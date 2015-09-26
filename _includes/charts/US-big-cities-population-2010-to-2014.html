@@ -23,6 +23,7 @@
 	.axis text {
 		font: 14px sans-serif;
 		font-weight: bold;
+		fill: #000;
 	}
 
 	.city text {
@@ -31,8 +32,7 @@
 	}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
-<!-- <h1>Here's how fast America's hugest cities grew or shrank from 2010 to 2014</h1> -->
-<h3>Population change in American cities with 500,000+ people, 2010-2014</h3>
+<h3>How population changed in American cities with 500,000+ people, 2010-2014</h3>
 <svg class="chart"></svg>
 <script type="text/javascript">
 	// Add commas to numbers. Example: 1000 becomes 1,000.
@@ -102,13 +102,13 @@
 	var marginLeft = margin.left;
 	var marginBottom = margin.bottom;
 	var marginRight = margin.right;
-	var width = document.getElementsByClassName('content')[0].clientWidth*0.95 - marginLeft - marginRight;
+	var width = document.getElementsByTagName('main')[0].clientWidth*0.95 - marginLeft - marginRight;
 	var widthWithMargins = width+marginRight+marginLeft;
 	var height = 2000;
 	var chart = d3.select('.chart')
 		.attr('width',widthWithMargins);
 
-	d3.csv('public/datasets/dataset.csv', function(error,csvData){
+	d3.csv('public/datasets/US cities population 2010 to 2014.csv', function(error,csvData){
 		var data = csvData.filter(function(d){
 			return +d.population2014>=500000;
 		});
