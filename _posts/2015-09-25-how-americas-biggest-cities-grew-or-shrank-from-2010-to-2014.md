@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How fast America's biggest cities grew or shrank from 2010 to 2014
+title: How America's biggest cities grew or shrank from 2010 to 2014
 ---
 
 I noticed the U.S. Census released 2014 population estimates for each city. I also noticed no one made a grouped bar chart comparing the biggest cities' populations for 2014 to 2010. So I decided to solve this problem.
@@ -15,7 +15,9 @@ Austin, Texas' population grew from 790,390 to 912,798. That means around one in
 
 I used data from the 2010 U.S. Census and the 2014 American Community Survey. I made the chart with [D3.js](http://d3js.org/). You can download the raw data from [this Github repo of mine](LINK TO FOLDER CONTAINING THE DATA).
 
-## Log vs. linear
+{% include forPosts/barChartCityPop2010To2014.html %}
+
+### Log vs. linear
 
 Data geeks may notice I've used a logrithmic scale for population instead of a linear one. For those who don't know the difference, here's an oversimplistic explanation. If the population scale was linear, the numbers on the lines might be 500k, 1M, 1.5M, 2M, 2.5M -- evenly spaced by 500,000. Instead, the number on each line is twice as big as the last: 500k doubles to 1M doubles to 2M and so on. It's a log scale. 
 
