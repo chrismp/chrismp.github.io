@@ -193,17 +193,21 @@
             .attr('class','y axis')
             .call(yAxis);
 
-        chart.selectAll('.axis')
+
+        chart.selectAll('.y')
             .attr('transform','translate('+marginLeft+')');
 
+        chart.selectAll('.x')
+            .attr('transform','translate('+marginLeft+','+marginTop+')');
         var city = chart.selectAll('.city')
             .data(data)
             .enter()
             .append('g')
             .attr('class','city')
             .attr('transform',function(d){
-                return 'translate('+marginLeft+','+y0(d.apCityName)+')';
+                return 'translate('+marginLeft+','+(y0(d.apCityName)+(marginTop/2))+')';
             });
+            
         city.selectAll('rect')
             .data(function(d){
                 return d.years;
