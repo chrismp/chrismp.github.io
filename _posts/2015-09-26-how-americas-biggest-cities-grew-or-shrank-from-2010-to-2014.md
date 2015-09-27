@@ -13,7 +13,7 @@ New York City grew the most, with 315,946 more people than it had at the start o
 
 Austin, Texas' population grew from 790,390 to 912,798. That means around one in seven people there are new.
 
-I used data from the 2010 U.S. Census and the 2014 American Community Survey. I made the chart with [D3.js](http://d3js.org/). You can download the raw data from [this Github repo of mine](LINK TO FOLDER CONTAINING THE DATA).
+I used data from the 2010 U.S. Census and the 2014 American Community Survey. I made the chart with [D3.js](http://d3js.org/). You can download the data from [this Github repo of mine](https://github.com/chrismp/chrismp.github.io/tree/master/public/datasets).
 
 {% include charts/US-big-cities-population-2010-to-2014.html %}
 

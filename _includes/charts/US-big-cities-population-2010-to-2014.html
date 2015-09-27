@@ -108,7 +108,7 @@
 	var chart = d3.select('.chart')
 		.attr('width',widthWithMargins);
 
-	d3.csv('public/datasets/US cities population 2010 to 2014.csv', function(error,csvData){
+	d3.csv('{{site.baseurl}}/public/datasets/US cities population 2010 to 2014.csv', function(error,csvData){
 		var data = csvData.filter(function(d){
 			return +d.population2014>=500000;
 		});
