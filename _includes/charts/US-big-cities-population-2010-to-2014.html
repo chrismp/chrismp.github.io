@@ -1,0 +1,317 @@
+
+<style type="text/css">
+	.axis {
+		font: 10px sans-serif;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line {
+		opacity: 0.2;
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text {
+		font: 14px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+
+	.city text {
+		font: 16px sans-serif;
+		font-weight: bold;
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+<h3>How population changed in American cities with 500,000+ people, 2010-2014</h3>
+<svg class="chart"></svg>
+<script type="text/javascript">
+	// Add commas to numbers. Example: 1000 becomes 1,000.
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	function apCityNameStyling(cityStateString){
+		// This isn't exact AP styling, but pretty close
+		var apCities = {
+			'Atlanta, Georgia': 'Atlanta',
+			'Baltimore, Maryland': 'Baltimore',
+			'Boston, Massachusetts': 'Boston',
+			'Chicago, Illinois': 'Chicago',
+			'Cincinnati, Ohio': 'Cincinnati',
+			'Cleveland, Ohio': 'Cleveland',
+			'Dallas, Texas': 'Dallas',
+			'Denver, Colorado': 'Denver',
+			'Detroit, Michigan': 'Detroit',
+			'Honolulu, Hawaii': 'Honolulu',
+			'Houston, Texas': 'Houston',
+			'Indianapolis  (balance), Indiana': 'Indianapolis',
+			'Las Vegas, Nevada': 'Las Vegas',
+			'Los Angeles, California': 'Los Angeles',
+			'Miami, Florida': 'Miami',
+			'Milwaukee, Wisconsin': 'Milwaukee',
+			'Minneapolis, Minnesota': 'Minneapolis',
+			'Nashville-Davidson (balance), Tennessee': 'Nashville, Tennessee', // Not a standalone city, but the key here is how the Census calls Nashville, TN
+			'New Orleans, Louisiana': 'New Orleans',
+			'New York, New York': 'New York City',
+			'Oklahoma City, Oklahoma': 'Oklahoma City',
+			'Philadelphia, Pennsylvania': 'Philadelphia',
+			'Phoenix, Arizona': 'Phoenix',
+			'Pittsburgh, Pennsylvania': 'Pittsburgh',
+			'Salt Lake City, Utah': 'Salt Lake City',
+			'San Antonio, Texas': 'San Antonio',
+			'San Diego, California': 'San Diego',
+			'San Francisco, California': 'San Francisco',
+			'Seattle, Washington': 'Seattle',
+			'St. Louis, Missouri': 'St. Louis',
+			'Washington, District of Columbia': 'Washington, D.C.'
+		};
+
+		if(cityStateString in apCities){
+			return apCities[cityStateString];
+		} else {
+			return cityStateString;
+		}
+	}
+
+
+
+	var colorArray = [
+		'#9ecae1',
+		'#3182bd'
+	];
+	var color = d3.scale.ordinal()
+		.range(colorArray);
+
+	var margin = {
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 105
+	};
+	var marginTop = margin.top;
+	var marginLeft = margin.left;
+	var marginBottom = margin.bottom;
+	var marginRight = margin.right;
+	var width = document.getElementsByTagName('main')[0].clientWidth*0.95 - marginLeft - marginRight;
+	var widthWithMargins = width+marginRight+marginLeft;
+	var height = 2000;
+	var chart = d3.select('.chart')
+		.attr('width',widthWithMargins);
+
+	d3.csv('{{site.baseurl}}/public/datasets/US cities population 2010 to 2014.csv', function(error,csvData){
+		var data = csvData.filter(function(d){
+			return +d.population2014>=500000;
+		});
+
+		var maxPopulation2014 = d3.max(
+				data,
+				function(d){
+					return +d.population2014;
+				}
+			);
+		var dataCount = data.length;
+		
+		var yearColumnNames = d3.keys(data[0]).filter(function(key){ 
+			return (key!=="Id" && key!=="City");
+		});
+
+		data.sort(
+			function(a,b){
+				return +b.population2014 - +a.population2014; // Sort by 2014 population, highest to lowest
+			}
+		);
+
+		data.forEach(function(d){
+			d.apCityName = apCityNameStyling(d.City);
+			d.years = yearColumnNames.map(function(name){
+				return {
+					name: name,
+					value: +d[name]
+				};
+			});
+		});
+		
+		chart.attr('height',height)
+			// .attr('transform','translate('+marginLeft+','+marginTop+')');
+
+		// X axis stuff
+		var xDomainMin = 400000;
+		var x = d3.scale.log()
+			.domain([xDomainMin,maxPopulation2014])
+			.range([0,width]); // Make range smaller than chart width so x axis doesn't go off the edge of chart's SVG canvas
+
+		var xTicks = [
+			// xDomainMin,
+			500000,
+			1000000,
+			2000000,
+			4000000,
+			8000000
+		];
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.tickValues(xTicks)
+			.tickFormat(d3.format('s'))
+			.innerTickSize(-height+marginBottom)
+			.orient('top');
+
+		chart.append('g')
+			.attr('class','x axis')
+			.call(xAxis)
+			.append('text')
+				.text('Population')
+				.style('text-anchor','end')
+				.attr('class','axis-label')
+				.attr('x',widthWithMargins/2)
+				.attr('y',-25);
+
+		var cityNameArray = data.map(function(d){
+			return d.apCityName;
+		});
+		var y0 = d3.scale.ordinal()
+			.domain(cityNameArray)
+			.rangeRoundBands([0,height-marginBottom],0.15);
+		var y1 = d3.scale.ordinal()
+			.domain(yearColumnNames)
+			.rangeRoundBands([0,y0.rangeBand()]);
+
+		var yAxis = d3.svg.axis()
+			.scale(y0)
+			.orient('left');
+
+		chart.append('g')
+			.attr('class','y axis')
+			.call(yAxis);
+
+        chart.selectAll('.y')
+            .attr('transform','translate('+marginLeft+')');
+
+        chart.selectAll('.x')
+            .attr('transform','translate('+marginLeft+','+marginTop+')');
+
+        chart.select('.y .domain')
+        	.attr('transform','translate(0,'+marginTop+')');
+
+		var city = chart.selectAll('.city')
+			.data(data)
+			.enter()
+			.append('g')
+			.attr('class','city')
+			.attr('transform',function(d){
+				var offset = y0(d.apCityName) + marginTop;
+				return 'translate('+marginLeft+','+offset+')';
+			});
+
+		city.selectAll('rect')
+			.data(function(d){
+				return d.years;
+			})
+			.enter()
+			.append('rect')
+				.attr('height',function(d){
+					return y1.rangeBand();
+				})
+				.attr('width',function(d){
+					return x(d.value);
+				})
+				.attr('y',function(d){
+					return y1(d.name);
+				})
+				.style('fill',function(d){
+					return color(d.name);
+				})
+
+		var popThreshold = 3000000; // Proxy for bar width
+		city.selectAll('.city')
+			.data(function(d){
+				return d.years;
+			})
+			.enter()
+			.append('text')
+			.attr('x',function(d){
+				var population = d.value;
+				var xPop = x(population);
+				return population>=popThreshold ? xPop-3 : xPop+3;
+			})
+			.attr('y',function(d){
+				return y1(d.name)+(y1.rangeBand()/1.3);
+			})
+			.attr('text-anchor',function(d){
+				return d.value>=popThreshold ? 'end' : 'start';
+			})
+			.attr('fill',function(d){
+				return d.value>=popThreshold ? '#eee' : '#000';
+			})
+			.attr('stroke',function(d){
+				return d.value<popThreshold ? '#fff' : '';
+			})
+			.attr('stroke-width',function(d){
+				return d.value<popThreshold ? 5 : '';
+			})
+			.attr('paint-order','stroke')
+			.text(function(d){
+				return numberWithCommas(d.value);
+			});
+
+		var insertLinebreaks = function (d,i) {
+			// Get `y` value for `g` element containing each cluster of bars
+				var gCityY = d3.selectAll('.city')[0][i]
+				.getAttribute('transform')
+				.split(',')[1]
+				.replace(')','');
+			var yTick = d3.selectAll('.y .tick')[0][i];
+			var el = d3.select(this);
+			var words = d.indexOf(', ') > -1 ? d.split(', ').map(function(w,i){return i===0 ? w+',' : w}) : d.split(' ');
+			
+			el.text('');
+			for (var i = 0; i < words.length; i++) {
+				var tspan = el.append('tspan').text(words[i]);
+				if(i===0){
+					tspan.attr('dx',5);
+				} else if (i > 0){
+					tspan.attr('x', 0).attr('dy', '15');
+				}
+			}
+
+			var cityNameY = words.length===3 ? +gCityY+10 : +gCityY+20;
+			yTick.setAttribute('transform','translate(-2.5,'+cityNameY+')');
+		};
+
+		chart.selectAll('.y .tick text').each(insertLinebreaks);
+
+		var legend = chart.selectAll('.legend')
+			.data(yearColumnNames.slice())
+			.enter()
+			.append('g')
+				.attr('class','legend')
+				.attr('transform',function(d,i){
+					return 'translate('+marginLeft+','+(marginTop+(i*20))+')';
+				})
+
+		var legendX = width - width - marginLeft;
+		legend.append('rect')
+			.attr('x',legendX)
+			.attr('y',-marginTop)
+			.attr('height',18)
+			.attr('width',18)
+			.style('fill',color);
+
+		legend.append('text')
+			.attr('x', legendX + 55)
+			.attr('y',-35)
+			.style('text-anchor','end')
+			.text(function(d){
+				return d.replace(/\D/g,'');
+			});
+	});
+</script>

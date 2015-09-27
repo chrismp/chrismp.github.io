@@ -6,7 +6,7 @@ relative_permalinks: true
 
 # Setup
 title:               Datavizz
-tagline:             Chris Persaud's data visualization blog
+tagline:             ""
 url:                 http://chrismp.github.io
 paginate:            1
 baseurl:             ""
