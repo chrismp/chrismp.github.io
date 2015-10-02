@@ -2,7 +2,9 @@
 	#container {
 		width: 100%;
 		height: 100%;
-		background-color: #ccc;
+		border: 1px solid #000;
+		text-align: center;
+		/*background-color: #ccc;*/
 	}
 
 	.states {
@@ -13,6 +15,7 @@
 
 	.q0-9 {
 		fill: #fff7fb;
+		stroke: #ccc;
 	}
 
 	.q1-9 {
@@ -47,6 +50,15 @@
 		fill: #014636;
 	}
 
+	.legendSquare text {
+		font: 16px sans-serif;
+	}
+
+	@media screen and (max-width: 360px){
+		.legendSquare text {
+			font-size: 11px sans-serif;
+		}
+	}
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
@@ -54,6 +66,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
 
 <div id="container">
+	<h3>Percent of people who say they only speak English</h3>
 	<svg class="map"></svg>
 </div>
 
@@ -64,13 +77,13 @@
 		bottom: 20,
 		left: 10
 	}
-	var width = document.getElementById('container').clientWidth,
-		width = +width;
+	var width = document.getElementById('container').clientWidth;
 	var mapRatio = 0.5;
 	var height = width*mapRatio+margin.top+margin.bottom;
 
+	var domain = [49,100];
 	var quantize = d3.scale.quantize()
-		.domain([50,100])
+		.domain(domain)
 		.range(d3.range(9).map(function(i){
 			return 'q'+i+'-9';
 		}));
@@ -86,11 +99,25 @@
 	var path = d3.geo.path()
 		.projection(mapProjection);
 
+	var zoom = d3.behavior.zoom()
+		.translate(mapProjection.translate())
+		.scale(mapProjection.scale())
+		.scaleExtent([height,8*height])
+		.on('zoom',	function(){
+			mapProjection.translate(zoom.translate())
+				.scale(zoom.scale());
+
+			svg.selectAll('.counties path').attr('d',path);
+			svg.selectAll('.states').attr('d',path);
+		});
+
+
+
 	var percentByID = d3.map();
 
 	queue()
-		.defer(d3.json, 'us.json')
-		.defer(d3.csv,'EnglishOnly.csv', function(d){
+		.defer(d3.json, '{{site.baseurl}}/public/datasets/us.json')
+		.defer(d3.csv,'{{site.baseurl}}/public/datasets/EnglishOnly.csv', function(d){
 			percentByID.set(
 				d.CountyID,
 				{
@@ -103,6 +130,7 @@
 		.await(function(error, us){
 			svg.append('g')
 				.attr('class','counties')
+				.call(zoom)
 				.selectAll('path')
 					.data(topojson.feature(us, us.objects.counties).features)
 					.enter()
@@ -121,31 +149,41 @@
 				.attr('class','states')
 				.attr('d',path);
 
-			var legendRectWidth = 20;
-			var legendRectHeight = legendRectWidth/2;
-			var legendContainer = svg.append('g')
-				.attr('class','legend')
-				.attr('transform','translate('+0+','+(margin.top)+')');
+			var quantizeRange = quantize.range();
+			var legendRectWidth = 28;
+			var legendRectHeight = 10;
+			var offset = window.innerWidth <= 360 ? 0 : width/2;
 
-			// legendContainer.append('text')
-			// 	.style('text-anchor','start')
-			// 	.text('50% or less');
-
-			legendContainer.selectAll('.legend').data(quantize.range())
+			svg.selectAll('.legendSquare')
+				.data(quantizeRange)
 				.enter()
-				.append('rect')
-					.attr('class',function(d){
-						return d;
-					})
-					.attr('width',legendRectWidth)
-					.attr('height',legendRectHeight)
+				.append('g')
+					.attr('class','legendSquare')
 					.attr('transform',function(d,i){
-						return 'translate('+0+','+(i*legendRectHeight)+')';
-					}); // Consider putting text INSIDE rects
+						var offset = window.innerWidth <= 360 ? 0 : (width/2) - (legendRectWidth*quantizeRange.length)/2;
+						return 'translate('+((i*legendRectWidth)+offset)+',0)';
+					})
+					.append('rect')
+						.attr('class',function(d){
+							return d;
+						})
+						.attr('width',legendRectWidth)
+						.attr('height',legendRectHeight)
 
-			// legendContainer.append('text')
-			// 	.style('text-anchor','end')
-			// 	.text('100%');
+			svg.select('.legendSquare')
+				.append('text')
+					.attr('y',legendRectHeight*3)
+					.style('text-anchor','start')
+					.text('<'+domain[0]+'%');
+
+			var legendSquares = svg.selectAll('.legendSquare');
+			var lastSquare = legendSquares[0].pop();
+			d3.select(lastSquare)
+				.append('text')
+					.attr('y',legendRectHeight*3)
+					.style('text-anchor','start')
+					.text(domain[1]+'%');
+
 		});
 
 	// Window resize code
