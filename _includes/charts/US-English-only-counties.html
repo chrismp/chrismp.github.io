@@ -174,7 +174,7 @@
 				.append('text')
 					.attr('y',legendRectHeight*3)
 					.style('text-anchor','start')
-					.text('<'+domain[0]+'%');
+					.text('<'+(domain[0]+1)+'%');
 
 			var legendSquares = svg.selectAll('.legendSquare');
 			var lastSquare = legendSquares[0].pop();
