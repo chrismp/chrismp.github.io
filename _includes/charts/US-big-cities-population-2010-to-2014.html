@@ -35,7 +35,6 @@
 <h3>How population changed in American cities with 500,000+ people, 2010-2014</h3>
 <svg class="chart"></svg>
 <script type="text/javascript">
-// <<<<<<< Updated upstream
 	// Add commas to numbers. Example: 1000 becomes 1,000.
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -195,167 +194,6 @@
 			.call(yAxis);
 
         chart.selectAll('.y')
-// =======
-//     // Add commas to numbers. Example: 1000 becomes 1,000.
-//     function numberWithCommas(x) {
-//         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-//     }
-
-//     function apCityNameStyling(cityStateString){
-//         // This isn't exact AP styling, but pretty close
-//         var apCities = {
-//             'Atlanta, Georgia': 'Atlanta',
-//             'Baltimore, Maryland': 'Baltimore',
-//             'Boston, Massachusetts': 'Boston',
-//             'Chicago, Illinois': 'Chicago',
-//             'Cincinnati, Ohio': 'Cincinnati',
-//             'Cleveland, Ohio': 'Cleveland',
-//             'Dallas, Texas': 'Dallas',
-//             'Denver, Colorado': 'Denver',
-//             'Detroit, Michigan': 'Detroit',
-//             'Honolulu, Hawaii': 'Honolulu',
-//             'Houston, Texas': 'Houston',
-//             'Indianapolis  (balance), Indiana': 'Indianapolis',
-//             'Las Vegas, Nevada': 'Las Vegas',
-//             'Los Angeles, California': 'Los Angeles',
-//             'Miami, Florida': 'Miami',
-//             'Milwaukee, Wisconsin': 'Milwaukee',
-//             'Minneapolis, Minnesota': 'Minneapolis',
-//             'Nashville-Davidson (balance), Tennessee': 'Nashville, Tennessee', // Not a standalone city, but the key here is how the Census calls Nashville, TN
-//             'New Orleans, Louisiana': 'New Orleans',
-//             'New York, New York': 'New York City',
-//             'Oklahoma City, Oklahoma': 'Oklahoma City',
-//             'Philadelphia, Pennsylvania': 'Philadelphia',
-//             'Phoenix, Arizona': 'Phoenix',
-//             'Pittsburgh, Pennsylvania': 'Pittsburgh',
-//             'Salt Lake City, Utah': 'Salt Lake City',
-//             'San Antonio, Texas': 'San Antonio',
-//             'San Diego, California': 'San Diego',
-//             'San Francisco, California': 'San Francisco',
-//             'Seattle, Washington': 'Seattle',
-//             'St. Louis, Missouri': 'St. Louis',
-//             'Washington, District of Columbia': 'Washington, D.C.'
-//         };
-
-//         if(cityStateString in apCities){
-//             return apCities[cityStateString];
-//         } else {
-//             return cityStateString;
-//         }
-//     }
-
-
-
-//     var colorArray = [
-//         '#9ecae1',
-//         '#3182bd'
-//     ];
-//     var color = d3.scale.ordinal()
-//         .range(colorArray);
-
-//     var margin = {
-//         top: 50,
-//         right: 30,
-//         bottom: 100,
-//         left: 105
-//     };
-//     var marginTop = margin.top;
-//     var marginLeft = margin.left;
-//     var marginBottom = margin.bottom;
-//     var marginRight = margin.right;
-//     var widthWithMargins = document.getElementsByTagName('main')[0].clientWidth;
-//     var width = widthWithMargins*0.95 - marginLeft - marginRight;
-//     var height = 2000;
-//     var chart = d3.select('.chart')
-//         .attr('width',widthWithMargins);
-
-//     d3.csv('public/datasets/US cities population 2010 to 2014.csv', function(error,csvData){
-//         var data = csvData.filter(function(d){
-//             return +d.population2014>=500000;
-//         });
-
-//         var maxPopulation2014 = d3.max(
-//                 data,
-//                 function(d){
-//                     return +d.population2014;
-//                 }
-//             );
-//         var dataCount = data.length;
-
-//         var yearColumnNames = d3.keys(data[0]).filter(function(key){
-//             return (key!=="Id" && key!=="City");
-//         });
-
-//         data.sort(
-//             function(a,b){
-//                 return +b.population2014 - +a.population2014; // Sort by 2014 population, highest to lowest
-//             }
-//         );
-
-//         data.forEach(function(d){
-//             d.apCityName = apCityNameStyling(d.City);
-//             d.years = yearColumnNames.map(function(name){
-//                 return {
-//                     name: name,
-//                     value: +d[name]
-//                 };
-//             });
-//         });
-
-//         chart.attr('height',height);
-//             // .attr('transform','translate('+marginLeft+','+marginTop+')');
-
-//         // X axis stuff
-//         var xDomainMin = 400000;
-//         var x = d3.scale.log()
-//             .domain([xDomainMin,maxPopulation2014])
-//             .range([0,width]); // Make range smaller than chart width so x axis doesn't go off the edge of chart's SVG canvas
-
-//         var xTicks = [
-//             // xDomainMin,
-//             500000,
-//             1000000,
-//             2000000,
-//             4000000,
-//             8000000
-//         ];
-//         var xAxis = d3.svg.axis()
-//             .scale(x)
-//             .tickValues(xTicks)
-//             .tickFormat(d3.format('s'))
-//             .innerTickSize(-height + marginTop)
-//             .orient('top');
-
-//         chart.append('g')
-//             .attr('class','x axis')
-//             .call(xAxis)
-//             .append('text')
-//                 .text('Population')
-//                 .style('text-anchor','end')
-//                 .attr('class','axis-label')
-//                 .attr('x',widthWithMargins/2)
-//                 .attr('y',-25);
-
-//         var cityNameArray = data.map(function(d){
-//             return d.apCityName;
-//         });
-//         var y0 = d3.scale.ordinal()
-//             .domain(cityNameArray)
-//             .rangeRoundBands([0,height - marginTop],0.15);
-//         var y1 = d3.scale.ordinal()
-//             .domain(yearColumnNames)
-//             .rangeRoundBands([0,y0.rangeBand()]);
-
-//         var yAxis = d3.svg.axis()
-//             .scale(y0)
-//             .orient('left');
-
-//         chart.append('g')
-//             .attr('class','y axis')
-//             .call(yAxis);
-
-//         chart.selectAll('.axis')
-// >>>>>>> Stashed changes
             .attr('transform','translate('+marginLeft+')');
 
         chart.selectAll('.x')
@@ -400,30 +238,30 @@
 			})
 			.enter()
 			.append('text')
-			.attr('x',function(d){
-				var population = d.value;
-				var xPop = x(population);
-				return population>=popThreshold ? xPop-3 : xPop+3;
-			})
-			.attr('y',function(d){
-				return y1(d.name)+(y1.rangeBand()/1.3);
-			})
-			.attr('text-anchor',function(d){
-				return d.value>=popThreshold ? 'end' : 'start';
-			})
-			.attr('fill',function(d){
-				return d.value>=popThreshold ? '#eee' : '#000';
-			})
-			.attr('stroke',function(d){
-				return d.value<popThreshold ? '#fff' : '';
-			})
-			.attr('stroke-width',function(d){
-				return d.value<popThreshold ? 5 : '';
-			})
-			.attr('paint-order','stroke')
-			.text(function(d){
-				return numberWithCommas(d.value);
-			});
+				.attr('x',function(d){
+					var population = d.value;
+					var xPop = x(population);
+					return population>=popThreshold ? xPop-3 : xPop+3;
+				})
+				.attr('y',function(d){
+					return y1(d.name)+(y1.rangeBand()/1.3);
+				})
+				.attr('text-anchor',function(d){
+					return d.value>=popThreshold ? 'end' : 'start';
+				})
+				.attr('fill',function(d){
+					return d.value>=popThreshold ? '#eee' : '#000';
+				})
+				.attr('stroke',function(d){
+					return d.value<popThreshold ? '#fff' : '';
+				})
+				.attr('stroke-width',function(d){
+					return d.value<popThreshold ? 5 : '';
+				})
+				.attr('paint-order','stroke')
+				.text(function(d){
+					return numberWithCommas(d.value);
+				});
 
 		var insertLinebreaks = function (d,i) {
 			// Get `y` value for `g` element containing each cluster of bars
