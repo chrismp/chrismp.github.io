@@ -1,0 +1,165 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+		height: 100%;
+		background-color: #ccc;
+	}
+
+	.states {
+		fill: none;
+		stroke: #fff;
+		stroke-linejoin: round;
+	}
+
+	.q0-9 {
+		fill: #fff7fb;
+	}
+
+	.q1-9 {
+		fill: #ece2f0;
+	}
+
+	.q2-9 {
+		fill: #d0d1e6;
+	}
+
+	.q3-9 {
+		fill: #a6bddb;
+	}
+
+	.q4-9 {
+		fill: #67a9cf;
+	}
+
+	.q5-9 {
+		fill: #3690c0;
+	}
+
+	.q6-9 {
+		fill: #02818a;
+	}
+
+	.q7-9 {
+		fill: #016c59;
+	}
+
+	.q8-9 {
+		fill: #014636;
+	}
+
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+
+<div id="container">
+	<svg class="map"></svg>
+</div>
+
+<script type="text/javascript">
+	var margin = {
+		top: 20,
+		right: 10,
+		bottom: 20,
+		left: 10
+	}
+	var width = document.getElementById('container').clientWidth,
+		width = +width;
+	var mapRatio = 0.5;
+	var height = width*mapRatio+margin.top+margin.bottom;
+
+	var quantize = d3.scale.quantize()
+		.domain([50,100])
+		.range(d3.range(9).map(function(i){
+			return 'q'+i+'-9';
+		}));
+
+	var svg = d3.select('.map');
+	svg.attr('width',width)
+		.attr('height',height);
+
+	var mapProjection = d3.geo.albersUsa()
+		.scale(width)
+		.translate([width/2,height/2]);
+
+	var path = d3.geo.path()
+		.projection(mapProjection);
+
+	var percentByID = d3.map();
+
+	queue()
+		.defer(d3.json, 'us.json')
+		.defer(d3.csv,'EnglishOnly.csv', function(d){
+			percentByID.set(
+				d.CountyID,
+				{
+					countyName: d.CountyName,
+					pop5Over:  +d.Population5Over,
+					pctEnglish: +d.PercentSpeakOnlyEnglish
+				}
+			);
+		})
+		.await(function(error, us){
+			svg.append('g')
+				.attr('class','counties')
+				.selectAll('path')
+					.data(topojson.feature(us, us.objects.counties).features)
+					.enter()
+					.append('path')
+						.attr('class',function(d){
+							var dataObj = percentByID.get(d.id); 
+							// console.log(dataObj);
+							return dataObj===undefined ? null : quantize(dataObj.pctEnglish);
+						})
+						.attr('d',path);
+
+			svg.append('path')
+				.datum(topojson.mesh(us, us.objects.states, function(a,b){
+					return a!==b;
+				}))
+				.attr('class','states')
+				.attr('d',path);
+
+			var legendRectWidth = 20;
+			var legendRectHeight = legendRectWidth/2;
+			var legendContainer = svg.append('g')
+				.attr('class','legend')
+				.attr('transform','translate('+0+','+(margin.top)+')');
+
+			// legendContainer.append('text')
+			// 	.style('text-anchor','start')
+			// 	.text('50% or less');
+
+			legendContainer.selectAll('.legend').data(quantize.range())
+				.enter()
+				.append('rect')
+					.attr('class',function(d){
+						return d;
+					})
+					.attr('width',legendRectWidth)
+					.attr('height',legendRectHeight)
+					.attr('transform',function(d,i){
+						return 'translate('+0+','+(i*legendRectHeight)+')';
+					}); // Consider putting text INSIDE rects
+
+			// legendContainer.append('text')
+			// 	.style('text-anchor','end')
+			// 	.text('100%');
+		});
+
+	// Window resize code
+	d3.select(window).on('resize',function(){
+		width = document.getElementById('container').clientWidth;
+		height = width*mapRatio+margin.top+margin.bottom;
+		mapProjection
+			.scale(width)
+			.translate([width/2,height/2]);
+
+		svg.style('width',width)
+			.style('height',height);
+
+		svg.selectAll('.counties path').attr('d',path);
+		svg.selectAll('.states').attr('d',path);
+	});
+</script>
