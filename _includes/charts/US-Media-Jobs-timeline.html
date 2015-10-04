@@ -32,7 +32,7 @@
 	var margin = {
 		top: 20,
 		right: 30,
-		bottom: 20,
+		bottom: 30,
 		left: 50
 	}
 	var width = document.getElementById('container').clientWidth,
@@ -62,7 +62,7 @@
 	// var line = d3.svg
 	// 	.line()
 	// 	.x(function(d){
-	// 		return x(d.Month);
+	// 		return x(d.month);
 	// 	})
 	// 	.y(function(d){
 	// 		return y(d[newspapers]);
@@ -72,7 +72,7 @@
 		.line()
 		.interpolate('basis')
 		.x(function(d){
-			return x(d.Month);
+			return x(d.date);
 		})
 		.y(function(d){
 			return y(d.jobs);
@@ -84,7 +84,7 @@
 		.append('g')
 			.attr('transform','translate('+margin.left+','+margin.top+')');
 
-	d3.csv('MediaJobNumbersUSA.csv',function(error,csvData){
+	d3.csv('{{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv',function(error,csvData){
 		if(error) throw error;
 
 		var data = csvData.map(function(obj){
@@ -95,15 +95,14 @@
 			rObj[pr] = obj[pr];
 
 			var timeFormat = d3.time.format('%Y M%m');
-			rObj.Month = timeFormat.parse(obj.Year+' '+obj.Period);
-
+			rObj.month = timeFormat.parse(obj.Year+' '+obj.Period);
 			return rObj;
 		});
 
 		color.domain(
 			d3.keys(data[0])
 				.filter(function(key){
-					return (key!=='Month');
+					return (key!=='month');
 				})
 		);
 
@@ -113,7 +112,7 @@
 					name: industry,
 					values: data.map(function(d){
 						return {
-							date: d.Month,
+							date: d.month,
 							jobs: +d[industry]
 						};
 					})
@@ -122,20 +121,17 @@
 
 
 		x.domain(d3.extent(data,function(d){
-			return d.Month;
+			return d.month;
 		}));
-		y.domain([
-			d3.min(industries, function(ind){
-				d3.min(ind.values, function(v){
-					return v.jobs;
-				});
-			}),
-			d3.max(industries, function(ind){
-				d3.max(ind.values, function(v){
-					return v.jobs;
-				});
-			})
-		]);
+		y.domain(
+			d3.extent(
+				d3.merge(industries.map(function(d){
+					return d.values;
+				})),
+				function(d){
+					return d.jobs;
+				})
+		);
 
 		svg.append('g')
 			.attr('class','x axis')
@@ -155,7 +151,6 @@
 		industry.append('path')
 			.attr('class','line')
 			.attr('d',function(d){
-				console.log(d.values);
 				return line(d.values);
 			})
 			.style('stroke',function(d){
