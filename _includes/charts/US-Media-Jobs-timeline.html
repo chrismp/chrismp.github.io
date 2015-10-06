@@ -131,6 +131,11 @@
 		.append('g')
 			.attr('transform','translate('+marginLeft+','+marginTop+')');
 
+	var parseDate = d3.time.format('%Y M%m'),
+	bisectDate = d3.bisector(function(d){
+		return d.date
+	}).left
+
 	d3.csv('{{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv',function(error,csvData){
 		if(error) throw error;
 
@@ -140,9 +145,7 @@
 			rObj[radio] = obj[radio];
 			rObj[tv] = obj[tv];
 			rObj[pr] = obj[pr];
-
-			var timeFormat = d3.time.format('%Y M%m');
-			rObj.month = timeFormat.parse(obj.Year+' '+obj.Period);
+			rObj.month = parseDate.parse(obj.Year+' '+obj.Period);
 			return rObj;
 		});
 
@@ -246,15 +249,41 @@
 					return d.name;
 				});
 
-		// svg.selectAll('.lineLabel')
-		// 	.data(industries)
-		// 	.enter()
-		// 	.append('g')
+		var focus = svg.append('g')
+			.attr('class','focus')
+			.style('display','none');
 
-		// svg.append('path')
-		// 	.datum(data)
-		// 	.attr('class','line')
-		// 	.attr('d',line);
+		focus.append('circle')
+			.attr('r',4.5)
+			.attr('fill','none')
+			.attr('stroke','steelblue');
+
+		focus.append('text')
+			.attr('x',9)
+			.attr('dy','.35em');
+
+		svg.append('rect')
+			.attr('class','overlay')
+			.attr('fill','none')
+			.attr('pointer-events','all')
+			.attr('width',width)
+			.attr('height',height)
+			.on('mouseover',function(){
+				focus.style('display',null);
+			})
+			.on('mouseout',function(){
+				focus.style('display','none');
+			})
+			.on('mouseout',function(){
+				console.log(x.invert(d3.mouse(this)[0]));
+				var x0 = x.invert(d3.mouse(this)[0]),
+				i = bisectDate(data, x0, 1),
+				d0 = data[i-1],
+				d1 = data[i],
+				d = (x0-d0.date) > (d1.date-d0) ? d1 : d0;
+				focus.attr('transform','translate('+x(d.date)+','+y(d.close)+')');
+				focus.select('text').text(d.values);
+			});
 	});
 
 	// // Window resize code
