@@ -6,9 +6,20 @@
 		shape-rendering: crispEdges;
 	}
 
-/*	.x.axis path {
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
 		display: none;
-	}*/
+		font-size: 12px;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		/*width: 200px;*/
+		z-index: 10;
+	}
 
 	.line {
 		fill: none;
@@ -133,10 +144,15 @@
 
 	var parseDate = d3.time.format('%Y M%m'),
 	bisectDate = d3.bisector(function(d){
-		return d.date
+		return d.month;
 	}).left
 
-	d3.csv('{{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv',function(error,csvData){
+	var tooltip = d3.select('#container')
+		.append('div')
+		.attr('class','tooltip');
+
+// {{site.baseurl}}/public/datasets/
+	d3.csv('MediaJobNumbersUSA.csv',function(error,csvData){
 		if(error) throw error;
 
 		var data = csvData.map(function(obj){
@@ -149,12 +165,12 @@
 			return rObj;
 		});
 
-		color.domain(
-			d3.keys(data[0])
-				.filter(function(key){
-					return (key!=='month');
-				})
-		);
+		var industryNames = d3.keys(data[0])
+			.filter(function(key){
+				return (key!=='month');
+			});
+
+		color.domain(industryNames);
 
 		var industries = color.domain()
 			.map(function(industry){
@@ -253,14 +269,27 @@
 			.attr('class','focus')
 			.style('display','none');
 
-		focus.append('circle')
-			.attr('r',4.5)
-			.attr('fill','none')
-			.attr('stroke','steelblue');
+		// focus.append('circle')
+		// 	.attr('r',4.5)
+		// 	.attr('fill','none')
+		// 	.attr('stroke','steelblue');
 
-		focus.append('text')
-			.attr('x',9)
-			.attr('dy','.35em');
+		// focus.append('text')
+		// 	.attr('x',9)
+		// 	.attr('dy','.35em');
+
+		focus.append('line')
+			.attr('class','x')
+			.style('stroke','#000')
+			// .style('stroke-dasharray',3.3)
+			.style('opacity',0.5)
+			.attr('y1',0)
+			.attr('y2',height);
+
+		industryNames.forEach(function(d,i){
+			tooltip.append('div');
+				// .attr('id','')
+		});
 
 		svg.append('rect')
 			.attr('class','overlay')
@@ -270,19 +299,31 @@
 			.attr('height',height)
 			.on('mouseover',function(){
 				focus.style('display',null);
+				tooltip.style('display','block');
 			})
 			.on('mouseout',function(){
 				focus.style('display','none');
+				tooltip.style('display','none');
 			})
-			.on('mouseout',function(){
-				console.log(x.invert(d3.mouse(this)[0]));
+			.on('mousemove',function(){
 				var x0 = x.invert(d3.mouse(this)[0]),
 				i = bisectDate(data, x0, 1),
 				d0 = data[i-1],
 				d1 = data[i],
-				d = (x0-d0.date) > (d1.date-d0) ? d1 : d0;
-				focus.attr('transform','translate('+x(d.date)+','+y(d.close)+')');
-				focus.select('text').text(d.values);
+				d = (x0-d0.month) > (d1.month-x0) ? d1 : d0;
+				focus.attr('transform','translate('+x(d.month)+',0)');
+				industryNames.forEach(function(name,index){
+					var jobs = d[name]==="" ? null : d[name]+'k';
+
+					tooltip.style('top',(d3.event.pageY+10)+'px')
+						.style('left',(d3.event.pageX+10)+'px');
+
+					d3.select('.tooltip div:nth-child('+(index+1)+')')
+						.html('<span style="color:'+color(name)+'">'+name+'</span>: <b>'+jobs+'</b>')
+						.style('display',function(){
+							return jobs===null ? 'none' : null;
+						});
+				});
 			});
 	});
 
