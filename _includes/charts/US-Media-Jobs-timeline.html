@@ -1,0 +1,363 @@
+<style type="text/css">
+	.axis path,
+	.axis line {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font-size: 14px;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		/*width: 200px;*/
+		z-index: 10;
+	}
+
+	.line {
+		fill: none;
+		stroke: steelblue;
+		stroke-width: 2px;
+	}
+
+	@media screen and (max-width: 360px){
+		.legendWrapper {
+			display: none;
+		}
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip,
+		text {
+			font-size: 10px;
+		}
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<div id="container">
+	<h3>Traditional media industry jobs in the U.S., Jan. 1947 to Aug. 2015</h3>
+	<svg class="line-chart"></svg>
+	<p class="source">Source: U.S. Bureau of Labor Statistics</p>
+</div>
+
+<script type="text/javascript">
+	var innerWidth = window.innerWidth;
+
+	var months = new Array(12);
+	months[0] = "Jan";
+	months[1] = "Feb";
+	months[2] = "Mar";
+	months[3] = "Apr";
+	months[4] = "May";
+	months[5] = "Jun";
+	months[6] = "Jul";
+	months[7] = "Aug";
+	months[8] = "Sept";
+	months[9] = "Oct";
+	months[10] = "Nov";
+	months[11] = "Dec";
+
+	var newspapers = 'Newspaper publishing',
+	radio = 'Radio broadcasting',
+	tv = 'Television broadcasting',
+	pr = 'Public relations agencies';
+
+	var margin = {
+		top: 20,
+		right: 30,
+		bottom: 30,
+		left: 50
+	},
+	marginTop = margin.top,
+	marginRight = margin.right,
+	marginBottom = margin.bottom,
+	marginLeft = margin.left;
+
+	var width = document.getElementById('container').clientWidth,
+	width = width - marginLeft - marginRight;
+	var height = innerWidth<=480 ? width/1.25 : width/1.75, 
+	height = height - marginTop - marginBottom;
+	
+	var x = d3.time
+		.scale()
+		.range([0,width]);
+	
+	var y = d3.scale
+		.log()
+		.range([height,0]);
+
+	var color = d3.scale.category10();
+	
+	var xAxis = d3.svg
+		.axis()
+		.scale(x)
+		.orient('bottom');
+	
+	var yTicks = [
+		// 40,
+		50,
+		// 60,
+		// 70,
+		// 80,
+		// 90,
+		100,
+		// 110,
+		// 120,
+		// 130,
+		// 140,
+		150,
+		200,
+		250,
+		300,
+		350,
+		400
+	];
+	var yAxis = d3.svg
+		.axis()
+		.tickValues(yTicks)
+		.tickFormat(function(d){
+			return d+'k';
+		})
+		.scale(y)
+		.orient('left');
+	
+	// var line = d3.svg
+	// 	.line()
+	// 	.x(function(d){
+	// 		return x(d.month);
+	// 	})
+	// 	.y(function(d){
+	// 		return y(d[newspapers]);
+	// 	});
+
+	var line = d3.svg
+		.line()
+		.interpolate('basis')
+		.defined(function(d){
+			return d.jobs!=null;
+		})
+		.x(function(d){
+			return x(d.date);
+		})
+		.y(function(d){
+			return y(d.jobs);
+		});
+
+	var svg = d3.select('.line-chart')
+		.attr('width',width+marginLeft+marginRight)
+		.attr('height',height+marginTop+marginBottom)
+		.append('g')
+			.attr('transform','translate('+marginLeft+','+marginTop+')');
+
+	var parseDate = d3.time.format('%Y M%m'),
+	bisectDate = d3.bisector(function(d){
+		return d.month;
+	}).left
+
+	var tooltip = d3.select('#container')
+		.append('div')
+		.attr('class','tooltip');
+
+	d3.csv('{{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv',function(error,csvData){
+		if(error) throw error;
+
+		var data = csvData.map(function(obj){
+			var rObj = {};
+			rObj[newspapers] = obj[newspapers];
+			rObj[radio] = obj[radio];
+			rObj[tv] = obj[tv];
+			rObj[pr] = obj[pr];
+			rObj.month = parseDate.parse(obj.Year+' '+obj.Period);
+			return rObj;
+		});
+
+		var industryNames = d3.keys(data[0])
+			.filter(function(key){
+				return (key!=='month');
+			});
+
+		color.domain(industryNames);
+
+		var industries = color.domain()
+			.map(function(industry){
+				return {
+					name: industry,
+					values: data.map(function(d){
+						var jobCount = d[industry]===''? null : +d[industry];
+						return {
+							date: d.month,
+							jobs: jobCount
+						};
+					})
+				};
+			});
+
+		x.domain(d3.extent(data,function(d){
+			return d.month;
+		}));
+		y.domain(
+			d3.extent(
+				d3.merge(industries.map(function(d){
+					return d.values;
+				})),
+				function(d){
+					return d.jobs;
+				})
+		);
+
+		svg.append('g')
+			.attr('class','x axis')
+			.attr('transform','translate(0,'+height+')')
+			.call(xAxis);
+		
+		svg.append('g')
+			.attr('class','y axis')
+			.call(yAxis)
+			.append('text')
+				.text('Workers')
+				// .attr('x',marginLeft)
+				.attr('y',marginTop)
+				.attr('transform','rotate(-90)')
+				.style('text-anchor','end')
+
+		var industry = svg.selectAll('.industry')
+			.data(industries)
+			.enter()
+			.append('g')
+				.attr('class','industry');
+
+		industry.append('path')
+			.attr('class','line')
+			.attr('d',function(d){
+				return line(d.values);
+			})
+			.style('stroke',function(d){
+				return color(d.name);
+			});
+
+		var heightBottom = height - marginBottom;
+		var legendWrapper = svg.append('g')
+			.attr('class','legendWrapper');
+
+		legendWrapper.append('rect');
+		legendWrapper.selectAll('circle')
+			.data(industries)
+			.enter()
+			.append('circle')
+				.attr('cx',function(d,i){
+					return innerWidth <= 640 ? (marginLeft/2) - 5 : marginLeft - 10;
+				})
+				.attr('cy',function(d,i){
+					return innerWidth <= 640 ? heightBottom - (marginBottom*i/2) - 4 : heightBottom - (marginBottom*i) - 6;
+				})
+				.attr('r',function(){
+					return innerWidth <= 640 ? 3 : 6; 
+				})
+				.attr('fill',function(d){
+					return color(d.name);
+				});
+
+		legendWrapper.selectAll('.lineLabel')
+			.data(industries)
+			.enter()
+			.append('text')
+				.attr('x',function(d,i){
+					return innerWidth <=640 ? marginLeft/2 : marginLeft;
+				})
+				.attr('y',function(d,i){
+					return innerWidth <=640 ? heightBottom - (marginBottom*i/2) : heightBottom - (marginBottom*i)
+				})
+				.text(function(d){
+					return d.name;
+				});
+
+		var focus = svg.append('g')
+			.attr('class','focus')
+			.style('display','none');
+
+		// focus.append('circle')
+		// 	.attr('r',4.5)
+		// 	.attr('fill','none')
+		// 	.attr('stroke','steelblue');
+
+		// focus.append('text')
+		// 	.attr('x',9)
+		// 	.attr('dy','.35em');
+
+		focus.append('line')
+			.attr('class','x')
+			.style('stroke','#000')
+			// .style('stroke-dasharray',3.3)
+			.style('opacity',0.5)
+			.attr('y1',0)
+			.attr('y2',height);
+
+		tooltip.append('div'); // This will contain the year
+		industryNames.forEach(function(d,i){
+			tooltip.append('div');
+		});
+
+		svg.append('rect')
+			.attr('class','overlay')
+			.attr('fill','none')
+			.attr('pointer-events','all')
+			.attr('width',width)
+			.attr('height',height)
+			.on('mouseover',function(){
+				focus.style('display',null);
+				tooltip.style('display','block');
+			})
+			.on('mouseout',function(){
+				focus.style('display','none');
+				tooltip.style('display','none');
+			})
+			.on('mousemove',function(){
+				var x0 = x.invert(d3.mouse(this)[0]),
+				i = bisectDate(data, x0, 1),
+				d0 = data[i-1],
+				d1 = data[i],
+				d = (x0-d0.month) > (d1.month-x0) ? d1 : d0;
+				focus.attr('transform','translate('+x(d.month)+',0)');
+
+				d3.select('.tooltip div:nth-child(1)')
+					.html('<b>'+months[d.month.getMonth()]+' '+d.month.getFullYear()+'</b>');
+					
+				industryNames.forEach(function(name,index){
+					var jobs = d[name]==="" ? null : d[name]+'k';
+
+					tooltip.style('top',(d3.event.pageY+10)+'px')
+						.style('left',(d3.event.pageX+10)+'px');
+
+					d3.select('.tooltip div:nth-child('+(index+2)+')')
+						.html('<b><span style="color:'+color(name)+'">'+name+'</span>: '+jobs+'</b>')
+						.style('display',function(){
+							return jobs===null ? 'none' : null;
+						});
+				});
+			});
+	});
+
+	// // Window resize code
+	// function resize(){
+	// 	var width = document.getElementById('container').clientWidth,
+	// 	width = width - marginLeft - marginRight;
+	// 	var height = innerWidth<=480 ? width : width/1.5, 
+	// 	height = height - marginTop - marginBottom;
+
+	// 	svg.style('width',width).style('height',height);
+	// 	x.range([0,width]);
+	// 	y.range([height,0]);
+	// 	svg.select('.x.axis').call(xAxis);
+	// 	svg.select('.y.axis').call(yAxis);
+	// 	svg.selectAll('.line').attr('d',function(d){return line(d.values)});
+	// }
+	// window.onresize = resize;
+</script>
