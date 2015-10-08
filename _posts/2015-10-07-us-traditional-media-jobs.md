@@ -17,3 +17,4 @@ Mouseover or tap the lines to see more details. Get the clean dataset [here]({{s
 
 {% include charts/US-media-jobs-timeline.html %}
 
+<!-- <img src="{{site.baseurl}}/public/images/US-media-jobs.png" style="display:none;"> -->
