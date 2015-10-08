@@ -15,6 +15,6 @@ The data come from the Bureau of Labor Statistics, series IDs CEU5051111001, CEU
 
 Mouseover or tap the lines to see more details. Get the clean dataset [here]({{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv). I made this chart with [D3.js](http://d3js.org/).
 
-{% include charts/US-media-jobs-timeline.html %}
+{% include charts/US-Media-Jobs-timeline.html %}
 
 <!-- <img src="{{site.baseurl}}/public/images/US-media-jobs.png" style="display:none;"> -->
