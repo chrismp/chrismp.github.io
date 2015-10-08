@@ -11,7 +11,7 @@
 		box-shadow: 0 0 5px #999;
 		color: #333;
 		display: none;
-		font-size: 12px;
+		font-size: 14px;
 		left: 130px;
 		padding: 10px;
 		position: absolute;
@@ -34,21 +34,36 @@
 	}
 
 	@media screen and (max-width: 640px){
+		.tooltip,
 		text {
-			font-size: 11px;
+			font-size: 10px;
 		}
 	}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 
 <div id="container">
-	<h3>Media industry jobs, Jan. 1947 to Aug. 2015</h3>
+	<h3>Traditional media industry jobs in the U.S., Jan. 1947 to Aug. 2015</h3>
 	<svg class="line-chart"></svg>
 	<p class="source">Source: U.S. Bureau of Labor Statistics</p>
 </div>
 
 <script type="text/javascript">
 	var innerWidth = window.innerWidth;
+
+	var months = new Array(12);
+	months[0] = "Jan";
+	months[1] = "Feb";
+	months[2] = "Mar";
+	months[3] = "Apr";
+	months[4] = "May";
+	months[5] = "Jun";
+	months[6] = "Jul";
+	months[7] = "Aug";
+	months[8] = "Sept";
+	months[9] = "Oct";
+	months[10] = "Nov";
+	months[11] = "Dec";
 
 	var newspapers = 'Newspaper publishing',
 	radio = 'Radio broadcasting',
@@ -151,8 +166,7 @@
 		.append('div')
 		.attr('class','tooltip');
 
-// {{site.baseurl}}/public/datasets/
-	d3.csv('MediaJobNumbersUSA.csv',function(error,csvData){
+	d3.csv('{{site.baseurl}}/public/datasets/MediaJobNumbersUSA.csv',function(error,csvData){
 		if(error) throw error;
 
 		var data = csvData.map(function(obj){
@@ -286,9 +300,9 @@
 			.attr('y1',0)
 			.attr('y2',height);
 
+		tooltip.append('div'); // This will contain the year
 		industryNames.forEach(function(d,i){
 			tooltip.append('div');
-				// .attr('id','')
 		});
 
 		svg.append('rect')
@@ -312,14 +326,18 @@
 				d1 = data[i],
 				d = (x0-d0.month) > (d1.month-x0) ? d1 : d0;
 				focus.attr('transform','translate('+x(d.month)+',0)');
+
+				d3.select('.tooltip div:nth-child(1)')
+					.html('<b>'+months[d.month.getMonth()]+' '+d.month.getFullYear()+'</b>');
+					
 				industryNames.forEach(function(name,index){
 					var jobs = d[name]==="" ? null : d[name]+'k';
 
 					tooltip.style('top',(d3.event.pageY+10)+'px')
 						.style('left',(d3.event.pageX+10)+'px');
 
-					d3.select('.tooltip div:nth-child('+(index+1)+')')
-						.html('<span style="color:'+color(name)+'">'+name+'</span>: <b>'+jobs+'</b>')
+					d3.select('.tooltip div:nth-child('+(index+2)+')')
+						.html('<b><span style="color:'+color(name)+'">'+name+'</span>: '+jobs+'</b>')
 						.style('display',function(){
 							return jobs===null ? 'none' : null;
 						});
