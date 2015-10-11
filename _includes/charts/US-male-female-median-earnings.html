@@ -1,0 +1,192 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+	}
+
+	.axis {
+		font: 10px sans-serif;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line {
+		opacity: 0.2;
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text {
+		font: 14px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<div id="container">
+	<h3>Unmarried women earn eight percent less than unmarried men in the U.S.</h3>
+	<svg class="chart"></svg>
+	<p class="source">2014 U.S. Current Population Survey</p>
+</div>
+
+<script type="text/javascript">
+	var colorArray = [
+		'#3182bd',
+		'#fb9a99'
+	];
+	var color = d3.scale.ordinal()
+		.range(colorArray);
+
+	var margin = {
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 105
+	};
+	var marginTop = margin.top;
+	var marginLeft = margin.left;
+	var marginBottom = margin.bottom;
+	var marginRight = margin.right;
+	var width = document.getElementById('container').clientWidth - marginRight - marginLeft;
+	var widthWithMargins = width+marginRight+marginLeft;
+	var height = 500;
+
+	var chart = d3.select('.chart');
+	chart.attr('width',widthWithMargins);
+
+	d3.csv('{{site.baseurl}}/public/datasets/Male and female median earnings by marital status.csv',function(error,data){
+		var sexes = d3.keys(data[0]).filter(function(key){
+			return (key==='Male'||key==='Female');
+		});
+
+		var maxSalary = d3.max(data,function(d){
+			var maleEarnings = +d.Male;
+			var femaleEarnings = +d.Female;
+			if(maleEarnings>femaleEarnings){
+				return maleEarnings;
+			} else {
+				return femaleEarnings;
+			}
+		});
+
+		var minSalary = d3.max(data,function(d){
+			var maleEarnings = +d.Male;
+			var femaleEarnings = +d.Female;
+			if(maleEarnings<femaleEarnings){
+				return maleEarnings;
+			} else {
+				return femaleEarnings;
+			}
+		});
+
+		data.forEach(function(d){
+			d.sex = sexes.map(function(sex){
+				return {
+					name:  sex,
+					value: +d[sex]
+				};
+			});
+		});
+
+		chart.attr('height',height);
+
+		var x = d3.scale.linear()
+			.domain([0,maxSalary])
+			.range([0,width]);
+
+		var xTicks = [
+			// 0,
+			10000,
+			20000,
+			30000,
+			40000,
+			50000,
+			60000
+		];
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.tickValues(xTicks)
+			.innerTickSize(-height+marginBottom)
+			.orient('top');
+
+		chart.append('g')
+			.attr('class','x axis')
+			.call(xAxis)
+			.append('text')
+				.text('Earnings')
+				.style('text-anchor','end')
+				.attr('class','axis-label')
+				.attr('x',widthWithMargins/2)
+				.attr('y',-25);
+
+		var maritalStatuses = data.map(function(d){
+			return d.Demographic;
+		});
+		var y0 = d3.scale.ordinal()
+			.domain(maritalStatuses)
+			.rangeRoundBands([0,height-marginBottom],0.15);
+		var y1 = d3.scale.ordinal()
+			.domain(sexes)
+			.rangeRoundBands([0,y0.rangeBand()]);
+
+		var yAxis = d3.svg.axis()
+			.scale(y0)
+			.orient('left');
+
+		chart.append('g')
+			.attr('class','y axis')
+			.call(yAxis);
+
+		chart.selectAll('.y')
+			.attr('transform','translate('+marginLeft+')');
+
+		chart.selectAll('.y .tick')
+			.attr('transform',function(d,i){
+				return 'translate(0,'+(y0(d)+y1.rangeBand()*2.5)+')'; 
+			});
+
+		chart.selectAll('.x')
+			.attr('transform','translate('+marginLeft+','+marginTop+')');
+
+		chart.select('.y .domain')
+			.attr('transform','translate(0,'+marginTop+')');
+	
+		var maritalStatus = chart.selectAll('.marital-status')
+			.data(data)
+			.enter()
+			.append('g')
+			.attr('class','marital-status')
+			.attr('transform',function(d){
+				var offset = y0(d.Demographic)+marginTop;
+				return 'translate('+marginLeft+','+offset+')';
+			});
+
+		maritalStatus.selectAll('rect')
+			.data(function(d){
+				return d.sex
+			})
+			.enter()
+			.append('rect')
+				.attr('height',function(d){
+					return y1.rangeBand();
+				})
+				.attr('width',function(d){
+					return x(d.value);
+				})
+				.attr('y',function(d){
+					return y1(d.name);
+				})
+				.style('fill',function(d){
+					return color(d.name);
+				})
+	});
+</script>
