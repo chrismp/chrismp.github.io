@@ -263,7 +263,7 @@
 
 		var insertLinebreaks = function (d,i) {
 			// Get `y` value for `g` element containing each cluster of bars
-				var gCityY = d3.selectAll('.city')[0][i]
+			var gCityY = d3.selectAll('.city')[0][i]
 				.getAttribute('transform')
 				.split(',')[1]
 				.replace(')','');
