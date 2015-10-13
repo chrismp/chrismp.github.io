@@ -91,7 +91,7 @@
 	var marginRight = margin.right;
 	var width = document.getElementById('container').clientWidth - marginRight - marginLeft;
 	var widthWithMargins = width+marginRight+marginLeft;
-	var height = 400;
+	var height = 475;
 
 	var chart = d3.select('.chart');
 	chart.attr('width',widthWithMargins);
@@ -99,7 +99,6 @@
 	var tooltip = d3.select('#container')
 		.append('div')
 		.attr('class','tooltip');
-
 
 	d3.csv('{{site.baseurl}}/public/datasets/Male and female median earnings by marital status.csv',function(error,csvData){
 		data = csvData;
