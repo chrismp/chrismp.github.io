@@ -1,0 +1,347 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+	}
+
+	.axis {
+		font: 10px sans-serif;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line {
+		opacity: 0.2;
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text {
+		font: 13px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	.source {
+		font-size: 12px;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip,
+		.axis text {
+			/*font-weight: unset;*/
+			font-size: 11px;
+		}
+
+		.x > text,
+		.legend text {
+			font-size: 12px;
+		}
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<div id="container">
+	<h3>Median earnings for American men and women working full-time in 2014</h3>
+	<svg class="chart"></svg>
+	<p class="source">Source: 2014 U.S. Current Population Survey</p>
+</div>
+
+<script type="text/javascript">
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	var x, y0, y1, xAxis, yAxis, data, maritalStatuses, sexes;
+	var colorArray = [
+		'#3182bd',
+		'#fb9a99'
+	];
+	var color = d3.scale.ordinal()
+		.range(colorArray);
+
+	var margin = {
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 70
+	};
+	var marginTop = margin.top;
+	var marginLeft = margin.left;
+	var marginBottom = margin.bottom;
+	var marginRight = margin.right;
+	var width = document.getElementById('container').clientWidth - marginRight - marginLeft;
+	var widthWithMargins = width+marginRight+marginLeft;
+	var height = 475;
+
+	var chart = d3.select('.chart');
+	chart.attr('width',widthWithMargins);
+
+	var tooltip = d3.select('#container')
+		.append('div')
+		.attr('class','tooltip');
+
+	d3.csv('{{site.baseurl}}/public/datasets/Male and female median earnings by marital status.csv',function(error,csvData){
+		data = csvData;
+
+		sexes = d3.keys(data[0]).filter(function(key){
+			return (key==='Male'||key==='Female');
+		});
+
+		var maxSalary = d3.max(data,function(d){
+			var maleEarnings = +d.Male;
+			var femaleEarnings = +d.Female;
+			if(maleEarnings>femaleEarnings){
+				return maleEarnings;
+			} else {
+				return femaleEarnings;
+			}
+		});
+
+		var minSalary = d3.max(data,function(d){
+			var maleEarnings = +d.Male;
+			var femaleEarnings = +d.Female;
+			if(maleEarnings<femaleEarnings){
+				return maleEarnings;
+			} else {
+				return femaleEarnings;
+			}
+		});
+
+		data.forEach(function(d){
+			d.sex = sexes.map(function(sex){
+				return {
+					name:  sex,
+					value: +d[sex]
+				};
+			});
+		});
+
+		chart.attr('height',height);
+
+		x = d3.scale.linear()
+			.domain([0,maxSalary])
+			.range([0,width]);
+
+		var xTicks1 = [
+			// 0,
+			10000,
+			20000,
+			30000,
+			40000,
+			50000,
+			60000
+		];
+
+		xAxis = d3.svg.axis()
+			.scale(x)
+			.tickValues(xTicks1)
+			.tickFormat(function(d){
+				return '$'+(d/1000)+'k';
+			})
+			.innerTickSize(-height+marginBottom)
+			.orient('top');
+
+		var xLabel = 'Yearly earnings'
+
+		chart.append('g')
+			.attr('class','x axis')
+			.call(xAxis)
+			.append('text')
+				.text(xLabel)
+				.style('text-anchor','end')
+				.attr('class','axis-label')
+				.attr('x',widthWithMargins/2)
+				.attr('y',-25);
+
+		maritalStatuses = data.map(function(d){
+			return d.Demographic;
+		});
+
+		y0 = d3.scale.ordinal()
+			.domain(maritalStatuses)
+			.rangeRoundBands([0,height-marginBottom],0.15);
+		y1 = d3.scale.ordinal()
+			.domain(sexes)
+			.rangeRoundBands([0,y0.rangeBand()]);
+
+		yAxis = d3.svg.axis()
+			.scale(y0)
+			.orient('left');
+
+		chart.append('g')
+			.attr('class','y axis')
+			.call(yAxis);
+
+		chart.selectAll('.y')
+			.attr('transform','translate('+marginLeft+')');
+
+		chart.selectAll('.y .tick')
+			.attr('transform',function(d,i){
+				return 'translate(0,'+(y0(d)+y1.rangeBand()*2.5)+')'; 
+			});
+
+		chart.selectAll('.x')
+			.attr('transform','translate('+marginLeft+','+marginTop+')');
+
+		chart.select('.y .domain')
+			.attr('transform','translate(0,'+marginTop+')');
+
+		// tooltip.append('div'); // For tooltips' titles
+		sexes.forEach(function(s){
+			tooltip.append('div');
+		});
+		tooltip.append('div'); // For $ difference and  % calculation
+
+		maritalStatus = chart.selectAll('.marital-status')
+			.data(data)
+			.enter()
+			.append('g')
+			.attr('class','marital-status')
+			.attr('transform',function(d){
+				var offset = y0(d.Demographic)+marginTop;
+				return 'translate('+marginLeft+','+offset+')';
+			})
+			.on('mouseover',function(d){
+				var malePay = +d.Male;
+				var femalePay = +d.Female;
+				var femalePayPercentOfMale = +((1-(femalePay/malePay))*100).toFixed(1);
+
+				sexes.forEach(function(name,index){
+					d3.select('.tooltip div:nth-child('+(index+1)+')')
+						.html('<b>'+name+' pay: '+'<span style="color:'+color(name)+'">$'+numberWithCommas(+d[name]))+'</span></b>';
+				});
+
+				d3.select('.tooltip div:last-child').html('<br>Median female pay is <b>$'+numberWithCommas(+d.Male - +d.Female)+' less</b>, or <b>'+femalePayPercentOfMale+' percent less</b>.');
+
+				tooltip.style('display','block');
+			})
+			.on('mouseout',function(d){
+				tooltip.style('display','none');
+			})
+			.on('mousemove',function(){
+				tooltip.style('top',(d3.event.pageY+10)+'px')
+					.style('left',(d3.event.pageX+10)+'px');
+			})
+
+		maritalStatus.selectAll('rect')
+			.data(function(d){
+				return d.sex;
+			})
+			.enter()
+			.append('rect')
+				.attr('height',function(d){
+					return y1.rangeBand();
+				})
+				.attr('width',function(d){
+					return x(d.value);
+				})
+				.attr('y',function(d){
+					return y1(d.name);
+				})
+				.style('fill',function(d){
+					return color(d.name);
+				});
+
+
+		var insertLinebreaks = function (d,i) {
+			// Get `y` value for `g` element containing each cluster of bars
+			var gY = d3.selectAll('.marital-status')[0][i]
+				.getAttribute('transform')
+				.split(',')[1]
+				.replace(')','');
+			var yTick = d3.selectAll('.y .tick')[0][i];
+			var el = d3.select(this);
+			var words = d.split(' ');
+			
+			el.text('');
+			for (var i = 0; i < words.length; i++) {
+				var tspan = el.append('tspan').text(words[i]);
+				if(i===0){
+					tspan.attr('dx',5);
+				} else if (i > 0){
+					tspan.attr('x', 0).attr('dy', '15');
+				}
+			}
+
+			var yLabelCoordinate = words.length<2 ? +gY+20 : +gY+15;
+			yTick.setAttribute('transform','translate(-2.5,'+yLabelCoordinate+')');
+		};
+
+		chart.selectAll('.y .tick text').each(insertLinebreaks);
+
+		var legend = chart.selectAll('.legend')
+			.data(sexes)
+			.enter()
+			.append('g')
+				.attr('class','legend')
+				.attr('transform',function(d,i){
+					return 'translate('+marginLeft+','+(marginTop+(i*20))+')';
+				})
+
+		var legendX = width - width - marginLeft;
+		legend.append('rect')
+			.attr('x',legendX)
+			.attr('y',-marginTop)
+			.attr('height',18)
+			.attr('width',18)
+			.style('fill',color);
+
+		legend.append('text')
+			.attr('x', legendX + 20)
+			.attr('y',-37.5)
+			.style('text-anchor','start')
+			.text(function(d){
+				return d;
+			});
+	});
+
+	d3.select(window).on('resize',function(){
+		var width = document.getElementById('container').clientWidth - marginRight - marginLeft;
+		var widthWithMargins = width+marginRight+marginLeft;
+
+		chart.attr('width',widthWithMargins).attr('height',height);
+		x.range([0,width]);
+		chart.select('.x.axis').call(xAxis)
+		chart.select('.x .axis-label').attr('x',widthWithMargins/2)
+
+		maritalStatus.selectAll('rect')
+			.data(function(d){
+				return d.sex
+			})
+			.attr('height',function(d){
+				return y1.rangeBand();
+			})
+			.attr('width',function(d){
+				return x(d.value);
+			})
+			.attr('y',function(d){
+				return y1(d.name);
+			})
+			.style('fill',function(d){
+				return color(d.name);
+			});
+	});
+</script>
