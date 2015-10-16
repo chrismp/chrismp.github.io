@@ -33,4 +33,4 @@ Do women who get married tend to be more traditional, working lower-paying jobs 
 
 Is there a huge flaw with this dataset? Past Current Population Surverys show similar gaps between unmarried men and women. It's possible all past surveys were flawed, but the chances are low.
 
-[Tweet](http://twitter.com/chrismpersaud) at me if you have any ideas what's going on here.
+[Tweet](http://twitter.com/chrismpersaud) at me or post on [r/DataIsBeautiful](https://www.reddit.com/r/dataisbeautiful/comments/3ozule/the_wage_gap_between_unmarried_american_men_and/) if you have any ideas.
