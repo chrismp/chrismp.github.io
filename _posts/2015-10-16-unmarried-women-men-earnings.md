@@ -3,7 +3,7 @@ layout: post
 title: Unmarried women earn eight percent less than unmarried men in America
 ---
 
-<img src="http://i.imgur.com/izJAQyl.png" />
+<!-- <img src="http://i.imgur.com/izJAQyl.png" /> -->
 
 Many Americans have heard that for every dollar a man earns, a woman earns way less. Maybe as little as 56-78 cents, as stated on the [White House's website](https://www.whitehouse.gov/issues/equal-pay#top).
 
