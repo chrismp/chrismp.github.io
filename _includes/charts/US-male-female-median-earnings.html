@@ -43,6 +43,10 @@
 		z-index: 10;
 	}
 
+	.source {
+		font-size: 12px;
+	}
+
 	@media screen and (max-width: 640px){
 		.tooltip,
 		.axis text {
@@ -60,10 +64,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 
 <div id="container">
-	<!-- <h3>Unmarried women earn eight percent less than unmarried men in the U.S.</h3> -->
-	<!-- <h3>Earnings for American men and women working full-time in 2014</h3> -->
+	<h3>Median earnings for American men and women working full-time in 2014</h3>
 	<svg class="chart"></svg>
-	<p class="source">2014 U.S. Current Population Survey</p>
+	<p class="source">Source: 2014 U.S. Current Population Survey</p>
 </div>
 
 <script type="text/javascript">
@@ -231,7 +234,7 @@
 						.html('<b>'+name+' pay: '+'<span style="color:'+color(name)+'">$'+numberWithCommas(+d[name]))+'</span></b>';
 				});
 
-				d3.select('.tooltip div:last-child').html('<br>Median female pay is <b>$'+numberWithCommas(+d.Male - +d.Female)+' less</b> and <b>'+femalePayPercentOfMale+' percent less</b>.');
+				d3.select('.tooltip div:last-child').html('<br>Median female pay is <b>$'+numberWithCommas(+d.Male - +d.Female)+' less</b>, or <b>'+femalePayPercentOfMale+' percent less</b>.');
 
 				tooltip.style('display','block');
 			})

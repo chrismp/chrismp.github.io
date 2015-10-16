@@ -15,7 +15,7 @@ The gap barely shrinks when job experience is taken into account.
 
 Half of full-time working men between ages 25 and 44 who put in at least 50 weeks earned at least [**$46,738**](http://www.census.gov/hhes/www/cpstables/032015/perinc/pinc05_2_4_1.xls). Half of women with the same experience earned at least [**$40,082**](http://www.census.gov/hhes/www/cpstables/032015/perinc/pinc05_3_4_1.xls). It's just **$6,566 less**, but still a **14 percent** difference.
 
-But watch how much the pay gap shrinks when marital status is considered.
+But watch how much the pay gap shrinks when marital status is considered in the chart below. (Tap or mouseover for more details.)  
 
 {% include charts/US-male-female-median-earnings.html %}
 
@@ -31,6 +31,6 @@ Why do married men earn so much more than every other group in the chart? Are me
 
 Do women who get married tend to be more traditional, working lower-paying jobs that allow them more time for staying at home to raise kids? Or do companies penalize women who get married and more time with the kids than at work?
 
-Is there a huge flaw with this dataset? Past Current Population Surverys show similar gaps between unmarried men and women, but it's possible, if unlikely, that all these surveys have been flawed from the start.
+Is there a huge flaw with this dataset? Past Current Population Surverys show similar gaps between unmarried men and women. It's possible all past surveys were flawed, but the chances are low.
 
-If you have any ideas, post them on [r/DataIsBeautiful](http://dataisbeautiful.reddit.com).
+[Tweet](http://twitter.com/chrismpersaud) at me if you have any ideas what's going on here.
