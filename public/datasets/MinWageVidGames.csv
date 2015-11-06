@@ -1,25 +1,25 @@
-Year,Generation,Console,Price,MinimumWage,HoursNeeded,PriceSource
-1977,2,Atatri 2600,199,2.3,86.52,https://en.wikipedia.org/wiki/Atari_2600
-1979,2,Magnavox Odyssey^2,179,2.9,61.72,https://en.wikipedia.org/wiki/Magnavox_Odyssey%C2%B2
-1980,2,Intellivision,299,3.1,96.45,https://en.wikipedia.org/wiki/Intellivision
-1982,2,ColecoVision,189,3.35,56.42,https://en.wikipedia.org/wiki/ColecoVision
-1982,2,Atatri 5200,269,3.35,80.30,http://vgsales.wikia.com/wiki/Launch_price
-1985,3,Nintendo Entertainment System,89.99,3.35,26.86,https://en.wikipedia.org/wiki/Nintendo_Entertainment_System
-1986,3,Sega Master System,200,3.35,59.70,https://en.wikipedia.org/wiki/Master_System
-1989,4,Sega Genesis,189,3.35,56.42,http://vgsales.wikia.com/wiki/Launch_price
-1989,4,TurboGrafx-16,399.99,3.35,119.40,https://en.wikipedia.org/wiki/TurboGrafx-16
-1991,4,Super Nintendo Entertainment System,199,4.25,46.82,http://vgsales.wikia.com/wiki/Launch_price
-1991,4,Philips CD-i,700,4.25,164.71,https://en.wikipedia.org/wiki/Philips_CD-i
-1995,5,PlayStation,299,4.25,70.35,https://en.wikipedia.org/wiki/PlayStation_(console)
-1995,5,Sega Saturn,399,4.25,93.88,https://en.wikipedia.org/wiki/Sega_Saturn
-1996,5,Nintendo 64,199.99,4.75,42.10,https://en.wikipedia.org/wiki/Nintendo_64
-1999,6,Sega Dreamcast,199,5.15,38.64,https://en.wikipedia.org/wiki/Dreamcast
-2000,6,PlayStation 2,299,5.15,58.06,http://vgsales.wikia.com/wiki/Launch_price
-2001,6,Xbox,299,5.15,58.06,http://vgsales.wikia.com/wiki/Launch_price
-2001,6,GameCube,199,5.15,38.64,http://vgsales.wikia.com/wiki/Launch_price
-2005,7,Xbox 360,299,5.15,58.06,https://en.wikipedia.org/wiki/List_of_Xbox_360_retail_configurations
-2006,7,Wii,249,5.15,48.35,http://vgsales.wikia.com/wiki/Launch_price
-2006,7,PlayStation 3,499,5.15,96.89,https://en.wikipedia.org/wiki/PlayStation_3
-2012,8,Wii U,299,7.25,41.24,https://en.wikipedia.org/wiki/Wii_U
-2013,8,PlayStation 4,399.99,7.25,55.17,https://en.wikipedia.org/wiki/PlayStation_4
-2013,8,Xbox One,499,7.25,68.83,https://en.wikipedia.org/wiki/Xbox_One
+Year,Generation,Console,Price,MinimumWage,MinWageHrsNeeded,MedianIncome15to24,NumberConsolesAfford,PriceSource
+1977,2,Atatri 2600,199,2.3,86.52,2725,14,https://en.wikipedia.org/wiki/Atari_2600
+1979,2,Magnavox Odyssey^2,179,2.9,61.72,3459,19,https://en.wikipedia.org/wiki/Magnavox_Odyssey%C2%B2
+1980,2,Intellivision,299,3.1,96.45,3769,13,https://en.wikipedia.org/wiki/Intellivision
+1982,2,ColecoVision,189,3.35,56.42,3806,20,https://en.wikipedia.org/wiki/ColecoVision
+1982,2,Atatri 5200,269,3.35,80.3,3806,14,http://vgsales.wikia.com/wiki/Launch_price
+1985,3,Nintendo Entertainment System,89.99,3.35,26.86,4328,48,https://en.wikipedia.org/wiki/Nintendo_Entertainment_System
+1986,3,Sega Master System,200,3.35,59.7,4610,23,https://en.wikipedia.org/wiki/Master_System
+1989,4,Sega Genesis,189,3.35,56.42,5409,29,http://vgsales.wikia.com/wiki/Launch_price
+1989,4,TurboGrafx-16,399.99,3.35,119.4,5409,14,https://en.wikipedia.org/wiki/TurboGrafx-16
+1991,4,Super Nintendo Entertainment System,199,4.25,46.82,5711,29,http://vgsales.wikia.com/wiki/Launch_price
+1991,4,Philips CD-i,700,4.25,164.71,5711,8,https://en.wikipedia.org/wiki/Philips_CD-i
+1995,5,PlayStation,299,4.25,70.35,6071,20,https://en.wikipedia.org/wiki/PlayStation_(console)
+1995,5,Sega Saturn,399,4.25,93.88,6071,15,https://en.wikipedia.org/wiki/Sega_Saturn
+1996,5,Nintendo 64,199.99,4.75,42.1,6403,32,https://en.wikipedia.org/wiki/Nintendo_64
+1999,6,Sega Dreamcast,199,5.15,38.64,7348,37,https://en.wikipedia.org/wiki/Dreamcast
+2000,6,PlayStation 2,299,5.15,58.06,8371,28,http://vgsales.wikia.com/wiki/Launch_price
+2001,6,Xbox,299,5.15,58.06,8329,28,http://vgsales.wikia.com/wiki/Launch_price
+2001,6,GameCube,199,5.15,38.64,8329,42,http://vgsales.wikia.com/wiki/Launch_price
+2005,7,Xbox 360,299,5.15,58.06,9294,31,https://en.wikipedia.org/wiki/List_of_Xbox_360_retail_configurations
+2006,7,Wii,249,5.15,48.35,9906,40,http://vgsales.wikia.com/wiki/Launch_price
+2006,7,PlayStation 3,499,5.15,96.89,9906,20,https://en.wikipedia.org/wiki/PlayStation_3
+2012,8,Wii U,299,7.25,41.24,10244,34,https://en.wikipedia.org/wiki/Wii_U
+2013,8,PlayStation 4,399.99,7.25,55.17,10678,27,https://en.wikipedia.org/wiki/PlayStation_4
+2013,8,Xbox One,499,7.25,68.83,10678,21,https://en.wikipedia.org/wiki/Xbox_One
