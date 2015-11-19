@@ -30,6 +30,20 @@
 		fill: #000;
 	}
 
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
 	@media screen and (max-width: 640px){
 		.tooltip,
 		.axis text {
@@ -49,6 +63,7 @@
 <div id="container">
 	<svg class="chart"></svg>
 	<p class="source">Sources here</p>
+	<button id="order-afford">Order by affordability</button>
 </div>
 
 
@@ -56,6 +71,22 @@
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
+	function chartSizer(stuff){
+		stuff.attr('x',marginLeft)
+			.attr('y',function(d){
+				return y(d.Console)+marginTop;
+			})
+			.attr('width',function(d){
+				return x(d.NumberConsolesAfford);
+			})
+			.attr('height',y.rangeBand())
+			.style('fill',function(d){
+				return color(d.Generation);
+			});
+	}
+
+	var data, x, xAxis, y, yAxis;
 
 	var margin = {
 		top: 50,
@@ -74,27 +105,45 @@
 	var chart = d3.select('.chart');
 	chart.attr('width',widthWithMargins);
 
+	var colorArray = [
+		'#808080',
+		'#cc0000',
+		'#b82e8a',
+		'#3333ff',
+		'#009933',
+		'#66ffff',
+		'#ffbb33'
+	];
+	var color = d3.scale.ordinal()
+		.range(colorArray);
+
+	var tooltip = d3.select('#container')
+		.append('div')
+		.attr('class','tooltip');
+
+
 	d3.csv(
 		'YoungPersonMedianIncomeConsoles.csv',
 		function(error,csvData){
-			chart.attr('height',height);
+			data = csvData;
 
 			var maxConsolesBought = d3.max(csvData,function(d){
 				return +d.NumberConsolesAfford;
 			});
 
-			var x = d3.scale
+			x = d3.scale
 				.linear()
 				.domain([0,maxConsolesBought])
 				.range([0,width]);
 
-			var xAxis = d3.svg.axis()
+			xAxis = d3.svg.axis()
 				.innerTickSize(-height+marginBottom)
 				.orient('top')
 				.scale(x)
 
 			var xLabel = 'Number of consoles';
 
+			chart.attr('height',height);
 			chart.append('g')
 				.attr('class','x axis')
 				.call(xAxis)
@@ -109,11 +158,11 @@
 				return d.Console;
 			});
 
-			var y = d3.scale.ordinal()
+			y = d3.scale.ordinal()
 				.domain(consoles)
 				.rangeRoundBands([0,height-marginBottom],0.15);
 				
-			var yAxis = d3.svg.axis()
+			yAxis = d3.svg.axis()
 				.scale(y)
 				.orient('left');
 
@@ -128,21 +177,78 @@
 			chart.select('.y .domain')
 				.attr('transform','translate(0,'+marginTop+')');
 
-			chart.selectAll('.bar')
+			var chartMake = chart.selectAll('.bar')
 				.data(csvData)
 				.enter()
 				.append('rect')
 					.attr('class','bar')
-					.attr('x',function(d){
-						return x(d.NumberConsolesAfford);
+					.on('mouseover',function(d){
+						var tooltipHTMLArray = [
+							'<b>'+d.Console+'</b> (released '+d.Year+')',
+							'Price: $' + d.Price,
+							'15-24-year-old median income in '+d.Year+': $'+numberWithCommas(d.MedianIncome15to24),
+							'That money could buy ' + d.NumberConsolesAfford + ' consoles'
+						];
+						
+						tooltip.style('display','block')
+							.html(tooltipHTMLArray.join('<br>'));
 					})
-					.attr('y',function(d){
-						return y(d.Console);
+					.on('mouseout',function(){
+						tooltip.style('display','none');
 					})
-					.attr('width',function(d){
-						return height - x(d.NumberConsolesAfford);
-					})
-					.attr('height',y.rangeBand());
+					.on('mousemove',function(){
+						tooltip.style('top',(d3.event.pageY+10)+'px')
+							.style('left',(d3.event.pageX+10)+'px');
+					});
+
+			chartSizer(chartMake)
 		}
 	);
+
+	d3.select('button#order-afford').on('click',function(){
+		var y0 = y.domain(
+			data.sort(function(a,b){
+				return +b.NumberConsolesAfford - +a.NumberConsolesAfford;
+			}).map(function(d){
+				return d.Console;
+			})
+		)
+		.copy();
+
+		chart.selectAll('.bar')
+			.sort(function(a,b){
+				return y0(+b.NumberConsolesAfford) - y0(+a.NumberConsolesAfford); 
+			});
+
+		var transition = chart.transition()
+			.duration(750)
+		var delay = function(d,i){
+			return i*50;
+		};
+
+		transition.selectAll('.bar')
+			.delay(delay)
+			.attr('y',function(d){
+				return y0(d.Console)+marginTop;
+			});
+
+		transition.select('.y.axis')
+			.call(yAxis)
+			.selectAll('g')
+				.delay(delay);
+	});
+
+	d3.select(window).on('resize',function(){
+		width = document.getElementById('container').clientWidth - marginRight - marginLeft;
+		widthWithMargins = width+marginRight+marginLeft;
+
+		chart.attr('width',widthWithMargins).attr('height',height);
+		x.range([0,width]);
+		chart.select('.x.axis').call(xAxis)
+		chart.select('.x .axis-label').attr('x',widthWithMargins/2)
+
+		var chartMake = chart.selectAll('.bar').data(data);
+
+		chartSizer(chartMake)
+	});
 </script>

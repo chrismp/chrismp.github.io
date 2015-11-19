@@ -1,5 +1,5 @@
 Year,Generation,Console,Price,MedianIncome15to24,NumberConsolesAfford,PriceSource
-1977,2,Atatri 2600,199,2725,14,https://en.wikipedia.org/wiki/Atari_2600
+1977,2,Atari 2600,199,2725,14,https://en.wikipedia.org/wiki/Atari_2600
 1979,2,Magnavox Odyssey^2,179,3459,19,https://en.wikipedia.org/wiki/Magnavox_Odyssey%C2%B2
 1980,2,Intellivision,299,3769,13,https://en.wikipedia.org/wiki/Intellivision
 1982,2,ColecoVision,189,3806,20,https://en.wikipedia.org/wiki/ColecoVision
@@ -21,5 +21,5 @@ Year,Generation,Console,Price,MedianIncome15to24,NumberConsolesAfford,PriceSourc
 2006,7,Wii,249,9906,40,http://vgsales.wikia.com/wiki/Launch_price
 2006,7,PlayStation 3,499,9906,20,https://en.wikipedia.org/wiki/PlayStation_3
 2012,8,Wii U,299,10244,34,https://en.wikipedia.org/wiki/Wii_U
-2013,8,PlayStation 4,399.99,10678,27,https://en.wikipedia.org/wiki/PlayStation_4
 2013,8,Xbox One,499,10678,21,https://en.wikipedia.org/wiki/Xbox_One
+2013,8,PlayStation 4,399.99,10678,27,https://en.wikipedia.org/wiki/PlayStation_4
