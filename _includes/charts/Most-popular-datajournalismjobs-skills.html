@@ -1,0 +1,201 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+	}
+
+	.axis {
+		font: 10px sans-serif;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line {
+		opacity: 0.2;
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text {
+		font: 13px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	.source {
+		font-size: 12px;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip,
+		.axis text {
+			/*font-weight: unset;*/
+			font-size: 11px;
+		}
+
+		.x > text,
+		.legend text {
+			font-size: 12px;
+		}
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<div id="container">
+	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
+	<svg class="chart"></svg>
+	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
+</div>
+
+<script type="text/javascript">
+	var x, y, xAxis, yAxis, data, skills;
+	var margin=	{
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 70
+	};
+	var marginTop=		margin.top;
+	var marginLeft=		margin.left;
+	var marginBottom=	margin.bottom;
+	var marginRight=	margin.right;
+
+	var width=	document.getElementById('container').clientWidth - marginRight - marginLeft;
+
+	var widthWithMargins=	width+marginRight+marginLeft;
+	var height=				475;
+
+	var chart=		d3.select('.chart');
+	chart.attr('width',widthWithMargins);
+
+	var tooltip=	d3.select('#container')
+		.append('div')
+		.attr('class','tooltip');
+
+	d3.csv(
+		"DataJournalismJobs_SkillGroup_Count.csv",
+		function(error, csvData){
+			data=csvData;
+
+			chart.attr("height",height);
+
+			var maxCount=	d3.max(data,function(d){
+				return +d.Count;
+			});			
+
+			x=	d3.scale.linear()
+				.domain([0,maxCount])
+				.range([0,width]);
+
+			var xTicks=	[
+				10,
+				20,
+				30,
+				40
+			];
+
+			xAxis=	d3.svg.axis()
+				.scale(x)
+				.tickValues(xTicks)
+				.innerTickSize(-height+marginBottom)
+				.orient("top");
+
+			var xLabel=	"Number of times skill mentioned"
+
+			chart.append('g')
+				.attr("class","x axis")
+				.call(xAxis)
+				.append("text")
+					.text(xLabel)
+					.style("text-anchor","end")
+					.attr("class","axis-label")
+					.attr('x', widthWithMargins/2)
+					.attr('y',-25);
+
+			skills=	data.map(function(d){
+				return d.SkillGroup;
+			});
+			
+			y=	d3.scale.ordinal()
+				.domain(skills)
+				.rangeRoundBands([0, height - marginBottom], 0.15);
+
+			yAxis=	d3.svg.axis()
+				.scale(y)
+				.orient("left");
+
+			chart.append('g')
+				.attr("class","y axis")
+				.call(yAxis);
+
+			chart.selectAll(".y")
+				.attr("transform","translate("+marginLeft+')');
+
+			chart.selectAll(".y .tick")
+				.attr("transform",function(d,i){
+					console.log(i,y(d));
+					return "translate(0,"+(y(d)+marginTop)+')'; 
+				});
+
+			chart.selectAll(".x")
+				.attr("transform","translate("+marginLeft+','+marginTop+')');
+
+			chart.select(".y .domain")
+				.attr("transform","translate(0,"+marginTop+')');
+
+			skills.forEach(function(s){
+				tooltip.append('div');
+			});
+			tooltip.append('div');
+
+
+			skill = chart.selectAll(".skill")
+				.data(data)
+				.enter()
+				.append('g')
+				.attr("class","skill");
+				// .attr("transform",function(d){
+				// 	var offset = y(d.SkillGroup)+marginTop;
+				// 	return "translate("+marginLeft+','+offset+')';
+				// });
+
+			skill.selectAll("rect")
+				.enter()
+				.append("rect")
+					.attr("height",function(d){
+						return y.rangeBand();
+					})
+					.attr("width",function(d){
+						return x(d.value);
+					})
+					.attr('y',function(d){
+						return y(d.name);
+					})
+					.style("fill",function(d){
+						return "#000";
+					});
+		}
+	)
+</script>
