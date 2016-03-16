@@ -155,8 +155,8 @@
 
 			chart.selectAll(".y .tick")
 				.attr("transform",function(d,i){
-					console.log(i,y(d));
-					return "translate(0,"+(y(d)+marginTop)+')'; 
+					var yOffset=	y(d) + marginTop + 8;
+					return "translate(0,"+yOffset+')'; 
 				});
 
 			chart.selectAll(".x")
@@ -165,9 +165,6 @@
 			chart.select(".y .domain")
 				.attr("transform","translate(0,"+marginTop+')');
 
-			skills.forEach(function(s){
-				tooltip.append('div');
-			});
 			tooltip.append('div');
 
 
@@ -175,27 +172,36 @@
 				.data(data)
 				.enter()
 				.append('g')
-				.attr("class","skill");
-				// .attr("transform",function(d){
-				// 	var offset = y(d.SkillGroup)+marginTop;
-				// 	return "translate("+marginLeft+','+offset+')';
-				// });
-
-			skill.selectAll("rect")
-				.enter()
+				.attr("class","skill")
+				.attr("transform",function(d){
+					var offset = y(d.SkillGroup)+marginTop;
+					return "translate("+marginLeft+','+offset+')';
+				})
 				.append("rect")
 					.attr("height",function(d){
 						return y.rangeBand();
 					})
 					.attr("width",function(d){
-						return x(d.value);
-					})
-					.attr('y',function(d){
-						return y(d.name);
+						return x(d.Count);
 					})
 					.style("fill",function(d){
-						return "#000";
-					});
+						return "#E45C10";
+					})
+				.on('mouseover',function(d){
+					d3.select('.tooltip').html(
+						"<b>"+d.SkillGroup+"</b><br>"+
+						d.Count+" mentions"
+					);
+
+					tooltip.style('display','block');
+				})
+				.on('mouseout',function(d){
+					tooltip.style('display','none');
+				})
+				.on('mousemove',function(){
+					tooltip.style('top',(d3.event.pageY+10)+'px')
+						.style('left',(d3.event.pageX+10)+'px');
+				})
 		}
 	)
 </script>
