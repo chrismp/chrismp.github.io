@@ -87,12 +87,12 @@
 	var widthWithMargins=	width+marginRight+marginLeft;
 	var height=				500;
 
-	var mapScale=		width/2/3.14;
-	var mapXYCentering=	[0,marginTop/2];
+	var mapScale=		(width/2/3.14)/2;
+	var mapCentering=	[0,marginTop/2];
 	var projection=	d3.geo
 						.mercator()
 						.scale(mapScale)
-						.center(mapXYCentering);
+						.center(mapCentering);
 	var map=		d3.select(".map");
 	map.attr("width", widthWithMargins)
 		.attr("height",height);

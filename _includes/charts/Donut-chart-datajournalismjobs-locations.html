@@ -1,0 +1,98 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+	}
+
+	.arc path {
+		stroke: #fff;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	.source {
+		font-size: 12px;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip,
+		.axis text {
+			font-weight: unset;
+			font-size: 11px;
+		}
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+
+<div id="container">
+	<h3>Locations of jobs posted to DataJournalismJobs.com</h3>
+	<svg class="chart"></svg>
+	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
+</div>
+
+<script type="text/javascript">
+	var margin=	{
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 70
+	};
+	var marginTop=		margin.top;
+	var marginLeft=		margin.left;
+	var marginBottom=	margin.bottom;
+	var marginRight=	margin.right;
+
+	var width=	document.getElementById('container').clientWidth - marginRight - marginLeft;
+
+	var widthWithMargins=	width+marginRight+marginLeft;
+	var height=				500;
+	var radius=				100;
+	var color=	 			d3.scale.category20();
+	var donutWidth=			30;
+
+	var arc=	d3.svg.arc()
+				.innerRadius(radius-donutWidth)
+				.outerRadius(radius);
+
+	var pie=	d3.layout.pie()
+				.value(function(d){
+					return d.Count;
+				})
+				.sort(null);
+
+	var svg=	d3.select(".chart")
+				.attr("width",width)
+				.attr("height",height)
+				.append('g')
+				.attr("transform","translate("+(width/2)+','+(height/2)+')');
+
+	d3.csv("DataJournalismJobs_locationsFormatted2.csv", function(error,data){
+		if(error) throw error;
+
+		data.forEach(function(d){
+			d.Count=	+d.Count;
+		});
+
+		var path=	svg.selectAll("path")
+					.data(pie(data))
+					.enter()
+					.append("path")
+					.attr('d',arc)
+					.attr("fill",function(d,i){
+						console.log(d.data.Count);
+						return color(i);
+					});
+	});
+</script>
