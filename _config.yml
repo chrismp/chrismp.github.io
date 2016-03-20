@@ -8,6 +8,7 @@ relative_permalinks: true
 title:               Datavizz
 tagline:             ""
 url:                 http://datavizz.com
+gems:				 [jekyll-paginate]
 paginate:            1
 baseurl:             ""
 
