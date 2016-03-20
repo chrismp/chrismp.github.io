@@ -1,5 +1,5 @@
 <style type="text/css">
-	#container {
+	#location-chart-container {
 		width: 100%;
 	}
 
@@ -7,7 +7,7 @@
 		stroke: #fff;
 	}
 
-	.tooltip {
+	#tooltip-location-chart {
 		background: #fff;
 		box-shadow: 0 0 5px #999;
 		color: #333;
@@ -25,24 +25,30 @@
 		font-size: 12px;
 	}
 
+/*	@media screen and (max-width: 374px){
+		.arc text {
+			display: none;
+		}
+	}*/
 	@media screen and (max-width: 640px){
-		.tooltip,
-		.axis text {
+		#tooltip-location-chart, text{
 			font-weight: unset;
 			font-size: 11px;
 		}
 	}
 </style>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script> -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-
-<div id="container">
+<div id="location-chart-container">
 	<h3>Locations of jobs posted to DataJournalismJobs.com</h3>
-	<svg class="chart"></svg>
 	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
 </div>
 
 <script type="text/javascript">
+	var g, gPath, gText;
+	var donutContainer=	"location-chart-container";
+	var color=	 		d3.scale.category20();
+
 	var margin=	{
 		top: 50,
 		right: 30,
@@ -54,14 +60,12 @@
 	var marginBottom=	margin.bottom;
 	var marginRight=	margin.right;
 
-	var width=	document.getElementById('container').clientWidth - marginRight - marginLeft;
+	var width=	document.getElementById(donutContainer).clientWidth;
+	var widthMinusMargins=	width - marginRight - marginLeft;
+	var height=				250;
 
-	var widthWithMargins=	width+marginRight+marginLeft;
-	var height=				500;
 	var radius=				Math.min(width,height)/2;
-	var color=	 			d3.scale.category20();
-	var donutWidth=			100;
-
+	var donutWidth=			50;
 	var arc=	d3.svg.arc()
 				.innerRadius(radius-donutWidth)
 				.outerRadius(radius);
@@ -72,17 +76,24 @@
 				})
 				.sort(null);
 
-	var svg=	d3.select(".chart")
-				.attr("width",width)
-				.attr("height",height)
-				.append('g')
-				.attr("transform","translate("+(width/2)+','+(height/2)+')');
+	var svg=	d3.select('#'+donutContainer)
+				.append("svg");
 
-	var tooltip=	d3.select('#container')
+	svg.attr("width",width)
+		.attr("height",height)
+		
+	var svgG=	svg.append('g')
+					.attr(
+						"transform",
+						"translate("+(width/2)+','+(height/2)+')'
+					);
+
+	var tooltipDonutId=	'tooltip-location-chart';
+	var tooltipDonut=	d3.select('#'+donutContainer)
 		.append('div')
-		.attr('class','tooltip');
+		.attr('id',tooltipDonutId);
 
-	d3.csv("DataJournalismJobs_locationsFormatted2.csv", function(error,data){
+	d3.csv("{{site.baseurl}}/public/datasets/DataJournalismJobs/DataJournalismJobs_locationsFormatted2.csv", function(error,data){
 		if(error) throw error;
 
 		data.forEach(function(d){
@@ -90,22 +101,26 @@
 		});
 
 		// Define 'g' element, which will be donut pieces
-		var g=		svg.selectAll(".arc")
+		g=		svgG.selectAll(".arc")
 					.data(pie(data))
 					.enter()
 					.append('g')
 					.attr("class","arc");
 
 		// Attach to page the 'g' elements, which form the donut pieces
-		g.append("path")
+		gPath=	g.append("path")
 		.attr('d',arc)
 		.attr("fill",function(d,i){
-			// console.log(d.data.Count);
 			return color(i);
 		});
 
-		g.append("text")
+		gText=	g.append("text")
 		.attr("transform",function(d){
+			var x=	arc.centroid(d)[0];
+			var y=	arc.centroid(d)[1];
+			if(width < 375){
+				return "translate("+(x-10)+','+y+')';
+			}
 			return "translate("+arc.centroid(d)+')';
 		})
 		.attr("dy",".35em")
@@ -120,20 +135,49 @@
 		d3.selectAll(".arc")
 		.data(data)
 		.on('mouseover',function(d){
-			d3.select('.tooltip').html(
+			d3.select('#'+tooltipDonutId).html(
 				"<b>"+d.CityFormatted+"</b><br>"+
 				d.Count+" jobs<br>"+
 				Math.round(+d.PercentFormatted)+" percent of total"
 			);
 
-			tooltip.style('display','block');
+			tooltipDonut.style('display','block');
 		})
 		.on('mouseout',function(d){
-			tooltip.style('display','none');
+			tooltipDonut.style('display','none');
 		})
 		.on('mousemove',function(){
-			tooltip.style('top',(d3.event.pageY+10)+'px')
+			tooltipDonut.style('top',(d3.event.pageY+10)+'px')
 				.style('left',(d3.event.pageX+10)+'px');
 		});
+	});
+
+	d3.select(window).on('resize',function(){
+		var width=	document.getElementById(donutContainer).clientWidth;
+		var height=	250;
+
+		radius=	Math.min(width,height)/2;
+		arc=	d3.svg.arc()
+				.innerRadius(radius-donutWidth)
+				.outerRadius(radius);
+
+		svg.attr("width",width)
+		.attr("height",height);
+
+		svgG.attr(
+			"transform",
+			"translate("+(width/2)+','+(height/2)+')'
+		);
+
+		gPath.attr('d',arc);
+		gText.attr("transform",function(d){
+			var x=	arc.centroid(d)[0];
+			var y=	arc.centroid(d)[1];
+			if(width < 375){
+				return "translate("+(x-10)+','+y+')';
+			}
+			return "translate("+arc.centroid(d)+')';
+		})
+		.attr("dy",".35em")
 	});
 </script>

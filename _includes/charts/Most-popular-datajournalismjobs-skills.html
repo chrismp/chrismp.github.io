@@ -1,5 +1,5 @@
 <style type="text/css">
-	#container {
+	#skills-chart-container {
 		width: 100%;
 	}
 
@@ -61,16 +61,18 @@
 	}
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script> -->
 
-<div id="container">
+<div id="skills-chart-container">
 	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
-	<svg class="chart"></svg>
 	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
 </div>
 
 <script type="text/javascript">
 	var x, y, xAxis, yAxis, data, skills;
+
+	var container=	"skills-chart-container";
+
 	var margin=	{
 		top: 50,
 		right: 30,
@@ -82,20 +84,21 @@
 	var marginBottom=	margin.bottom;
 	var marginRight=	margin.right;
 
-	var width=	document.getElementById('container').clientWidth - marginRight - marginLeft;
+	var width=	document.getElementById(container).clientWidth - marginRight - marginLeft;
 
 	var widthWithMargins=	width+marginRight+marginLeft;
 	var height=				475;
 
-	var chart=		d3.select('.chart');
+	var chart=		d3.select('#'+container)
+					.append("svg");
 	chart.attr('width',widthWithMargins);
 
-	var tooltip=	d3.select('#container')
+	var tooltip=	d3.select('#'+container)
 		.append('div')
 		.attr('class','tooltip');
 
 	d3.csv(
-		"DataJournalismJobs_SkillGroup_Count.csv",
+		"{{site.baseurl}}/public/datasets/DataJournalismJobs/DataJournalismJobs_SkillGroup_Count.csv",
 		function(error, csvData){
 			data=csvData;
 

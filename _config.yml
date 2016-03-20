@@ -2,7 +2,7 @@
 #
 # Use of `relative_permalinks` ensures post links from the index work properly.
 permalink:           pretty
-relative_permalinks: true
+# relative_permalinks: true
 
 # Setup
 title:               Datavizz
@@ -11,6 +11,7 @@ url:                 http://datavizz.com
 gems:				 [jekyll-paginate]
 paginate:            1
 baseurl:             ""
+future:				 true # Allows us to see posts scheduled in the future
 
 # Assets
 #
