@@ -18,7 +18,6 @@
 		display: none;
 	}
 
-	.legend text,
 	.axis text {
 		font: 13px sans-serif;
 		font-weight: bold;
@@ -43,25 +42,31 @@
 		font-size: 12px;
 	}
 
+	.skill text {
+		font-weight: bold;
+		font-size: 14px;
+	}
+
 	@media screen and (max-width: 640px){
 		.tooltip,
 		.axis text {
 			/*font-weight: unset;*/
-			font-size: 11px;
+			font-size: 10px;
 		}
 
-		.x > text,
-		.legend text {
+		.x > text{
+			font-size: 12px;
+		}
+
+		.skill text {
+			font-weight: bold;
 			font-size: 12px;
 		}
 	}
 </style>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script> -->
-
 <div id="skills-chart-container" class="chart">
 	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
-	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
 </div>
 
 <script type="text/javascript">
@@ -73,7 +78,7 @@
 		top: 50,
 		right: 30,
 		bottom: 100,
-		left: 70
+		left: 0
 	};
 	var marginTop=		margin.top;
 	var marginLeft=		margin.left;
@@ -111,8 +116,7 @@
 			var xTicks=	[
 				10,
 				20,
-				30,
-				40
+				30
 			];
 
 			xAxis=	d3.svg.axis()
@@ -121,8 +125,7 @@
 				.innerTickSize(-height+marginBottom)
 				.orient("top");
 
-			var xLabel=	"Number of times skill mentioned"
-
+			var xLabel=	"Mentions"
 			chart.append('g')
 				.attr("class","x axis")
 				.call(xAxis)
@@ -145,18 +148,18 @@
 				.scale(y)
 				.orient("left");
 
-			chart.append('g')
-				.attr("class","y axis")
-				.call(yAxis);
+			// chart.append('g')
+			// 	.attr("class","y axis")
+			// 	.call(yAxis);
 
-			chart.selectAll(".y")
-				.attr("transform","translate("+marginLeft+')');
+			// chart.selectAll(".y")
+			// 	.attr("transform","translate("+marginLeft+')');
 
-			chart.selectAll(".y .tick")
-				.attr("transform",function(d,i){
-					var yOffset=	y(d) + marginTop + 8;
-					return "translate(0,"+yOffset+')'; 
-				});
+			// chart.selectAll(".y .tick")
+			// 	.attr("transform",function(d,i){
+			// 		var yOffset=	y(d) + marginTop + 8;
+			// 		return "translate(0,"+yOffset+')'; 
+			// 	});
 
 			chart.selectAll(".x")
 				.attr("transform","translate("+marginLeft+','+marginTop+')');
@@ -165,7 +168,6 @@
 				.attr("transform","translate(0,"+marginTop+')');
 
 			tooltip.append('div');
-
 
 			skill = chart.selectAll(".skill")
 				.data(data)
@@ -202,6 +204,18 @@
 				.style("fill",function(d){
 					return "#E45C10";
 				});
+
+			skill.append("text")
+				.attr("text-anchor","start")
+				.attr("transform",function(d){
+					var textXMargin=	5;
+					return "translate("+textXMargin+','+y.rangeBand()/1.25+')';
+				})
+				.attr("fill","#000")
+				.text(function(d){
+					return d.SkillGroup;
+				});
+
 		}
 	);
 

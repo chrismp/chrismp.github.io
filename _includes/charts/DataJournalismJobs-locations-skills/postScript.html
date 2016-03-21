@@ -1,0 +1,16 @@
+<script type="text/javascript">
+	var charts=		document.getElementsByClassName("chart");
+	for(var i=	0;	i < charts.length;	i++){
+		var aTag=		document.createElement('a');
+		aTag.href=		"http://datajournalismjobs.com";
+		aTag.target=	"_blank";
+		aTag.innerHTML=	"DataJournalismJobs.com";
+
+		var pTag=		document.createElement('p');
+		pTag.className=	"source";
+		pTag.innerHTML=	"Source: ";
+		pTag.appendChild(aTag);
+
+		charts[i].appendChild(pTag);
+	}
+</script>
