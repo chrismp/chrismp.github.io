@@ -7,6 +7,6 @@ Testing.
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 
-{% include charts/Donut-chart-datajournalismjobs-locations.html %}
+{% include charts/DataJournalismJobs-locations-skills/Donut-chart-datajournalismjobs-locations.html %}
 
-{% include charts/Most-popular-datajournalismjobs-skills.html %}
+{% include charts/DataJournalismJobs-locations-skills/Most-popular-datajournalismjobs-skills.html %}
