@@ -1,8 +1,4 @@
 <style type="text/css">
-	#location-chart-container {
-		width: 100%;
-	}
-
 	.arc path {
 		stroke: #fff;
 	}
@@ -39,7 +35,7 @@
 </style>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script> -->
 
-<div id="location-chart-container">
+<div id="location-chart-container" class="chart">
 	<h3>Locations of jobs posted to DataJournalismJobs.com</h3>
 	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
 </div>
@@ -150,34 +146,5 @@
 			tooltipDonut.style('top',(d3.event.pageY+10)+'px')
 				.style('left',(d3.event.pageX+10)+'px');
 		});
-	});
-
-	d3.select(window).on('resize',function(){
-		var width=	document.getElementById(donutContainer).clientWidth;
-		var height=	250;
-
-		radius=	Math.min(width,height)/2;
-		arc=	d3.svg.arc()
-				.innerRadius(radius-donutWidth)
-				.outerRadius(radius);
-
-		svg.attr("width",width)
-		.attr("height",height);
-
-		svgG.attr(
-			"transform",
-			"translate("+(width/2)+','+(height/2)+')'
-		);
-
-		gPath.attr('d',arc);
-		gText.attr("transform",function(d){
-			var x=	arc.centroid(d)[0];
-			var y=	arc.centroid(d)[1];
-			if(width < 375){
-				return "translate("+(x-10)+','+y+')';
-			}
-			return "translate("+arc.centroid(d)+')';
-		})
-		.attr("dy",".35em")
 	});
 </script>

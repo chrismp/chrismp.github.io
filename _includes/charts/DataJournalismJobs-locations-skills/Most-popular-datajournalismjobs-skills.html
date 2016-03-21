@@ -1,8 +1,4 @@
 <style type="text/css">
-	#skills-chart-container {
-		width: 100%;
-	}
-
 	.axis {
 		font: 10px sans-serif;
 	}
@@ -63,15 +59,15 @@
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script> -->
 
-<div id="skills-chart-container">
+<div id="skills-chart-container" class="chart">
 	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
 	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
 </div>
 
 <script type="text/javascript">
-	var x, y, xAxis, yAxis, data, skills;
+	var x, y, xAxis, yAxis, data, skills, maxCount;
 
-	var container=	"skills-chart-container";
+	var skillsChartContainer=	"skills-chart-container";
 
 	var margin=	{
 		top: 50,
@@ -84,16 +80,16 @@
 	var marginBottom=	margin.bottom;
 	var marginRight=	margin.right;
 
-	var width=	document.getElementById(container).clientWidth - marginRight - marginLeft;
+	var width=	document.getElementById(skillsChartContainer).clientWidth - marginRight - marginLeft;
 
 	var widthWithMargins=	width+marginRight+marginLeft;
-	var height=				475;
+	var height=				500;
 
-	var chart=		d3.select('#'+container)
+	var chart=		d3.select('#'+skillsChartContainer)
 					.append("svg");
 	chart.attr('width',widthWithMargins);
 
-	var tooltip=	d3.select('#'+container)
+	var tooltip=	d3.select('#'+skillsChartContainer)
 		.append('div')
 		.attr('class','tooltip');
 
@@ -104,7 +100,7 @@
 
 			chart.attr("height",height);
 
-			var maxCount=	d3.max(data,function(d){
+			maxCount=	d3.max(data,function(d){
 				return +d.Count;
 			});			
 
@@ -180,16 +176,6 @@
 					var offset = y(d.SkillGroup)+marginTop;
 					return "translate("+marginLeft+','+offset+')';
 				})
-				.append("rect")
-					.attr("height",function(d){
-						return y.rangeBand();
-					})
-					.attr("width",function(d){
-						return x(d.Count);
-					})
-					.style("fill",function(d){
-						return "#E45C10";
-					})
 				.on('mouseover',function(d){
 					d3.select('.tooltip').html(
 						"<b>"+d.SkillGroup+"</b><br>"+
@@ -204,7 +190,77 @@
 				.on('mousemove',function(){
 					tooltip.style('top',(d3.event.pageY+10)+'px')
 						.style('left',(d3.event.pageX+10)+'px');
+				});
+
+			skill.append("rect")
+				.attr("height",function(d){
+					return y.rangeBand();
 				})
+				.attr("width",function(d){
+					return x(d.Count);
+				})
+				.style("fill",function(d){
+					return "#E45C10";
+				});
 		}
-	)
+	);
+
+	d3.select(window).on('resize',function(){
+		var width = document.getElementById(skillsChartContainer).clientWidth - marginRight - marginLeft;
+		var height=	500;
+		var widthWithMargins = width+marginRight+marginLeft;
+
+		chart.attr('width',widthWithMargins).attr('height',height);
+
+		x=	d3.scale.linear()
+			.domain([0,maxCount])
+			.range([0,width]);
+		x.range([0,width]);
+
+		xAxis=	d3.svg.axis()
+			.scale(x)
+			.innerTickSize(-height+marginBottom)
+			.orient("top");
+
+		chart.select('.x.axis').call(xAxis)
+		chart.select('.x .axis-label').attr('x',widthWithMargins/2)
+
+		skill.selectAll("rect")
+			.attr("height",function(d){
+				return y.rangeBand();
+			})
+			.attr("width",function(d){
+				return x(d.Count);
+			})
+			.style("fill",function(d){
+				return "#E45C10";
+			});
+
+		// Resize donut chart
+		var width=	document.getElementById(donutContainer).clientWidth;
+		var height=	250;
+		radius=	Math.min(width,height)/2;
+		arc=	d3.svg.arc()
+				.innerRadius(radius-donutWidth)
+				.outerRadius(radius);
+
+		svg.attr("width",width)
+		.attr("height",height);
+
+		svgG.attr(
+			"transform",
+			"translate("+(width/2)+','+(height/2)+')'
+		);
+
+		gPath.attr('d',arc);
+		gText.attr("transform",function(d){
+			var x=	arc.centroid(d)[0];
+			var y=	arc.centroid(d)[1];
+			if(width < 375){
+				return "translate("+(x-10)+','+y+')';
+			}
+			return "translate("+arc.centroid(d)+')';
+		})
+		.attr("dy",".35em");
+	});
 </script>
