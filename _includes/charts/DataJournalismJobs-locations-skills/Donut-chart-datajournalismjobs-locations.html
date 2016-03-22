@@ -1,8 +1,4 @@
 <style type="text/css">
-	.arc path {
-		stroke: #fff;
-	}
-
 	#tooltip-location-chart {
 		background: #fff;
 		box-shadow: 0 0 5px #999;
@@ -17,24 +13,31 @@
 		z-index: 10;
 	}
 
+	.arc path {
+		stroke: #fff;
+	}
+
 	.source {
 		font-size: 12px;
 	}
 
-/*	@media screen and (max-width: 374px){
-		.arc text {
-			display: none;
-		}
-	}*/
 	@media screen and (max-width: 640px){
 		#tooltip-location-chart, text{
 			font-weight: unset;
 			font-size: 11px;
 		}
 	}
+
+	@media screen and (min-width: 768px){
+		#location-chart-container {
+			float: left;
+			margin-right: 20px;
+		}
+	}
 </style>
 
 <div id="location-chart-container" class="chart">
+	<hr class=".chart-border">
 	<h3>Locations of jobs posted to DataJournalismJobs.com</h3>
 </div>
 

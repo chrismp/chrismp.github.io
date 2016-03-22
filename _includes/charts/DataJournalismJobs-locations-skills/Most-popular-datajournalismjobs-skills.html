@@ -66,6 +66,7 @@
 </style>
 
 <div id="skills-chart-container" class="chart">
+	<hr class=".chart-border">
 	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
 </div>
 
@@ -211,7 +212,7 @@
 					var textXMargin=	5;
 					return "translate("+textXMargin+','+y.rangeBand()/1.25+')';
 				})
-				.attr("fill","#000")
+				.attr("fill","#333")
 				.text(function(d){
 					return d.SkillGroup;
 				});
