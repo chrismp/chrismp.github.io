@@ -6,20 +6,47 @@ title: Where data journalism jobs are and what skills they demand
 {% include charts/DataJournalismJobs-locations-skills/include.html %}
 
 
-Journalism job openings for programmers emphasize making and editing web pages -- not researching, reporting and writing.
+Journalism job openings for programmers emphasize making web pages, apps and graphics more than researching, reporting and writing.
 
-This is what I found after analyzing 84 (NOTE: RE-RUN NUMBER CRUNCHING TO MAKE THIS CORRECT) such job listings posted to [DataJournalismJobs.com](http://datajournalismjobs.com), which I made in July. When hiring editors want skilled coders on their teams, they post openings to my site.
+This is what I found after analyzing 82 such job listings posted to [DataJournalismJobs.com](http://datajournalismjobs.com), which I made in July. 
 
+Hiring editors who want skilled coders post openings to my site. I wrote a [Python script](https://github.com/chrismp/datajournalismjobs-skill-counter) to count all words in the Skills column, then I grouped together similar skills into categories. (Example: I grouped "PostgreSQL", "MySQL" and "SQL" into "SQL").
+
+The chart below shows the most common skills mentioned in DataJournalismJobs.com listings. Mouseover or tap each bar for more details.
 
 {% include charts/DataJournalismJobs-locations-skills/Most-popular-datajournalismjobs-skills.html %}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi molestie aliquam cursus. Suspendisse lobortis ipsum at lectus gravida posuere. Morbi porttitor, dolor quis mollis volutpat, ipsum metus scelerisque nibh, ac convallis risus quam vel ipsum. Fusce dapibus tincidunt urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fermentum elit est, vitae semper metus lacinia id. Cras porttitor semper massa, id dapibus dui placerat eget. Maecenas quis justo mollis, rutrum ipsum a, malesuada dolor. Morbi vitae imperdiet magna, vitae accumsan justo. Proin ac dui a augue porta egestas at rutrum metus.
+The most in-demand skills for data journalism postings have little to do with gathering and reporting information, as expected of a traditional reporter.
 
-Donec eget efficitur justo. Suspendisse at scelerisque metus, luctus ornare elit. Vivamus a libero sem. Mauris sapien lorem, tempus eu mollis a, lobortis in magna. Nunc facilisis laoreet nibh nec fermentum. Vivamus a ligula rutrum, pellentesque erat eget, lobortis sapien. Duis congue mattis neque viverra vestibulum. Maecenas vel mi ultrices, tempus lectus egestas, placerat elit. Sed scelerisque dui vel diam tincidunt, nec venenatis ligula condimentum. Phasellus congue feugiat turpis sed efficitur. Donec vitae massa dictum magna rhoncus malesuada. Morbi iaculis, magna eu hendrerit aliquam, diam ligula eleifend lacus, vel vehicula purus felis ac eros. Cras et nulla erat. Aenean vel scelerisque erat, vitae porttitor nulla. Vestibulum bibendum ullamcorper convallis. Suspendisse potenti.
+Jobs that demand people in the website-making languages of Javascript, CSS and HTML -- which account for 87 mentions -- reflect this. As do ads demanding knowledge in Python, Ruby and mapping.
+
+Reuters in January posted this opening for a Data Visualization Developer, listing HTML, CSS, Javascript, QGIS, Python and/or Ruby as preferred skills for applicants. 
+
+> Reuters is looking for a seasoned front-end web developer to work with the graphics team building news-driven data visualizations.
+
+Here's an October post from Bloomberg for a Data Journalist skilled in Adobe Photoshop and Illustrator.
+
+> Bloomberg is seeking a talented and motivated data journalist to create graphics and illustrations for a new operation that provides a morning news summary to users of the Bloomberg Terminal.
+
+Both example posts emphasize design -- making interactive graphics. Many ads on DataJournalismJobs.com describe jobs for designers or programmers who can design. Few posts describe jobs where new hires dig for information to help break a story. 
+
+But those jobs do exist. It helps to find an ad where preferred skills include SQL, Microsoft Excel or R.
+
+Like this one from the Los Angeles Times posted in October for a summer 2016 internship.
+
+> The Data Desk is a team of reporters and computer programmers that works with journalists in The Times newsroom to collect, organize, analyze and present large amounts of information. In short, we use data to find and tell stories.
+
+Or this opening from Reuters seeking a data reporter, posted in September, that asks for applicants skilled in Excel, SQL and R.
+
+> We want a data ninja who can hunt and slay data, resulting in stories that uncover business secrets, drive markets and challenge titans of industry. You must enjoy collaboration and have a sixth-sense for finding stories that matter. Our data reporters do not merely serve up data; they work with other reporters and editors to conceive stories and shape our reporting.
+
+I also analyzed job locations for 75 postings that had valid locations. Valid locations exclude listings where the stated location is something like "Remote", "various" or blank.
 
 {% include charts/DataJournalismJobs-locations-skills/Donut-chart-datajournalismjobs-locations.html %}
 {% include charts/DataJournalismJobs-locations-skills/postScript.html %}
 
-Donec eget efficitur justo. Suspendisse at scelerisque metus, luctus ornare elit. Vivamus a libero sem. Mauris sapien lorem, tempus eu mollis a, lobortis in magna. Nunc facilisis laoreet nibh nec fermentum. Vivamus a ligula rutrum, pellentesque erat eget, lobortis sapien. Duis congue mattis neque viverra vestibulum. Maecenas vel mi ultrices, tempus lectus egestas, placerat elit. Sed scelerisque dui vel diam tincidunt, nec venenatis ligula condimentum. Phasellus congue feugiat turpis sed efficitur. Donec vitae massa dictum magna rhoncus malesuada. Morbi iaculis, magna eu hendrerit aliquam, diam ligula eleifend lacus, vel vehicula purus felis ac eros. Cras et nulla erat. Aenean vel scelerisque erat, vitae porttitor nulla. Vestibulum bibendum ullamcorper convallis. Suspendisse potenti.
+Two of America's most world-renowned cities hold three out of five openings posted on DataJournalismJobs.com.
 
-Donec eget efficitur justo. Suspendisse at scelerisque metus, luctus ornare elit. Vivamus a libero sem. Mauris sapien lorem, tempus eu mollis a, lobortis in magna. Nunc facilisis laoreet nibh nec fermentum. Vivamus a ligula rutrum, pellentesque erat eget, lobortis sapien. Duis congue mattis neque viverra vestibulum. Maecenas vel mi ultrices, tempus lectus egestas, placerat elit. Sed scelerisque dui vel diam tincidunt, nec venenatis ligula condimentum. Phasellus congue feugiat turpis sed efficitur. Donec vitae massa dictum magna rhoncus malesuada. Morbi iaculis, magna eu hendrerit aliquam, diam ligula eleifend lacus, vel vehicula purus felis ac eros. Cras et nulla erat. Aenean vel scelerisque erat, vitae porttitor nulla. Vestibulum bibendum ullamcorper convallis. Suspendisse potenti.
+Jobs located in New York City account for 21 positions posted to my site since its launch. Washington, D.C. accounts for nine jobs. Together, that's 30 out of 75. 
+
+Seems like programmers who want a job in data journalism -- whether in design, development or reporting -- may end up in one of those cities working for a national news company. Companies from those cities who have posted to my site include The Washington Post, The New York Times, The Guardian US, ProPublica, Reuters and Bloomberg.
