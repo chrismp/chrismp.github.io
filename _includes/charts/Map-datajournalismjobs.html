@@ -1,0 +1,126 @@
+<style type="text/css">
+	#container {
+		width: 100%;
+	}
+
+/*	.axis {
+		font: 10px sans-serif;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line {
+		opacity: 0.2;
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text {
+		font: 13px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}*/
+
+	.source {
+		font-size: 12px;
+	}
+
+	@media screen and (max-width: 640px){
+/*		.tooltip,
+		.axis text {
+			font-weight: unset;
+			font-size: 11px;
+		}
+
+		.x > text,
+		.legend text {
+			font-size: 12px;
+		}*/
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+<div id="container">
+	<h3>Locations of jobs posted to DataJournalismJobs.com</h3>
+	<svg class="map"></svg>
+	<p class="source">Source: <a href="http://datajournalismjobs.com">DataJournalismJobs.com</a></p>
+</div>
+
+<script type="text/javascript">
+	var margin=	{
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 70
+	};
+	var marginTop=		margin.top;
+	var marginLeft=		margin.left;
+	var marginBottom=	margin.bottom;
+	var marginRight=	margin.right;
+
+	var width=	document.getElementById('container').clientWidth - marginRight - marginLeft;
+
+	var widthWithMargins=	width+marginRight+marginLeft;
+	var height=				500;
+
+	var mapScale=		(width/2/3.14)/2;
+	var mapCentering=	[0,marginTop/2];
+	var projection=	d3.geo
+						.mercator()
+						.scale(mapScale)
+						.center(mapCentering);
+	var map=		d3.select(".map");
+	map.attr("width", widthWithMargins)
+		.attr("height",height);
+
+	var path=		d3.geo.path().projection(projection);
+	var g=			map.append('g').style("stroke-width","2px");
+
+	// Draw world map
+	d3.json("maps/world-50m.json", function(error,worldJSON){
+		if(error) throw error;
+
+		var countries=			worldJSON.objects.countries;
+		var topoJSONFeatures=	topojson.feature(worldJSON, countries).features;
+
+		g.selectAll("path")
+			.data(topoJSONFeatures)
+			.enter()
+			.append("path")
+				.attr('d',path)
+				.attr("class","feature");
+	});
+
+	// Parse job location data
+	d3.csv("DataJournalismJobs_locationsGeoLocated.csv", function(error,csvData){
+		if(error) throw error;
+
+		for(var dataIndex=0; dataIndex<csvData.length; dataIndex++){
+				
+		}
+	});
+</script>
