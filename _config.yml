@@ -23,13 +23,14 @@ sass:
 # About/contact
 author:
   name:              Chris Persaud
-  url:               https://twitter.com/chrismpersaud
+  url:				 http://chrispersaud.com
+  twitter:           https://twitter.com/chrismpersaud
   email:             christopher.mark.persaud@gmail.com
 
 # Custom vars
 version:             2.0.0
 github:
-  repo:              https://github.com/chrismp/
+  repo:              https://github.com/chrismp/chrismp.github.io
 
 pages_list:
   About: '/about'
