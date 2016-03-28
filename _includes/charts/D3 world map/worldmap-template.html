@@ -53,8 +53,8 @@ div.tooltip {
 
 	<div id="container"></div>
 
-<script src="js/d3.min.js"></script>
-<script src="js/topojson.v1.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
 	d3.select(window).on("resize", throttle);
 
@@ -63,7 +63,7 @@ div.tooltip {
 			.on("zoom", move);
 
 
-	var width = document.getElementById('container').offsetWidth;
+	var width = document.getElementById("container").offsetWidth;
 	var height = width / 2;
 
 	var topo,projection,path,svg,g;
@@ -124,14 +124,14 @@ div.tooltip {
 				.attr("d", path)
 				.attr("id", function(d,i) { return d.id; })
 				.attr("title", function(d,i) { return d.properties.name; })
-				// .style('fill','#ccc')
-				.style('stroke','#666');
+				// .style("fill","#ccc")
+				.style("stroke","#666");
 				// .style("fill", function(d, i) { return d.properties.color; });
 
 
 		//offsets for tooltips
-		var offsetL = document.getElementById('container').offsetLeft+20;
-		var offsetT = document.getElementById('container').offsetTop+10;
+		var offsetL = document.getElementById("container").offsetLeft+20;
+		var offsetT = document.getElementById("container").offsetTop+10;
 
 		//tooltips
 		country
@@ -147,30 +147,22 @@ div.tooltip {
 					tooltip.classed("hidden", true);
 				}); 
 
-		country.on('click',function(d,i){
+		country.on("click",function(d,i){
 			var mapCountryName = d.properties.name;
-			d3.csv('data/UNHRC-CIA country name map.csv',function(error2, countryNameCSV){
+			d3.csv("data/UNHRC-CIA country name map.csv",function(error2, countryNameCSV){
 				countryNameCSV.forEach(function(countryNameRow){
-					if(countryNameRow['TopoJSON Name']===mapCountryName){
-						d3.csv('data/CIA world fact book population.csv',function(error3, ciaCSV){
+					if(countryNameRow["TopoJSON Name"]===mapCountryName){
+						d3.csv("data/CIA world fact book population.csv",function(error3, ciaCSV){
 							ciaCSV.forEach(function(ciaRow){
-								if(ciaRow.Country===countryNameRow['CIA country name']){
+								if(ciaRow.Country===countryNameRow["CIA country name"]){
 									console.log(ciaRow);
 								}
 							});
 						});
 
-						d3.csv('data/UNHCR persons of concern 1951 to 2014.csv',function(error5, pocCSV){
-							pocCSV.forEach(function(pocRow){
-								if(pocRow['Country / territory of asylum/residence']===countryNameRow['UNHCR Country name']){
-									console.log(pocRow);
-								}
-							});
-						});
-
-						d3.csv('data/UNHCR monthly asylum seeker data, Jan 1996 to Aug 2015.csv',function(error4, asylumCSV){
+						d3.csv("data/UNHCR monthly asylum seeker data, Jan 1996 to Aug 2015.csv",function(error4, asylumCSV){
 							asylumCSV.forEach(function(asylumRow){
-								if(asylumRow['Country / territory of asylum/residence']===countryNameRow['UNHCR Country name']){
+								if(asylumRow["Country / territory of asylum/residence"]===countryNameRow["UNHCR Country name"]){
 									console.log(asylumRow);
 								}
 							});
@@ -193,9 +185,9 @@ div.tooltip {
 
 
 	function redraw() {
-		width = document.getElementById('container').offsetWidth;
+		width = document.getElementById("container").offsetWidth;
 		height = width / 2;
-		d3.select('svg').remove();
+		d3.select("svg").remove();
 		setup(width,height);
 		draw(topo);
 	}
