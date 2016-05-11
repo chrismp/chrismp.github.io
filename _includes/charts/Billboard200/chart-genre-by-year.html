@@ -73,9 +73,9 @@
 			});
 		});
 
-		data.sort(function(a,b){
-			return b.Genres[0].x1 + a.Genres[0].x1;
-		});
+		// data.sort(function(a,b){
+		// 	return b.Genres[0].x1 + a.Genres[0].x1;
+		// });
 
 		y.domain(data.map(function(d){
 			return d.Year;
@@ -96,6 +96,7 @@
 					.append('g')
 					.attr("class","year")
 					.attr("transform",function(d){
+						console.log(d.Year);
 						return "translate(0,"+ y(d.Year)+")";
 					});
 
