@@ -150,8 +150,14 @@
 				d3.select(".tooltip").html(
 					d.name+" albums topped the charts for "+d.weeks+" weeks in "+d.year+'.'
 				);
-
 				tooltip.style("display","block");
 			})
+			.on("mouseout",function(d){
+				tooltip.style("display","none");
+			})
+			.on("mousemove",function(d){
+				tooltip.style("top",(d3.event.pageY+10)+"px")
+					.style("left",(d3.event.pageX+10)+"px");
+			});
 	});
 </script>
