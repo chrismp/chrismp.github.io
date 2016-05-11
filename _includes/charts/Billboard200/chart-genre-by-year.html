@@ -1,3 +1,26 @@
+<style type="text/css">
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip {
+			font-size: 10px;
+		}
+	}
+</style>
+
 <div id="genre-by-year-chart-container" class="chart">
 </div>
 
@@ -24,6 +47,11 @@
 
 	var chart=		d3.select('#'+genreByYearContainerID)
 					.append("svg");
+
+	var tooltip=	d3.select('#'+genreByYearContainerID)
+		.append('div')
+		.attr('class','tooltip');
+
 	chart.attr('width',widthWithMargins)
 		.attr("height",height);
 
@@ -34,7 +62,7 @@
 	d3.csv("dummydata_genreCountByYear.csv", function(error, data){
 		y=	d3.scale
 			.ordinal()
-			.rangeRoundBands([0,height - marginBottom], 0.1);
+			.rangeRoundBands([0,height - marginBottom],0.025);
 
 		x=	d3.scale
 			.linear()
@@ -61,6 +89,8 @@
 			d.Genres=	color.domain().map(function(name){
 				var obj=	{
 					name:	name,
+					weeks:	+d[name],
+					year:	d.Year,
 					x0:		x0,
 					x1:		x0 += +d[name]
 				};
@@ -96,10 +126,10 @@
 					.append('g')
 					.attr("class","year")
 					.attr("transform",function(d){
-						console.log(d.Year);
-						return "translate(0,"+ y(d.Year)+")";
+						return "translate(0,"+ y(d.Year)+')';
 					});
 
+		tooltip.append("div");
 		year.selectAll("rect")
 			.data(function(d){
 				return d.Genres;
@@ -115,6 +145,13 @@
 			})
 			.style("fill",function(d){
 				return color(d.name);
-			});
+			})
+			.on("mouseover",function(d){
+				d3.select(".tooltip").html(
+					d.name+" albums topped the charts for "+d.weeks+" weeks in "+d.year+'.'
+				);
+
+				tooltip.style("display","block");
+			})
 	});
 </script>
