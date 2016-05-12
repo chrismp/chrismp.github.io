@@ -1,0 +1,126 @@
+<style type="text/css">
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip {
+			font-size: 10px;
+		}
+	}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<div id="genre-by-decade-chart-container" class="chart">
+</div>
+
+<script type="text/javascript">
+	var g, gPath, gText;
+	var donutContainer=	"genre-by-decade-chart-container";
+	var color=	 		d3.scale.category20();
+	var width=			document.getElementById(donutContainer).clientWidth;
+
+	var donutHeight=	300;
+	var radius=			Math.min(width,donutHeight)/2;
+	var donutWidth=		50;
+	var arc=	d3.svg.arc()
+				.innerRadius(radius-donutWidth)
+				.outerRadius(radius);
+
+	d3.csv("dummydata_genre-decades.csv",function(error,data){
+		if(error) throw error;
+
+		var dataKeys=	d3.keys(data[0]);
+		for (var keyIndex=1; keyIndex<dataKeys.length; keyIndex++) {
+			var keyName=dataKeys[keyIndex];
+			var pie=	d3.layout.pie()
+						.value(function(d){
+							return d[keyName];
+						})
+						.sort(null);
+
+			var svg=	d3.select('#'+donutContainer)
+						.append("svg");
+
+			svg.attr("width",width)
+				.attr("height",donutHeight);
+				
+			var svgG=	svg.append('g')
+							.attr(
+								"transform",
+								"translate("+(width/2)+','+(donutHeight/2)+')'
+							);
+
+			var tooltipDonutId=	"tooltip-location-chart";
+			var tooltipDonut=	d3.select('#'+donutContainer)
+								.append("div")
+								.attr("id",tooltipDonutId);
+
+			data.forEach(function(d){
+				d[keyName]=	+d[keyName];
+			});
+
+			// Define 'g' element, which will be donut pieces
+			g=	svgG.selectAll(".arc")
+				.data(pie(data))
+				.enter()
+				.append('g')
+				.attr("class","arc");
+
+			// Attach to page the 'g' elements, which form the donut pieces
+			gPath=	g.append("path")
+			.attr('d',arc)
+			.attr("fill",function(d,i){
+				return color(i);
+			});
+
+			// gText=	g.append("text")
+			// .attr("transform",function(d){
+			// 	var x=	arc.centroid(d)[0];
+			// 	var y=	arc.centroid(d)[1];
+			// 	if(width < 375){
+			// 		return "translate("+(x-10)+','+y+')';
+			// 	}
+			// 	return "translate("+arc.centroid(d)+')';
+			// })
+			// .attr("dy",".35em")
+			// .attr("class","donut-text")
+			// .text(function(d){
+			// 	if(Math.round(+d.data.PercentFormatted >= 5)){
+			// 		return d.data.CityFormatted;
+			// 	}
+			// });
+
+			// Mouseover tooltip
+			d3.selectAll(".arc")
+			.data(data)
+			.on('mouseover',function(d){
+				d3.select('#'+tooltipDonutId).html(
+					"<b>"+d.genre+"</b><br>"+
+					d[keyName]
+				);
+
+				tooltipDonut.style('display','block');
+			})
+			.on('mouseout',function(d){
+				tooltipDonut.style('display','none');
+			})
+			.on('mousemove',function(){
+				tooltipDonut.style('top',(d3.event.pageY+10)+'px')
+					.style('left',(d3.event.pageX+10)+'px');
+			});
+		}
+	});
+</script>
