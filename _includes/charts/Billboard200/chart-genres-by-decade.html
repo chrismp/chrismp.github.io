@@ -43,84 +43,85 @@
 		if(error) throw error;
 
 		var dataKeys=	d3.keys(data[0]);
-		for (var keyIndex=1; keyIndex<dataKeys.length; keyIndex++) {
-			var keyName=dataKeys[keyIndex];
-			var pie=	d3.layout.pie()
-						.value(function(d){
-							return d[keyName];
-						})
-						.sort(null);
+		dataKeys.forEach(function(keyName){
+			if (keyName!=="genre"){
+				var pie=	d3.layout.pie()
+							.value(function(d){
+								return d[keyName];
+							})
+							.sort(null);
 
-			var svg=	d3.select('#'+donutContainer)
-						.append("svg");
+				var svg=	d3.select('#'+donutContainer)
+							.append("svg");
 
-			svg.attr("width",width)
-				.attr("height",donutHeight);
-				
-			var svgG=	svg.append('g')
-							.attr(
-								"transform",
-								"translate("+(width/2)+','+(donutHeight/2)+')'
-							);
+				svg.attr("width",width)
+					.attr("height",donutHeight);
+					
+				var svgG=	svg.append('g')
+								.attr(
+									"transform",
+									"translate("+(width/2)+','+(donutHeight/2)+')'
+								);
 
-			var tooltipDonutId=	"tooltip-location-chart";
-			var tooltipDonut=	d3.select('#'+donutContainer)
-								.append("div")
-								.attr("id",tooltipDonutId);
+				var tooltipDonutId=	"tooltip-location-chart";
+				var tooltipDonut=	d3.select('#'+donutContainer)
+									.append("div")
+									.attr("id",tooltipDonutId);
 
-			data.forEach(function(d){
-				d[keyName]=	+d[keyName];
-			});
+				data.forEach(function(d){
+					d[keyName]=	+d[keyName];
+				});
 
-			// Define 'g' element, which will be donut pieces
-			g=	svgG.selectAll(".arc")
-				.data(pie(data))
-				.enter()
-				.append('g')
-				.attr("class","arc");
+				// Define 'g' element, which will be donut pieces
+				g=	svgG.selectAll(".arc")
+					.data(pie(data))
+					.enter()
+					.append('g')
+					.attr("class","arc");
 
-			// Attach to page the 'g' elements, which form the donut pieces
-			gPath=	g.append("path")
-			.attr('d',arc)
-			.attr("fill",function(d,i){
-				return color(i);
-			});
+				// Attach to page the 'g' elements, which form the donut pieces
+				gPath=	g.append("path")
+				.attr('d',arc)
+				.attr("fill",function(d,i){
+					return color(i);
+				});
 
-			// gText=	g.append("text")
-			// .attr("transform",function(d){
-			// 	var x=	arc.centroid(d)[0];
-			// 	var y=	arc.centroid(d)[1];
-			// 	if(width < 375){
-			// 		return "translate("+(x-10)+','+y+')';
-			// 	}
-			// 	return "translate("+arc.centroid(d)+')';
-			// })
-			// .attr("dy",".35em")
-			// .attr("class","donut-text")
-			// .text(function(d){
-			// 	if(Math.round(+d.data.PercentFormatted >= 5)){
-			// 		return d.data.CityFormatted;
-			// 	}
-			// });
+				// gText=	g.append("text")
+				// .attr("transform",function(d){
+				// 	var x=	arc.centroid(d)[0];
+				// 	var y=	arc.centroid(d)[1];
+				// 	if(width < 375){
+				// 		return "translate("+(x-10)+','+y+')';
+				// 	}
+				// 	return "translate("+arc.centroid(d)+')';
+				// })
+				// .attr("dy",".35em")
+				// .attr("class","donut-text")
+				// .text(function(d){
+				// 	if(Math.round(+d.data.PercentFormatted >= 5)){
+				// 		return d.data.CityFormatted;
+				// 	}
+				// });
 
-			// Mouseover tooltip
-			d3.selectAll(".arc")
-			.data(data)
-			.on('mouseover',function(d){
-				d3.select('#'+tooltipDonutId).html(
-					"<b>"+d.genre+"</b><br>"+
-					d[keyName]
-				);
+				// Mouseover tooltip
+				d3.selectAll(".arc")
+				.data(data)
+				.on("mouseover",function(d){
+					d3.select('#'+tooltipDonutId).html(
+						"<b>"+d.genre+"</b><br>"+
+						d[keyName]
+					);
 
-				tooltipDonut.style('display','block');
-			})
-			.on('mouseout',function(d){
-				tooltipDonut.style('display','none');
-			})
-			.on('mousemove',function(){
-				tooltipDonut.style('top',(d3.event.pageY+10)+'px')
-					.style('left',(d3.event.pageX+10)+'px');
-			});
-		}
+					tooltipDonut.style("display","block");
+				})
+				.on("mouseout",function(d){
+					tooltipDonut.style("display","none");
+				})
+				.on("mousemove",function(){
+					tooltipDonut.style("top",(d3.event.pageY+10)+"px")
+						.style("left",(d3.event.pageX+10)+"px");
+				});
+			}
+		});
 	});
 </script>
