@@ -1,4 +1,7 @@
 <style type="text/css">
+	#top-albums-chart-container svg {
+		background-image: url("stripes.png");
+	}
 
 	.tooltip {
 		background: #fff;
@@ -34,7 +37,7 @@
 	var container=	"top-albums-chart-container";
 	var mobileSized= window.innerWidth < 640;
 	var chartWidth=	window.innerWidth;
-	var chartHeight=100000;
+	// var chartHeight=100000;
 	var margin=	{
 		top: 50,
 		right: 30,
@@ -42,40 +45,45 @@
 		left: 0
 	};
 	var svg=	d3.select('#'+container).append("svg");
-
-	svg.attr("width",chartWidth).attr("height",chartHeight)
+	svg.attr("width",chartWidth);//.attr("height",chartHeight)
 	d3.csv("Billboard200Data.csv",function(error,data){
 		if (error) throw error;
 
 		// var columns=	mobileSized ? 3 : 4;
-		var columns=	4;
+		var columns=	10;
 		var imgWidth=	chartWidth / columns;
 		var imgHeight=	imgWidth;
 		var currentY=	0;
 		var columnIdx=	0;
+		var	border=		1;
+		var borderColor="white";
 		var week=	svg.selectAll(".week")
 					.data(data)
 					.enter()
 					.append('g')
 						.attr("class","week")
-						.append("image")
-							.attr("width",imgWidth)
-							.attr("height",imgHeight)
-							.attr('x',function(d,i){
-								return imgWidth * (i%columns);
-							})
-							.attr('y',function(d,i){
-								var remainder=	i%columns;
-								columnIdx += 1;
-								if (columnIdx === columns){
-									columnIdx=	0;
-									currentY += imgHeight;
-								}
-								console.log(currentY);
-								return currentY;
-							})
-							.attr("xlink:href",function(d){
-								return d["AlbumImageURL"];
-							});
+						.attr("id",function(d){
+							return d["Date"];
+						});
+
+		week.append("image")
+			.attr("width",imgWidth)
+			.attr("height",imgHeight)
+			.attr('x',function(d,i){
+				return imgWidth * (i%columns);
+			})
+			.attr('y',function(d,i){
+				if (columnIdx === columns){
+					columnIdx=	0;
+					currentY += imgHeight;
+				}
+				columnIdx += 1;
+				return currentY;
+			})
+			.attr("xlink:href",function(d){
+				return d["AlbumImageURL"];
+			});
+
+		svg.attr("height",currentY+imgHeight);
 	});
 </script>
