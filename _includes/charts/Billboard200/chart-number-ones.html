@@ -30,7 +30,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 <script type="https://raw.githubusercontent.com/interactivethings/d3-grid/master/d3-grid.js"></script>
 
+<h3>Top albums on the Billboard 200, 1945 to May 2016</h3>
 <div id="top-albums-chart-container" class="chart-container">
+
 </div>
 
 <script type="text/javascript">
@@ -45,8 +47,12 @@
 		left: 0
 	};
 	var svg=	d3.select('#'+container).append("svg");
+	var tooltip=d3.select('#'+container)
+		.append('div')
+		.attr('class','tooltip');
+
 	svg.attr("width",chartWidth);//.attr("height",chartHeight)
-	d3.csv("Billboard200Data.csv",function(error,data){
+	d3.csv("Billboard200Data_v2.csv",function(error,data){
 		if (error) throw error;
 
 		// var columns=	mobileSized ? 3 : 4;
@@ -66,6 +72,7 @@
 							return d["Date"];
 						});
 
+		tooltip.append('div');
 		week.append("image")
 			.attr("width",imgWidth)
 			.attr("height",imgHeight)
@@ -82,6 +89,22 @@
 			})
 			.attr("xlink:href",function(d){
 				return d["AlbumImageURL"];
+			})
+			.on('mouseover',function(d){
+				d3.select('.tooltip').html(
+					"<b>"+d["Date"]+"</b><br>"+
+					"<b>Album:</b> "+d["Album"]+"<br>"+
+					"<b>Artist:</b> "+d["Artist"]
+				);
+
+				tooltip.style('display','block');
+			})
+			.on('mouseout',function(d){
+				tooltip.style('display','none');
+			})
+			.on('mousemove',function(){
+				tooltip.style('top',(d3.event.pageY+10)+'px')
+					.style('left',(d3.event.pageX+10)+'px');
 			});
 
 		svg.attr("height",currentY+imgHeight);
