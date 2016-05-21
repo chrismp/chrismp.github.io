@@ -1,6 +1,7 @@
 ---
 layout: post
 title: American newspapers employ fewer people than they did in 1947
+author: Chris Persaud
 ---
 
 If you work in news in the United States, here's your depressing chart of the day. 

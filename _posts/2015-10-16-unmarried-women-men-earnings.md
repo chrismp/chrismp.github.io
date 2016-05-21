@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Unmarried women earn eight percent less than unmarried men in America
+author: Chris Persaud
 ---
 
 <!-- <img src="http://i.imgur.com/izJAQyl.png" /> -->
