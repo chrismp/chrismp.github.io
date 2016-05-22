@@ -1,6 +1,6 @@
 <style type="text/css">
 	#top-albums-chart-container svg {
-		background-image: url("stripes.png");
+		background-image: url("{{site.baseurl}}/public/images/stripes.png");
 	}
 
 	.tooltip {
@@ -37,24 +37,25 @@
 
 <script type="text/javascript">
 	var container=	"top-albums-chart-container";
-	var windowWidth=	window.innerWidth;
+	var windowWidth=window.innerWidth;
 	var margin=	{
 		top: 50,
-		right: 30,
+		right: 50,
 		bottom: 100,
-		left: 0
+		left: 50
 	};
+	var chartWidth=	windowWidth - margin.left - margin.right;
 	var svg=	d3.select('#'+container).append("svg");
 	var tooltip=d3.select('#'+container)
 		.append('div')
 		.attr('class','tooltip');
 
-	svg.attr("width",windowWidth);//.attr("height",chartHeight)
+	svg.attr("width",chartWidth);//.attr("height",chartHeight)
 	d3.csv("{{site.baseurl}}/public/datasets/BillboardCharts/Billboard200Data_v2.csv",function(error,data){
 		if (error) throw error;
 
 		var columns=	windowWidth<=640 ? 4 : windowWidth<=1024 ? 7 : 10;
-		var imgWidth=	windowWidth / columns;
+		var imgWidth=	chartWidth / columns;
 		var imgHeight=	imgWidth;
 		var currentY=	0;
 		var columnIdx=	0;
