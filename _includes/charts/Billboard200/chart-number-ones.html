@@ -37,9 +37,7 @@
 
 <script type="text/javascript">
 	var container=	"top-albums-chart-container";
-	var mobileSized= window.innerWidth < 640;
-	var chartWidth=	window.innerWidth;
-	// var chartHeight=100000;
+	var windowWidth=	window.innerWidth;
 	var margin=	{
 		top: 50,
 		right: 30,
@@ -51,13 +49,12 @@
 		.append('div')
 		.attr('class','tooltip');
 
-	svg.attr("width",chartWidth);//.attr("height",chartHeight)
-	d3.csv("Billboard200Data_v2.csv",function(error,data){
+	svg.attr("width",windowWidth);//.attr("height",chartHeight)
+	d3.csv("{{site.baseurl}}/public/datasets/BillboardCharts/Billboard200Data_v2.csv",function(error,data){
 		if (error) throw error;
 
-		// var columns=	mobileSized ? 3 : 4;
-		var columns=	10;
-		var imgWidth=	chartWidth / columns;
+		var columns=	windowWidth<=640 ? 4 : windowWidth<=1024 ? 7 : 10;
+		var imgWidth=	windowWidth / columns;
 		var imgHeight=	imgWidth;
 		var currentY=	0;
 		var columnIdx=	0;
