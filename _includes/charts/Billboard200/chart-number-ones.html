@@ -57,8 +57,24 @@
 				return d["AlbumImageURL"];
 			})
 			.on('mouseover',function(d){
+				var month=	new Array();
+				month[0]=	"Jan.";
+				month[1]=	"Feb.";
+				month[2]=	"March";
+				month[3]=	"April";
+				month[4]=	"May";
+				month[5]=	"June";
+				month[6]=	"July";
+				month[7]=	"Aug.";
+				month[8]=	"Sept.";
+				month[9]=	"Oct.";
+				month[10]=	"Nov.";
+				month[11]=	"Dec.";
+
+				var dateObj=	new Date(d["Date"]);
+				var dateString=	month[dateObj.getMonth()] + ' ' + dateObj.getDate() + ", " + dateObj.getFullYear();
 				d3.select('.tooltip').html(
-					"<b>"+d["Date"]+"</b><br>"+
+					"<b>"+dateString+"</b><br>"+
 					"<b>Album:</b> "+d["Album"]+"<br>"+
 					"<b>Artist:</b> "+d["Artist"]
 				);
