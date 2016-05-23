@@ -1,0 +1,75 @@
+-- NUMBER OF UNIQUE ARTIST BY YEAR
+SELECT 
+	CAST(substr(`Date`,-4,4) AS Integer) AS Year,
+	COUNT(DISTINCT Artist) AS `Unique artist count`
+FROM Billboard200
+GROUP BY Year
+ORDER BY Year;
+
+
+-- NUMBER OF UNIQUE ALBUMS BY YEAR
+SELECT 
+	CAST(substr(`Date`,-4,4) AS Integer) AS Year,
+	COUNT(DISTINCT Album) AS `Unique album count`
+FROM Billboard200
+GROUP BY Year
+ORDER BY Year;
+
+
+-- NUMBER OF WEEKS BY ARTIST
+SELECT
+	Artist,
+	COUNT(*) AS Weeks
+FROM Billboard200
+GROUP BY Artist
+ORDER BY Weeks DESC; 
+
+
+-- NUMBER OF WEEKS BY ALBUM
+SELECT
+	Album,
+	Artist,
+	COUNT(*) AS Weeks
+FROM Billboard200
+GROUP BY Album
+ORDER BY Weeks DESC; 
+
+
+-- Unique artists by decade
+SELECT 
+	CASE 
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1950 THEN "1945-1949"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1960 THEN "1950s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1970 THEN "1960s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1980 THEN "1970s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1990 THEN "1980s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 2000 THEN "1990s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 2010 THEN "2000s"
+		ELSE "2010 to present"
+	END AS Decade,
+	COUNT(DISTINCT Artist) AS "Artists"
+FROM Billboard200
+WHERE
+	Artist != "Soundtrack" AND 
+	Artist != "Original Cast"
+GROUP BY Decade
+ORDER BY Decade;
+
+
+-- Unique albums by decade
+SELECT 
+	CASE 
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1950 THEN "1945-1949"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1960 THEN "1950s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1970 THEN "1960s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1980 THEN "1970s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 1990 THEN "1980s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 2000 THEN "1990s"
+		WHEN CAST(substr(`Date`,-4,4) AS Integer) < 2010 THEN "2000s"
+		ELSE "2010 to present"
+	END AS Decade,
+	COUNT(DISTINCT Album) AS "Albums"
+FROM Billboard200
+GROUP BY Decade
+ORDER BY Decade;
+

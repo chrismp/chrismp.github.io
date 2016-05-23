@@ -1,48 +1,16 @@
-<style type="text/css">
-	#top-albums-chart-container svg {
-		background-image: url("{{site.baseurl}}/public/images/stripes.png");
-	}
-
-	.tooltip {
-		background: #fff;
-		box-shadow: 0 0 5px #999;
-		color: #333;
-		display: none;
-		font: 14px sans-serif;
-		left: 130px;
-		padding: 10px;
-		position: absolute;
-		text-align: left;
-		top: 95px;
-		z-index: 10;
-	}
-
-	@media screen and (max-width: 640px){
-		.tooltip {
-			font-size: 10px;
-		}
-	}
-</style>
-
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-<script src="https://raw.githubusercontent.com/evanplaice/jquery-csv/master/src/jquery.csv.min.js"></script> -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
-<script type="https://raw.githubusercontent.com/interactivethings/d3-grid/master/d3-grid.js"></script>
-
-<h3>Top albums on the Billboard 200, 1945 to May 2016</h3>
+<h3>Top albums on the Billboard 200, 1945-2016</h3>
 <div id="top-albums-chart-container" class="chart-container">
 
 </div>
 
 <script type="text/javascript">
 	var container=	"top-albums-chart-container";
-	var windowWidth=window.innerWidth;
+	var windowWidth=document.getElementById(container).clientWidth;
 	var margin=	{
-		top: 50,
-		right: 50,
-		bottom: 100,
-		left: 50
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0
 	};
 	var chartWidth=	windowWidth - margin.left - margin.right;
 	var svg=	d3.select('#'+container).append("svg");

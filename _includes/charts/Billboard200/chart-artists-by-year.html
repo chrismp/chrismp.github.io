@@ -1,12 +1,11 @@
-<div id="skills-chart-container" class="chart">
-	<hr class=".chart-border">
-	<h3>Most popular skills listed on DataJournalismJobs.com</h3>
+<div id="artists-by-year-chart-container" class="chart">
+	<h3>Number of artists at the top of the Billboard 200, 1945-2016</h3>
 </div>
 
 <script type="text/javascript">
-	var x, y, xAxis, yAxis, data, skills, maxCount;
+	var x, y, xAxis, yAxis, data, years, maxCount;
 
-	var skillsChartContainer=	"skills-chart-container";
+	var chartContainer=	"artists-by-year-chart-container";
 
 	var margin=	{
 		top: 50,
@@ -19,28 +18,30 @@
 	var marginBottom=	margin.bottom;
 	var marginRight=	margin.right;
 
-	var width=	document.getElementById(skillsChartContainer).clientWidth - marginRight - marginLeft;
+	var width=	document.getElementById(chartContainer).clientWidth - marginRight - marginLeft;
 
 	var widthWithMargins=	width+marginRight+marginLeft;
-	var height=				500;
+	var height=				300;
 
-	var chart=		d3.select('#'+skillsChartContainer)
-					.append("svg");
+	var chart=	d3.select('#'+chartContainer)
+				.append("svg");
 	chart.attr('width',widthWithMargins);
 
-	var tooltip=	d3.select('#'+skillsChartContainer)
-		.append('div')
-		.attr('class','tooltip');
+	// var tooltip=	d3.select('#'+chartContainer)
+	// 	.append('div')
+	// 	.attr('class','tooltip');
 
 	d3.csv(
-		"{{site.baseurl}}/public/datasets/DataJournalismJobs/DataJournalismJobs_SkillGroup_Count.csv",
+		"{{site.baseurl}}/public/datasets/BillboardCharts/ArtistsByDecade.csv",
 		function(error, csvData){
 			data=csvData;
+			var labelColumn=	"Decade";
+			var countColumn=	"Artists";
 
 			chart.attr("height",height);
 
 			maxCount=	d3.max(data,function(d){
-				return +d.Count;
+				return +d[countColumn];
 			});			
 
 			x=	d3.scale.linear()
@@ -48,9 +49,12 @@
 				.range([0,width]);
 
 			var xTicks=	[
-				10,
-				20,
-				30
+				25,
+				50,
+				75,
+				100,
+				125,
+				150
 			];
 
 			xAxis=	d3.svg.axis()
@@ -59,7 +63,7 @@
 				.innerTickSize(-height+marginBottom)
 				.orient("top");
 
-			var xLabel=	"Mentions"
+			var xLabel=	"Artists"
 			chart.append('g')
 				.attr("class","x axis")
 				.call(xAxis)
@@ -70,30 +74,17 @@
 					.attr('x', widthWithMargins/2)
 					.attr('y',-25);
 
-			skills=	data.map(function(d){
-				return d.SkillGroup;
+			years=	data.map(function(d){
+				return d[labelColumn];
 			});
 			
 			y=	d3.scale.ordinal()
-				.domain(skills)
+				.domain(years)
 				.rangeRoundBands([0, height - marginBottom], 0.15);
 
 			yAxis=	d3.svg.axis()
 				.scale(y)
 				.orient("left");
-
-			// chart.append('g')
-			// 	.attr("class","y axis")
-			// 	.call(yAxis);
-
-			// chart.selectAll(".y")
-			// 	.attr("transform","translate("+marginLeft+')');
-
-			// chart.selectAll(".y .tick")
-			// 	.attr("transform",function(d,i){
-			// 		var yOffset=	y(d) + marginTop + 8;
-			// 		return "translate(0,"+yOffset+')'; 
-			// 	});
 
 			chart.selectAll(".x")
 				.attr("transform","translate("+marginLeft+','+marginTop+')');
@@ -103,19 +94,19 @@
 
 			tooltip.append('div');
 
-			skill = chart.selectAll(".skill")
+			year = chart.selectAll(".year")
 				.data(data)
 				.enter()
 				.append('g')
-				.attr("class","skill")
+				.attr("class","year")
 				.attr("transform",function(d){
-					var offset = y(d.SkillGroup)+marginTop;
+					var offset = y(d[labelColumn])+marginTop;
 					return "translate("+marginLeft+','+offset+')';
 				})
 				.on('mouseover',function(d){
 					d3.select('.tooltip').html(
-						"<b>"+d.SkillGroup+"</b><br>"+
-						d.Count+" mentions"
+						"<b>"+d[labelColumn]+"</b><br>"+
+						d[countColumn]+" artists made it to the top of the charts."
 					);
 
 					tooltip.style('display','block');
@@ -128,18 +119,18 @@
 						.style('left',(d3.event.pageX+10)+'px');
 				});
 
-			skill.append("rect")
+			year.append("rect")
 				.attr("height",function(d){
 					return y.rangeBand();
 				})
 				.attr("width",function(d){
-					return x(d.Count);
+					return x(d[countColumn]);
 				})
 				.style("fill",function(d){
 					return "#E45C10";
 				});
 
-			skill.append("text")
+			year.append("text")
 				.attr("text-anchor","start")
 				.attr("transform",function(d){
 					var textXMargin=	5;
@@ -147,7 +138,7 @@
 				})
 				.attr("fill","#333")
 				.text(function(d){
-					return d.SkillGroup;
+					return d[labelColumn];
 				});
 
 		}
