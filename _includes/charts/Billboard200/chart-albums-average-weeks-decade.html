@@ -1,11 +1,12 @@
-<div id="artists-by-year-chart-container" class="chart">
-	<h3>Number of artists at the top of the Billboard 200, 1945 to may 2016</h3>
+<div id="albums-average-weeks-decade-chart-container" class="chart">
+	<h3>Average number of non-consecutive weeks an album is top-selling in America</h3>
 </div>
 
 <script type="text/javascript">
+function averageWeeksChart(){
 	var x, y, xAxis, yAxis, data, years, maxCount;
 
-	var chartContainer=	"artists-by-year-chart-container";
+	var chartContainer=	"albums-average-weeks-decade-chart-container";
 
 	var margin=	{
 		top: 50,
@@ -32,11 +33,11 @@
 	// 	.attr('class','tooltip');
 
 	d3.csv(
-		"{{site.baseurl}}/public/datasets/BillboardCharts/ArtistsByDecade.csv",
+		"{{site.baseurl}}/public/datasets/BillboardCharts/AverageWeeksByDecade.csv",
 		function(error, csvData){
 			data=csvData;
 			var labelColumn=	"Decade";
-			var countColumn=	"Artists";
+			var countColumn=	"AverageWeeks";
 
 			chart.attr("height",height);
 
@@ -49,12 +50,16 @@
 				.range([0,width]);
 
 			var xTicks=	[
-				25,
-				50,
-				75,
-				100,
-				125,
-				150
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
 			];
 
 			xAxis=	d3.svg.axis()
@@ -63,7 +68,7 @@
 				.innerTickSize(-height+marginBottom)
 				.orient("top");
 
-			var xLabel=	"Artists"
+			var xLabel=	"Weeks"
 			chart.append('g')
 				.attr("class","x axis")
 				.call(xAxis)
@@ -106,7 +111,7 @@
 				.on('mouseover',function(d){
 					d3.select('.tooltip').html(
 						"<b>"+d[labelColumn]+"</b><br>"+
-						"<b>"+d[countColumn]+" artists</b> made it to the top of the charts."
+						"Top-selling albums spent <b>"+d[countColumn]+" weeks</b> on average at the top of the Billboard 200."
 					);
 
 					tooltip.style('display','block');
@@ -143,4 +148,6 @@
 
 		}
 	);
+}
+averageWeeksChart()
 </script>
