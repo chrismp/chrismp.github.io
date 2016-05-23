@@ -1,0 +1,31 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
+
+<style type="text/css">
+	#top-albums-chart-container svg {
+		background-image: url("{{site.baseurl}}/public/images/stripes.png");
+	}
+
+	.x .domain {
+		display: none;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	@media screen and (max-width: 640px){
+		.tooltip {
+			font-size: 10px;
+		}
+	}
+</style>

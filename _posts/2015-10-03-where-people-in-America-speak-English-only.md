@@ -1,6 +1,7 @@
 ---
 layout: post
 title: This map of America shows where people speak English only
+author: Chris Persaud
 ---
 
 Most Americans speak no language besides English. But in huge parts of the country, that's not the case. Many people can speak another language in the southwest bordering Mexico, in South Florida, or big cities on the East Coast and in the Midwest.

@@ -1,0 +1,146 @@
+<div id="artists-by-year-chart-container" class="chart">
+	<h3>Number of artists at the top of the Billboard 200, 1945 to May 2016</h3>
+</div>
+
+<script type="text/javascript">
+	var x, y, xAxis, yAxis, data, years, maxCount;
+
+	var chartContainer=	"artists-by-year-chart-container";
+
+	var margin=	{
+		top: 50,
+		right: 30,
+		bottom: 100,
+		left: 0
+	};
+	var marginTop=		margin.top;
+	var marginLeft=		margin.left;
+	var marginBottom=	margin.bottom;
+	var marginRight=	margin.right;
+
+	var width=	document.getElementById(chartContainer).clientWidth - marginRight - marginLeft;
+
+	var widthWithMargins=	width+marginRight+marginLeft;
+	var height=				300;
+
+	var chart=	d3.select('#'+chartContainer)
+				.append("svg");
+	chart.attr('width',widthWithMargins);
+
+	// var tooltip=	d3.select('#'+chartContainer)
+	// 	.append('div')
+	// 	.attr('class','tooltip');
+
+	d3.csv(
+		"{{site.baseurl}}/public/datasets/BillboardCharts/ArtistsByDecade.csv",
+		function(error, csvData){
+			data=csvData;
+			var labelColumn=	"Decade";
+			var countColumn=	"Artists";
+
+			chart.attr("height",height);
+
+			maxCount=	d3.max(data,function(d){
+				return +d[countColumn];
+			});			
+
+			x=	d3.scale.linear()
+				.domain([0,maxCount])
+				.range([0,width]);
+
+			var xTicks=	[
+				25,
+				50,
+				75,
+				100,
+				125,
+				150
+			];
+
+			xAxis=	d3.svg.axis()
+				.scale(x)
+				.tickValues(xTicks)
+				.innerTickSize(-height+marginBottom)
+				.orient("top");
+
+			var xLabel=	"Artists"
+			chart.append('g')
+				.attr("class","x axis")
+				.call(xAxis)
+				.append("text")
+					.text(xLabel)
+					.style("text-anchor","end")
+					.attr("class","axis-label")
+					.attr('x', widthWithMargins/2)
+					.attr('y',-25);
+
+			years=	data.map(function(d){
+				return d[labelColumn];
+			});
+			
+			y=	d3.scale.ordinal()
+				.domain(years)
+				.rangeRoundBands([0, height - marginBottom], 0.15);
+
+			yAxis=	d3.svg.axis()
+				.scale(y)
+				.orient("left");
+
+			chart.selectAll(".x")
+				.attr("transform","translate("+marginLeft+','+marginTop+')');
+
+			chart.select(".y .domain")
+				.attr("transform","translate(0,"+marginTop+')');
+
+			tooltip.append('div');
+
+			year = chart.selectAll(".year")
+				.data(data)
+				.enter()
+				.append('g')
+				.attr("class","year")
+				.attr("transform",function(d){
+					var offset = y(d[labelColumn])+marginTop;
+					return "translate("+marginLeft+','+offset+')';
+				})
+				.on('mouseover',function(d){
+					d3.select('.tooltip').html(
+						"<b>"+d[labelColumn]+"</b><br>"+
+						"<b>"+d[countColumn]+" artists</b> made it to the top of the charts."
+					);
+
+					tooltip.style('display','block');
+				})
+				.on('mouseout',function(d){
+					tooltip.style('display','none');
+				})
+				.on('mousemove',function(){
+					tooltip.style('top',(d3.event.pageY+10)+'px')
+						.style('left',(d3.event.pageX+10)+'px');
+				});
+
+			year.append("rect")
+				.attr("height",function(d){
+					return y.rangeBand();
+				})
+				.attr("width",function(d){
+					return x(d[countColumn]);
+				})
+				.style("fill",function(d){
+					return "#E45C10";
+				});
+
+			year.append("text")
+				.attr("text-anchor","start")
+				.attr("transform",function(d){
+					var textXMargin=	5;
+					return "translate("+textXMargin+','+y.rangeBand()/1.25+')';
+				})
+				.attr("fill","#333")
+				.text(function(d){
+					return d[labelColumn];
+				});
+
+		}
+	);
+</script>

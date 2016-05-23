@@ -1,0 +1,94 @@
+<h3>Top-selling albums in the U.S., 1945 to May 2016</h3>
+<div id="top-albums-chart-container" class="chart-container">
+
+</div>
+
+<script type="text/javascript">
+	var container=	"top-albums-chart-container";
+	var windowWidth=document.getElementById(container).clientWidth;
+	var margin=	{
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0
+	};
+	var chartWidth=	windowWidth - margin.left - margin.right;
+	var svg=	d3.select('#'+container).append("svg");
+	var tooltip=d3.select('#'+container)
+		.append('div')
+		.attr('class','tooltip');
+
+	svg.attr("width",chartWidth);//.attr("height",chartHeight)
+	d3.csv("{{site.baseurl}}/public/datasets/BillboardCharts/Billboard200Data_v2.csv",function(error,data){
+		if (error) throw error;
+
+		var columns=	windowWidth<=640 ? 4 : windowWidth<=1024 ? 7 : 10;
+		var imgWidth=	chartWidth / columns;
+		var imgHeight=	imgWidth;
+		var currentY=	0;
+		var columnIdx=	0;
+		var	border=		1;
+		var borderColor="white";
+		var week=	svg.selectAll(".week")
+					.data(data)
+					.enter()
+					.append('g')
+						.attr("class","week")
+						.attr("id",function(d){
+							return d["Date"];
+						});
+
+		tooltip.append('div');
+		week.append("image")
+			.attr("width",imgWidth)
+			.attr("height",imgHeight)
+			.attr('x',function(d,i){
+				return imgWidth * (i%columns);
+			})
+			.attr('y',function(d,i){
+				if (columnIdx === columns){
+					columnIdx=	0;
+					currentY += imgHeight;
+				}
+				columnIdx += 1;
+				return currentY;
+			})
+			.attr("xlink:href",function(d){
+				return d["AlbumImageURL"];
+			})
+			.on('mouseover',function(d){
+				var month=	new Array();
+				month[0]=	"Jan.";
+				month[1]=	"Feb.";
+				month[2]=	"March";
+				month[3]=	"April";
+				month[4]=	"May";
+				month[5]=	"June";
+				month[6]=	"July";
+				month[7]=	"Aug.";
+				month[8]=	"Sept.";
+				month[9]=	"Oct.";
+				month[10]=	"Nov.";
+				month[11]=	"Dec.";
+
+				var dateObj=	new Date(d["Date"]);
+				var dateString=	month[dateObj.getMonth()] + ' ' + dateObj.getDate() + ", " + dateObj.getFullYear();
+				d3.select('.tooltip').html(
+					"<b>"+dateString+"</b><br>"+
+					"<b>Album:</b> "+d["Album"]+"<br>"+
+					"<b>Artist:</b> "+d["Artist"]
+				);
+
+				tooltip.style('display','block');
+			})
+			.on('mouseout',function(d){
+				tooltip.style('display','none');
+			})
+			.on('mousemove',function(){
+				tooltip.style('top',(d3.event.pageY+10)+'px')
+					.style('left',(d3.event.pageX+10)+'px');
+			});
+
+		svg.attr("height",currentY+imgHeight);
+	});
+</script>

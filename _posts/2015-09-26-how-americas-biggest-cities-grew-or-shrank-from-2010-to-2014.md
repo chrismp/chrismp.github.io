@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How America's biggest cities grew or shrank from 2010 to 2014
+author: Chris Persaud
 ---
 
 I noticed the U.S. Census released 2014 population estimates for each city. I also noticed no one made a grouped bar chart comparing the biggest cities' populations for 2014 to 2010. So I decided to solve this problem.

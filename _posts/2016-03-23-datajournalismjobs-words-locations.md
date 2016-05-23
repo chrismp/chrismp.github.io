@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Where data journalism jobs are and what skills they demand
+author: Chris Persaud
 ---
 <img itemprop="image" src="public/images/itemprop-DataJournalismJobs-popular-skills.png" style='display:none'>
 {% include charts/DataJournalismJobs-locations-skills/include.html %}
