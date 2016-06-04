@@ -6,7 +6,7 @@ permalink:           pretty
 
 # Setup
 title:               Datavizz
-tagline:             "Chris Persaud made this."
+tagline:             "Chris Persaud made this. More info ===>"
 url:                 http://datavizz.com
 gems:				 [jekyll-paginate]
 paginate:            1
