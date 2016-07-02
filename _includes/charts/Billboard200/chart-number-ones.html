@@ -3,9 +3,11 @@
 
 </div>
 
+
 <script type="text/javascript">
-	var container=	"top-albums-chart-container";
-	var windowWidth=document.getElementById(container).clientWidth;
+	var container=			"top-albums-chart-container";
+	var containerElement=	document.getElementById(container);
+	var windowWidth=		containerElement.clientWidth;
 	var margin=	{
 		top: 0,
 		right: 0,
@@ -91,4 +93,15 @@
 
 		svg.attr("height",currentY+imgHeight);
 	});
+
+	var sourceElement=			document.createElement("p");
+	sourceElement.className=	"source";
+	sourceElement.innerHTML=	"Source: List of Billboard 200 number-one albums via Wikipedia. Analysis by Chris Persaud - Datavizz.com.";
+	containerElement.appendChild(sourceElement);
+
+	var inputElem=			document.createElement("input");
+	inputElem.className=	"btnSave";
+	inputElem.type=			"button";
+	inputElem.value=		"Make PNG from chart";
+	containerElement.appendChild(inputElem);
 </script>
