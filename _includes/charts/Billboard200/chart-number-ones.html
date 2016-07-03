@@ -2,7 +2,7 @@
 <div id="top-albums-chart-container" class="chart-container">
 
 </div>
-
+<div id="img-out"></div>
 
 <script type="text/javascript">
 	var container=			"top-albums-chart-container";
@@ -100,8 +100,26 @@
 	containerElement.appendChild(sourceElement);
 
 	var inputElem=			document.createElement("input");
-	inputElem.className=	"btnSave";
+	inputElem.className=	"btn-save";
+	inputElem.id=			"save-bb200";
 	inputElem.type=			"button";
 	inputElem.value=		"Make PNG from chart";
 	containerElement.appendChild(inputElem);
+
+	$(function(){
+		$('#'+inputElem.id).click(function(){
+			html2canvas(
+				$('#'+container),
+				{
+					onrendered: function(canvas){
+						theCanvas = canvas;
+						document.body.appendChild(canvas);
+
+						Canvas2Image.saveAsPNG(canvas);
+
+					}
+				}
+			);
+		});
+	});
 </script>
