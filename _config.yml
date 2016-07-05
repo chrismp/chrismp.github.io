@@ -6,12 +6,12 @@ permalink:           pretty
 
 # Setup
 title:               Datavizz
-tagline:             ""
+tagline:             "Data visualizations by Chris Persaud"
 url:                 http://datavizz.com
 gems:				 [jekyll-paginate]
 paginate:            1
 baseurl:             ""
-future:				 true # Allows us to see posts scheduled in the future
+future:				 false # Allows us to see posts scheduled in the future
 
 # Assets
 #

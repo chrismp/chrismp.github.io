@@ -2,10 +2,12 @@
 <div id="top-albums-chart-container" class="chart-container">
 
 </div>
+<!-- <div id="img-out"></div> -->
 
 <script type="text/javascript">
-	var container=	"top-albums-chart-container";
-	var windowWidth=document.getElementById(container).clientWidth;
+	var container=			"top-albums-chart-container";
+	var containerElement=	document.getElementById(container);
+	var windowWidth=		containerElement.clientWidth;
 	var margin=	{
 		top: 0,
 		right: 0,
@@ -91,4 +93,36 @@
 
 		svg.attr("height",currentY+imgHeight);
 	});
+
+	var sourceElement=			document.createElement("p");
+	sourceElement.className=	"source";
+	sourceElement.innerHTML=	"Source: List of Billboard 200 number-one albums via Wikipedia. Analysis by Chris Persaud - Datavizz.com.";
+	containerElement.appendChild(sourceElement);
+
+	// var inputElem=			document.createElement("input");
+	// inputElem.className=	"btn-save";
+	// inputElem.id=			"save-bb200";
+	// inputElem.type=			"button";
+	// inputElem.value=		"Make PNG from chart";
+	// containerElement.appendChild(inputElem);
+
+	// https://jsfiddle.net/8ypxW/3/
+	// $(function(){
+	// 	$('#'+inputElem.id).click(function(){
+	// 		console.log('#'+inputElem.id);
+	// 		html2canvas(
+	// 			$('#'+container),
+	// 			{
+	// 				onrendered: function(canvas){
+	// 					console.log('#'+container);
+	// 					var theCanvas = canvas;
+	// 					document.body.appendChild(canvas);
+
+	// 					Canvas2Image.saveAsPNG(canvas);
+	// 					$("#img-out").append(canvas);
+	// 				}
+	// 			}
+	// 		);
+	// 	});
+	// });
 </script>
