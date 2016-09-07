@@ -1,10 +1,15 @@
 ---
 layout: post
-title: Metacritic data: Fans say video games have gotten worse, critics disagree
+title: 
 author: Chris Persaud
 ---
 
-Gamers and critics disagree on video games more than ever in the past 16 years. 
+Here are some interesting facts I learned from scraping and crunching more than 14,000 video game reviews from game ratings website [Metacritic.com](http://metacritic.com).
 
-Players' opinions on games have dropped while critics' ratings held steady, according to more than 14,000 ratings I [scraped](https://github.com/chrismp/Metacritic-video-games-scanner) from game reviews website [Metacritic.com](http://metacritic.com). The data spans ranges from 2000 to July 2016.
-
+- Video games released in the past few years are the worst of this century so far -- or at least, that's what gamers think.
+- Players and game critics disagree more than ever since Metacritic began averaging scores from critics and fans.
+- Mobile phone games are the most overrated. Critics think they are great. Players think they are either bad or just OK.
+- For the newest consoles, gamers and critics disagree most on the quality of games for the Xbox One and Playstation...
+- ...But critics and gamers generally agree that Wii-U games are pretty good.
+- For the biggest video game publishers, Deep Silver, 505 Games and Blizzard Entertainment have the worst ratings from players. Nintendo, Valve Software and Rockstar Games have the best.
+- For the biggest developers, Infinity Ward, Blizzard and Bethesda Game Studios have the worst ratings from players. CD Project Red Studio, Rocksteady Studios and Naughty Dog have the best.
