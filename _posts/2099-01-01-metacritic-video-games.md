@@ -4,7 +4,7 @@ title:
 author: Chris Persaud
 ---
 
-Here are some interesting facts I learned from scraping and crunching more than 14,000 video game reviews from game ratings website [Metacritic.com](http://metacritic.com).
+I learned some interesting facts after downloading more than 14,000 video game reviews from game ratings website [Metacritic.com](http://metacritic.com).
 
 - Video games released in the past few years are the worst of this century so far -- or at least, that's what gamers think.
 - Players and game critics disagree more than ever since Metacritic began averaging scores from critics and fans.
@@ -14,3 +14,4 @@ Here are some interesting facts I learned from scraping and crunching more than 
 - For the biggest video game publishers of the 2010s so far: *Activision*, *Electronic Arts* and *Deep Silver* have the worst ratings from players. *Valve Software*, *Rockstar Games* and *Telltale Games* have the best.
 - For the biggest developers of the 2010s so far: *Infinity Ward*, *Sledgehammer Games* and *Treyarch* have the worst ratings from players. *CD Projekt Red Studio*, *Naughty Dog* and *Irrational Games* have the best.
 - The most underrated game is *Counter-Strike: Condition Zero*, released for PC in 2004. The most overrated game is *Company of Heroes 2*, released for PC in 2013. Second place goes to *Call of Duty: Modern Warfare 3*, released in 2011 for Playstation 3, Xbox360 and PC.
+
