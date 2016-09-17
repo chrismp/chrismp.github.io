@@ -8,7 +8,7 @@ I learned some interesting facts after downloading more than 14,000 video game r
 
 - Video games released in the past few years are the worst of this century so far -- or at least, that's what gamers think.
 - Players and game critics disagree more than ever since Metacritic began averaging scores from critics and fans.
-- **Mobile phone games** are the most overrated. Critics think they are great. Players think they are either bad or just OK.
+- **Apple iPhone games** are the most overrated. Critics think they are great. Players think they are either bad or just OK.
 - For the newest consoles, gamers and critics disagree most on the quality of games for the **Xbox One** and **Playstation**...
 - ...But critics and gamers generally agree that **Wii-U** games are pretty good.
 - For the biggest video game publishers of the 2010s so far: **Activision**, **Electronic Arts** and **Deep Silver** have the worst ratings from players. **Valve Software**, **Rockstar Games** and **Telltale Games** have the best.
@@ -56,10 +56,15 @@ The most eye-opening fact I found in my analysis was that players believe video 
 
 What's more, the share of games users rate as "bad" nearly tripled over the past 16 years. Only about one in 22 games released in 2000 had a user score of 4.9 or less on Metacritic. **For 2016 so far, about one in eight games were considered terrible.**
 
-Unsurprisingly, players rate games released on older game consoles higher than games for the current generation. The **Playstation** and **Nintendo 64**, released in 1994 and 1996, have the **best-rated games**, with median user scores of 8.1 and 8.3. But games for the **Xbox One** and **Playstation 4**, both released in 2013, have the **worst-rated games**, with median user scores of 6.8 and 6.9. The **Wii-U** is the exception among the newest gaming consoles, with half of its games getting user scores of at least 7.3 -- better than games for the Playstation 3, Xbox360 and Wii.
+
+## IPhone games suck, Wii-U games are pretty good
+
+Since older games have higher user ratings, it follows that players rate games released on older game consoles higher than games for the current systems. The **Playstation** and **Nintendo 64**, released in 1994 and 1996, have the **best-rated games**, with median user scores of 8.1 and 8.3. But games for the **Xbox One** and **Playstation 4**, both released in 2013, have the **worst-rated games**, with median user scores of 6.8 and 6.9. The **Wii-U** is the exception among the newest gaming consoles, with half of its games getting user scores of at least 7.3 -- better than games for the Playstation 3, Xbox360 and Wii.
+
+By far, Metacritic users rate games for iPhones and iPads worse than any system listed on the site. But critics like them more than games for any system besides the Nintendo 64 and Sega Dreamcast. Half of mobile games received user scores of 6.5 or less, but Metascores of 79 or more. This is the biggest split between players and critics for all game systems on Metacritic.
 
 
-## AVERAGES/MEDIANS FOR GAME GENRES, CONSOLES, YEARS
+
 
 CRITIC SCORES VS GAMING SCORES FOR YEARS, CONSOLES
 
