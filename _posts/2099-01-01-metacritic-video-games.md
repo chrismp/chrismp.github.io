@@ -52,7 +52,7 @@ Two PC games from 2003 seemed overrun by insincere votes: "[Navy SEALs: Weapons 
 
 ## One in eight games suck	
 
-The most eye-opening fact I found in my analysis was that players believe video games nowadays are worse than ever. Half of games released from 1999-2006 were rated "Good" by Metacritic's users, getting scores of at least 7.5. But from 2007 onwards, players' ratings steadily dropped. At least 50 percent of games released in 2015 and 2016 so far have been rated at a 7.0 or below, which means ratings of "bad" or "mixed." (For this part of the analysis, I included only the years 1999 to 2016, since Metacritic has user scores for at least 50 games in each of those years.)
+The most interesting fact I found was that players believe video games nowadays are worse than ever. Half of games released from 1999-2006 were rated "Good" by Metacritic's users, getting scores of at least 7.5. But from 2007 onwards, players' ratings steadily dropped. At least 50 percent of games released in 2015 and 2016 so far have been rated at a 7.0 or below, which means ratings of "bad" or "mixed." (For this part of the analysis, I included only the years 1999 to 2016, since Metacritic has user scores for at least 50 games in each of those years.)
 
 What's more, the share of games users rate as "bad" nearly tripled over the past 16 years. Only about one in 22 games released in 2000 had a user score of 4.9 or less on Metacritic. **For 2016 so far, about one in eight games were considered terrible.**
 
@@ -63,11 +63,26 @@ Since older games have higher user ratings, it follows that players rate games r
 
 By far, Metacritic users rate games for iPhones and iPads worse than any system listed on the site. But critics like them more than games for any system besides the Nintendo 64 and Sega Dreamcast. Half of mobile games received user scores of 6.5 or less, but Metascores of 79 or more. This is the biggest split between players and critics for all game systems on Metacritic.
 
+PC games also fail to escape the "older was better, newer is worse" phenomenon. PC games released in 2000 listed on Metacritic are considered amazing by users, with half the games receiving user scores of at least eight. But for 2016 so far, seven is the median user score for PC games.
 
 
+## Big developers are getting worse
 
-CRITIC SCORES VS GAMING SCORES FOR YEARS, CONSOLES
+Players' distaste for new games goes beyond gaming systems. Metacritic users believe game developers big and small put out worse games each year. This was made clear when I compared ratings for the biggest developers in the 2000s and 2010s. I define big developers in each decade as the 20 with the most votes from Metacritic users and who have made at least five games.
+
+**Valve** was the highest-rated big developer in the first decade of the 21st century. Thanks to PC games like its "Half-Life" series, "Counter-Strike" series, "Team Fortress 2" and "Portal", Valve earned a median user rating of 8.6 and a median Metascore of 89. But for 2010 to July 2016, half of its games garnered user scores of 8.1 or less and Metascores of 80 or less. Although Valve made near-universally-acclaimed games like "Left 4 Dead 2" and "Portal 2" during this time, players nevertheless rated those games as less great than the ones released in the previous decade. While "Portal" on the PC earned a 9.3, its sequel for the same system earned an 8.8. Worse still, 2013's "Dota 2" for the PC earned a mediocre 6.2 -- despite universal acclaim from critics.
+
+**Infinity Ward** fell hardest. The studio known for its "Call of Duty" action/shooter series earned a median user rating of 7.7 from players and a median Metascore of 89 in the 2000s. But all its games this decade got user scores ranging from 1.8 to 5.1. Last decade, most of Infinity Ward's "Call of Duty" games, from 2003's "Call of Duty" to 2009's "Call of Duty 4: Modern Warfare," earned scores ranging from 8.1 to 8.5. This started changing with 2009's "Call of Duty 4: Modern Warfare 2," which earned user scores of 4.2 on PC and 6.3 on both Xbox 360 and PS3. [INSERT QUOTES HERE]. Depsite this, the game earned critical acclaim, with Metascores in the 80s and 90s. The player-critic disagreement widened with each new "Call of Duty" game. While critics rated 2013's "Call of Duty: Ghosts" lower than previous entries in the franchise, players tore it a new one. The game earned abysmal player ratings of 4.2 on Xbox One, 3.5 on Playstation 4, 2.6 on Xbox 360, 2.5 on PS3, and 2.0 for PC. [MORE QUOTES].
+
+None of the big developers of this decade or the previous one improved its standing among players on Metacritic. At best, their user ratings barely fell. **Naughty Dog** and **Square Enix** are the best examples of this.
+
+Known for its popular "Crash Bandicoot" games for the Sony Playstation in the 1990s, Naughty Dog earned high marks from players and critics in the 2000s with its "Jak and Daxter" series for the Playstation 2. During this decade, all of Naughty Dog's games got user scores ranging from 7.7 to 8.7, well above the 7.5 needed for a game to be considered "good" by Metacritic users. Naughty Dog continued to receive high marks this decade with its "Uncharted" and "The Last of Us" series. The 2013 release of "The Last of Us" for PS3 was the company's highest-rated game on Metacritic, earning critical acclaim with a Metascore of 95 and a player score of 9.1.
+
+Square Enix also retained relatively high ratings from players from 2000 to 2016, but not as much as Naughty Dog. Known for its popular "Final Fantasy" series, which started with a game of the same name in 1987, Square Enix's median user score fell from 7.6 in the 2000s to 7.5 for the 2010s so far. This means half the games the company has made so far have been rated "good" by players.
+
 
 CRITICS THAT OUR MOST/LEAST IN SYNC WITH PLAYER OPINIONS
 
-BEST/WORST-RATED GAMES FOR SYSTEMS, PUBLISHERS, DEVS
+NEED QUOTES FROM CRITIC/USER REVIEWS
+
+## 
