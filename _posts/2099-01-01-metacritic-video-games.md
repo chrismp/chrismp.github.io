@@ -70,7 +70,7 @@ PC games also fail to escape the "older was better, newer is worse" phenomenon. 
 
 Players' distaste for new games goes beyond gaming systems. Metacritic users believe game developers big and small put out worse games each year. This was made clear when I compared ratings for the biggest developers in the 2000s and 2010s. I define big developers in each decade as the 20 with the most votes from Metacritic users and who have made at least five games.
 
-**Valve** was the highest-rated big developer in the first decade of the 21st century. Thanks to PC games like its "Half-Life" series, "Counter-Strike" series, "Team Fortress 2" and "Portal", Valve earned a median user rating of 8.6 and a median Metascore of 89. But for 2010 to July 2016, half of its games garnered user scores of 8.1 or less and Metascores of 80 or less. Although Valve made near-universally-acclaimed games like "Left 4 Dead 2" and "Portal 2" during this time, players nevertheless rated those games as less great than the ones released in the previous decade. While "Portal" on the PC earned a 9.3, its sequel for the same system earned an 8.8. Worse still, 2013's "Dota 2" for the PC earned a mediocre 6.2 -- despite universal acclaim from critics.
+**Valve** was the highest-rated big developer in the first decade of the 21st century. Thanks to PC games like its "Half-Life" series, "Counter-Strike" series, and "Team Fortress 2" and "Portal", Valve earned a median user rating of 8.6 and a median Metascore of 89. But for 2010 to July 2016, half of its games garnered user scores of 8.1 or less and Metascores of 80 or less. Although Valve made near-universally-acclaimed games like "Left 4 Dead 2" and "Portal 2" during this time, players nevertheless rated those games as less great than the ones released in the previous decade. While "Portal" earned a 9.3 in 2007, its 2011 sequel earned an 8.8. Worse still, 2013's "Dota 2" earned a mediocre 6.2 -- despite universal acclaim from critics.
 
 **Infinity Ward** fell hardest. The studio known for its "Call of Duty" action/shooter series earned a median user rating of 7.7 from players and a median Metascore of 89 in the 2000s. But all its games this decade got user scores ranging from 1.8 to 5.1. Last decade, most of Infinity Ward's "Call of Duty" games, from 2003's "Call of Duty" to 2009's "Call of Duty 4: Modern Warfare," earned scores ranging from 8.1 to 8.5. This started changing with 2009's "Call of Duty 4: Modern Warfare 2," which earned user scores of 4.2 on PC and 6.3 on both Xbox 360 and PS3. [INSERT QUOTES HERE]. Depsite this, the game earned critical acclaim, with Metascores in the 80s and 90s. The player-critic disagreement widened with each new "Call of Duty" game. While critics rated 2013's "Call of Duty: Ghosts" lower than previous entries in the franchise, players tore it a new one. The game earned abysmal player ratings of 4.2 on Xbox One, 3.5 on Playstation 4, 2.6 on Xbox 360, 2.5 on PS3, and 2.0 for PC. [MORE QUOTES].
 
@@ -79,6 +79,15 @@ None of the big developers of this decade or the previous one improved its stand
 Known for its popular "Crash Bandicoot" games for the Sony Playstation in the 1990s, Naughty Dog earned high marks from players and critics in the 2000s with its "Jak and Daxter" series for the Playstation 2. During this decade, all of Naughty Dog's games got user scores ranging from 7.7 to 8.7, well above the 7.5 needed for a game to be considered "good" by Metacritic users. Naughty Dog continued to receive high marks this decade with its "Uncharted" and "The Last of Us" series. The 2013 release of "The Last of Us" for PS3 was the company's highest-rated game on Metacritic, earning critical acclaim with a Metascore of 95 and a player score of 9.1.
 
 Square Enix also retained relatively high ratings from players from 2000 to 2016, but not as much as Naughty Dog. Known for its popular "Final Fantasy" series, which started with a game of the same name in 1987, Square Enix's median user score fell from 7.6 in the 2000s to 7.5 for the 2010s so far. This means half the games the company has made so far have been rated "good" by players.
+
+
+## Smaller developers are also getting worse
+
+Big developers are not the only targets for players' increasing dislike for video games. Smaller game makers also earned lower Metacritic user scores this decade compared to the 2000s.
+
+I grouped developers into four categories based on how many user votes they got on Metacritic: 5,000+ votes, 1,000-4,999, 500-999, and less than 500.
+
+Across all my developer size categories, user ratings dropped between the 2000s and 2010s. The median user score for developers who got 5,000+ votes 8.2 in the 2000s, 7.3 this decade. For developers that got 1,000-4,999 votes, the median score dropped from 7.8 to seven.
 
 
 CRITICS THAT OUR MOST/LEAST IN SYNC WITH PLAYER OPINIONS
