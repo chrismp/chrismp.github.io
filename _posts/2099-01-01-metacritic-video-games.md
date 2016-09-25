@@ -50,7 +50,9 @@ I excluded from my analysis any games with user scores overrun by trolls. Games 
 Two PC games from 2003 seemed overrun by insincere votes: "[Navy SEALs: Weapons of Mass Destruction](http://www.metacritic.com/game/pc/navy-seals-weapons-of-mass-destruction/user-reviews)" and "[Gods and Generals](http://www.metacritic.com/game/pc/gods-and-generals/user-reviews)." Both received low marks from critics, but have high user ratings. A closer look at the user reviews reveal that most of the high votes came on June 11, 2012 by a handful of users writing near-identical reviews with memes and bad English.
 
 
-## Players dislike one in eight video games	
+## Players dislike one in eight video games
+
+[CHART OF GOOD-MIXED-BAD BAR CHART, GAMES BY YEAR]
 
 The most interesting fact I found was that players believe video games nowadays are worse than ever. Half of games released from 1999-2006 were rated "Good" by Metacritic's users, getting scores of at least 7.5. But from 2007 onwards, players' ratings steadily dropped. At least 50 percent of games released in 2015 and 2016 so far have been rated at a 7.0 or below, which means ratings of "bad" or "mixed." (For this part of the analysis, I included only the years 1999 to 2016, since Metacritic has user scores for at least 50 games in each of those years.)
 
@@ -58,6 +60,8 @@ What's more, the share of games users rate as "bad" nearly tripled over the past
 
 
 ## IPhone games are really bad, Wii-U games are pretty good
+
+[CRITIC-USER SPLIT BY CONSOLE CHART]
 
 Since older games have higher user ratings, it follows that players rate games released on older game consoles higher than games for the current systems. The **Playstation** and **Nintendo 64**, released in 1994 and 1996, have the **best-rated games**, with median user scores of 8.1 and 8.3. 
 
@@ -69,6 +73,8 @@ PC games also fail to escape the "older was better, newer is worse" phenomenon. 
 
 
 ## Big developers getting worse
+
+[CHART COMPARING METASCORE/USER-SCORES FOR BIG 2000s DEVs]
 
 Players' distaste for new games goes beyond gaming systems. Metacritic users believe game developers big and small put out worse games each year. This was made clear when I compared ratings for the biggest developers in the 2000s and 2010s. I define big developers in each decade as the 20 with the most votes from Metacritic users and who have made at least five games.
 
@@ -84,6 +90,8 @@ Square Enix also retained relatively high ratings from players from 2000 to 2016
 
 
 ## Smaller developers getting worse
+
+[2000S-2010s CHART COMPARING METASCORES/USER SCORES BY DEV SIZES]
 
 Big developers are not the only targets for players' increasing dislike for video games. Smaller game makers also earned lower Metacritic user scores this decade compared to the 2000s.
 
