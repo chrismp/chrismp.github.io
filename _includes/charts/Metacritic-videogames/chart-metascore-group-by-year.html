@@ -1,7 +1,111 @@
-<div class="chart-container">
+<div id="normalized-stacked-bar-metascore-by-year" class="chart-container">
 	
 </div>
 
 <script type="text/javascript">
+function stackedBarMetascoreCategoriesByYear(){
+	var x,y,z;
+
+	var container=			"normalized-stacked-bar-metascore-by-year";
+	var containerTag=		'#'+container;
+	var containerElement=	document.getElementById(container);
+	var windowWidth=		containerElement.clientWidth;
 	
+	var chart=	{
+		margin: {
+			top: 0,
+			right: 0,
+			bottom: 0,
+			left: 0
+		},
+		get width(){
+			return windowWidth - this.margin.left - this.margin.right;
+		},
+		height: 1000,
+		svg: d3.select(containerTag).append("svg"),
+		get g(){
+			return this.svg.append('g')
+					.attr("transform", "translate("+this.margin.left+','+this.margin.top+')');
+		}
+	}
+
+	var tooltip=	d3.select('#'+container)
+					.append('div')
+					.attr('class','tooltip');
+
+	chart.svg.attr("width",chart.width);
+
+	d3.csv("{{site.baseurl}}/public/datasets/MetacriticVideoGames/chartData.MetascoreByYear.csv", function(error,data){
+		if(error) throw error;
+		chart.svg.attr("height",chart.height)
+
+		var xRangeRound=	[0,chart.width];
+		var xPadding=		0.1;
+		x=	d3.scaleBand()
+			.rangeRound(xRangeRound)
+			.padding(xPadding)
+			.align(xPadding);
+
+		var yRangeRound=	[chart.height,0];
+		y=	d3.scaleLinear()
+			.rangeRound(yRangeRound);
+
+		var colorGood=		"#6c3";
+		var colorMixed=		"#fc3";
+		var colorBad=		"#f00";
+		var legendColors=	[
+			colorBad,
+			colorGood,
+			colorMixed			
+		];
+		z=	d3.scaleOrdinal()
+			.range(legendColors);
+
+		var stack=	d3.stack()
+					.offset(d3.stackOffsetExpand);
+
+		x.domain(data.map(function(d){
+			return d["ReleaseYear"];
+		}));
+		z.domain(data.columns.slice(1,4));	// Get columns at indices one thru three, which are the number of Good, Bad and Mixed
+
+		var serie=	chart.g.selectAll(".serie")
+					.data(stack.keys(data.columns.slice(1,4))(data))
+					.enter()
+					.append('g')
+						.attr("class","serie")
+						.attr("fill",function(d){
+							return z(d.key);
+						});
+
+		serie.selectAll("rect")
+			.data(function(d){
+				console.log(d);
+				return d;
+			})
+			.enter()
+			.append("rect")
+				.attr('x',function(d){
+					return x(d.data["ReleaseYear"]);
+				})
+				.attr('y',function(d){
+					return y(d[1]);
+				})
+				.attr("height",function(d){
+					return y(d[0] - y(d[1]));
+				})
+				.attr("width", x.bandwidth());
+
+		// chart.g.append('g')
+		// 	.attr("class", "axis axis--x")
+		// 	.attr("transform", "translate(0,"+chart.height+')')
+		// 	.call(d3.axisBottom(x));
+
+		// chart.g.append('g')
+		// 	.attr("class", "axis axis--y")
+		// 	.call(d3.axisLeft(y).ticks(10,'%'));
+	});
+}
+
+stackedBarMetascoreCategoriesByYear()
 </script>
