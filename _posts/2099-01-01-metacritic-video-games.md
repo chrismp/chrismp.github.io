@@ -94,6 +94,8 @@ Across all my developer size categories, user ratings dropped between the 2000s 
 
 ## Weak correlation between critic and user scores
 
+[SCATTERPLOT OF METASCORE VS USER SCORE, FILTER BY YEAR?]
+
 My analysis of 321,518 critic Metascores has led me to a simple conclusion. Most critics rarely see eye-to-eye with players, no matter how big or small the critic. The correlation between each critic's Metascore and a game's user score is weak.
 
 Look at the scatterplot below. You can choose a critic from the dropdown to see how weak the relationship is between their game ratings and those of Metacritic users. The chart covers review data from 2010 through July 2016.
@@ -117,6 +119,9 @@ After FiringSquad was *IGN AU* and *IGN UK*, the Australian and British editions
 
 ## Most underrated/overrated games
 
-[SCATTERPLOT OF METASCORE VS USER SCORE, FILTER BY YEAR?]
+Finally, I've made two interactive charts. The first shows games that critics liked much more than players and vice versa. You can filter by year to see which games were the most overrated or underrated from 2000 to 2016. I included only games with at least 10 votes from Metacritic users.
+
+The second chart is similar to above, but only for developers. And it does not filter by year. 
 
 [MOST OVERRATED/UNDERRATED DEVS]
+
