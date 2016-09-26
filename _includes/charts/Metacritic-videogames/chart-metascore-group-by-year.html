@@ -35,7 +35,8 @@ function stackedBarMetascoreCategoriesByYear(){
 
 	chart.svg.attr("width",chart.width);
 
-	d3.csv("{{site.baseurl}}/public/datasets/MetacriticVideoGames/chartData.MetascoreByYear.csv", function(error,data){
+	var dataFilePath=	"{{site.baseurl}}/public/datasets/MetacriticVideoGames/chartData.MetascoreByYear.csv";
+	d3.csv(dataFilePath, function(error,data){
 		if(error) throw error;
 		chart.svg.attr("height",chart.height)
 
@@ -92,7 +93,7 @@ function stackedBarMetascoreCategoriesByYear(){
 					return y(d[1]);
 				})
 				.attr("height",function(d){
-					return y(d[0] - y(d[1]));
+					return y(d[0]) - y(d[1]);
 				})
 				.attr("width", x.bandwidth());
 
