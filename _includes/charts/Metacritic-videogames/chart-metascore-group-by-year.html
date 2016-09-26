@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
 function stackedBarMetascoreCategoriesByYear(){
-	var x,y,z;
-
 	var container=			"normalized-stacked-bar-metascore-by-year";
 	var containerTag=		'#'+container;
 	var containerElement=	document.getElementById(container);
@@ -26,38 +24,42 @@ function stackedBarMetascoreCategoriesByYear(){
 		get g(){
 			return this.svg.append('g')
 					.attr("transform", "translate("+this.margin.left+','+this.margin.top+')');
-		}
+		},
+		tooltip: d3.select(containerTag).append("div").attr("class","tooltip")
 	}
-
-	var tooltip=	d3.select('#'+container)
-					.append('div')
-					.attr('class','tooltip');
-
-	chart.svg.attr("width",chart.width);
+	chart.svg
+		.attr("width",chart.width)
+		.attr("height",chart.height);
 
 	var dataFilePath=	"{{site.baseurl}}/public/datasets/MetacriticVideoGames/chartData.MetascoreByYear.csv";
 	d3.csv(dataFilePath, function(error,data){
 		if(error) throw error;
-		chart.svg.attr("height",chart.height)
 
-		var xRangeRound=	[0,chart.width];
-		var xPadding=		0.1;
-		x=	d3.scaleBand()
-			.rangeRound(xRangeRound)
-			.padding(xPadding)
-			.align(xPadding);
+		data.reverse();	// reverse order since by default a vertical chart puts bottom row of data at top of chart.
 
-		var yRangeRound=	[chart.height,0];
-		y=	d3.scaleLinear()
-			.rangeRound(yRangeRound);
+		var x=	{
+			rangeRoundArray: [0,chart.width]
+		}
+		x=	d3.scaleLinear()
+			.rangeRound(x.rangeRoundArray);
+
+		var y=	{
+			rangeRoundArray: [chart.height,0],
+			padding: 0.1,
+			align: 0.1
+		}
+		y=	d3.scaleBand()
+			.rangeRound(y.rangeRoundArray)
+			.padding(y.padding)
+			.align(y.align);
 
 		var colorGood=		"#6c3";
 		var colorMixed=		"#fc3";
 		var colorBad=		"#f00";
 		var legendColors=	[
 			colorBad,
-			colorGood,
-			colorMixed			
+			colorMixed,
+			colorGood			
 		];
 		z=	d3.scaleOrdinal()
 			.range(legendColors);
@@ -65,13 +67,15 @@ function stackedBarMetascoreCategoriesByYear(){
 		var stack=	d3.stack()
 					.offset(d3.stackOffsetExpand);
 
-		x.domain(data.map(function(d){
+		y.domain(data.map(function(d){
 			return d["ReleaseYear"];
 		}));
-		z.domain(data.columns.slice(1,4));	// Get columns at indices one thru three, which are the number of Good, Bad and Mixed
+
+		var targetColumns=	data.columns.slice(1,4)
+		z.domain(targetColumns);	// Get columns at indices one thru three, which are the number of Good, Bad and Mixed
 
 		var serie=	chart.g.selectAll(".serie")
-					.data(stack.keys(data.columns.slice(1,4))(data))
+					.data(stack.keys(targetColumns)(data))
 					.enter()
 					.append('g')
 						.attr("class","serie")
@@ -81,21 +85,20 @@ function stackedBarMetascoreCategoriesByYear(){
 
 		serie.selectAll("rect")
 			.data(function(d){
-				console.log(d);
 				return d;
 			})
 			.enter()
 			.append("rect")
-				.attr('x',function(d){
-					return x(d.data["ReleaseYear"]);
-				})
 				.attr('y',function(d){
-					return y(d[1]);
+					return y(d.data["ReleaseYear"]);
 				})
-				.attr("height",function(d){
-					return y(d[0]) - y(d[1]);
+				.attr('x',function(d){
+					return x(d[0]);
 				})
-				.attr("width", x.bandwidth());
+				.attr("width",function(d){
+					return x(d[1]) - x(d[0]);
+				})
+				.attr("height", y.bandwidth());
 
 		// chart.g.append('g')
 		// 	.attr("class", "axis axis--x")
