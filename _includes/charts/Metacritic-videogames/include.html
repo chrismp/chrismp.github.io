@@ -5,13 +5,39 @@
 <script src="{{site.baseurl}}/public/js/html2canvas.js"></script> -->
 
 <style type="text/css">
+	.chart-container h3 {
+		text-align: center;
+	}
+
 	.caption {
 		font-size: 10px;
 		color: grey;
 	}
 
-	.x .domain {
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line,
+	.y line {
+		opacity: 1;
+	}
+
+	.x .domain,
+	.y .domain {
 		display: none;
+	}
+
+	.legend text,
+	.axis text,
+	.tick text {
+		font: 14px sans-serif;
+		font-weight: bold;
+		fill: #000;
 	}
 
 	.tooltip {
@@ -29,12 +55,204 @@
 	}
 
 	.source {
-		color: #999;
+		font-size: 12px;
 	}
 
-	@media screen and (max-width: 640px){
-		.tooltip {
-			font-size: 10px;
-		}
+	.score-by-year .x .tick:last-of-type {
+		display: none;
 	}
+
+/*	@media screen and (max-width: 640px){
+		.tooltip,
+		.axis text {
+			font-weight: unset;
+			font-size: 11px;
+		}
+
+		.x > text,
+		.legend text {
+			font-size: 12px;
+		}
+	}*/
 </style>
+
+<script type="text/javascript">
+function stackedBarScoreCategoriesByYear(dataset, containerName){
+	var container=			containerName;
+	var containerTag=		'#'+container;
+	var containerElement=	document.getElementById(container);
+	var windowWidth=		containerElement.clientWidth;
+	var svgID=				containerName+"-svg";
+
+	var chart=	{
+		margin: {
+			top: 20,
+			right: 0,
+			bottom: 0,
+			left: 50
+		},
+		get width(){
+			return document.getElementById(container).clientWidth - this.margin.left - this.margin.right;
+		},
+		height: 500,
+		svg: d3.select(containerTag)
+				.append("svg")
+				.attr("id",svgID),
+		get g(){
+			return this.svg.append('g')
+					.attr("transform", "translate("+this.margin.left+','+this.margin.top+')');
+		},
+		tooltip: d3.select(containerTag).append("div").attr("class","tooltip")
+	}
+	chart.svg
+		.attr("width",chart.width + chart.margin.left + chart.margin.right)
+		.attr("height",chart.height + chart.margin.top + chart.margin.bottom);
+
+	var dataFilePath=	"{{site.baseurl}}/public/datasets/MetacriticVideoGames/"+dataset;
+	d3.csv(dataFilePath, function(error,data){
+		if(error) throw error;
+
+		data.reverse();	// reverse order since by default a vertical chart puts bottom row of data at top of chart.
+
+		chart.x=	{
+			rangeRoundArray: [0,chart.width],
+			padding: 0.1,
+			get axisProperties(){
+				return d3.scaleLinear().rangeRound(this.rangeRoundArray);
+			},
+			get axis(){
+				return d3.axisTop(this.axisProperties)
+						.ticks(10,'%');
+			}
+		};
+
+		chart.y=	{
+			rangeRoundArray: [chart.height,0],
+			padding: 0.05,
+			align: 0.05
+		};
+		chart.y.axisProperties=	d3.scaleBand()
+							.rangeRound(chart.y.rangeRoundArray)
+							.padding(chart.y.padding)
+							.align(chart.y.align);
+		chart.y.axis=		d3.axisLeft().scale(chart.y.axisProperties);
+
+		var colorGood=		"#6c3";
+		var colorMixed=		"#fc3";
+		var colorBad=		"#f00";
+		chart.legendColors=	[
+			colorBad,
+			colorMixed,
+			colorGood			
+		];
+		chart.z=	d3.scaleOrdinal()
+			.range(chart.legendColors);
+
+		var stack=	d3.stack()
+					.offset(d3.stackOffsetExpand);
+
+		chart.y.axisProperties.domain(data.map(function(d){
+			return d["ReleaseYear"];
+		}));
+
+		var targetColumns=	data.columns.slice(1,4)
+		chart.z.domain(targetColumns);	// Get columns at indices one thru three, which are the number of Good, Bad and Mixed
+
+		var serie=	chart.g.selectAll(".serie")
+					.data(stack.keys(targetColumns)(data))
+					.enter()
+					.append('g')
+						.attr("class","serie")
+						.attr("fill",function(d){
+							return chart.z(d.key);
+						});
+
+		serie.selectAll("rect")
+			.data(function(d){
+				return d;
+			})
+			.enter()
+			.append("rect")
+				.attr('y',function(d){
+					return chart.y.axisProperties(d.data["ReleaseYear"]);
+				})
+				.attr('x',function(d){
+					return chart.x.axisProperties(d[0]);
+				})
+				.attr("width",function(d){
+					return chart.x.axisProperties(d[1]) - chart.x.axisProperties(d[0]);
+				})
+				.attr("height", chart.y.axisProperties.bandwidth());
+
+		chart.svg.append('g')
+			.attr("class","y axis")
+			.call(chart.y.axis);
+
+		chart.svg.selectAll(".y")
+			.attr("transform","translate("+chart.margin.left+')');
+
+		chart.svg.selectAll(".y .tick")
+			.attr("transform",function(d){
+				var topOfbar=		chart.y.axisProperties(d);
+				var barheight=		chart.y.axisProperties.bandwidth();
+				var barHalfHeight=	barheight/2;
+				var tickPosition=	topOfbar + barHalfHeight + chart.margin.top;
+				return "translate(0,"+tickPosition+')';
+			});
+
+		chart.svg.append('g')
+			.attr("class","x axis")
+			.attr("transform","translate("+chart.margin.left+','+chart.margin.top+')')
+			.call(chart.x.axis);
+	});
+}
+
+var scoreByYearDatasetsObj=	{
+	"chartData.MetascoreByYear.csv": "normalized-stacked-bar-metascore-by-year",
+	"chartData.UserScoreByYear.csv": "normalized-stacked-bar-user-score-by-year"
+};
+
+for(var dataset in scoreByYearDatasetsObj) {
+	var containerName=	scoreByYearDatasetsObj[dataset];
+	stackedBarScoreCategoriesByYear(dataset, containerName);
+}
+
+d3.select(window).on("resize",function(){
+	for(var dataset in scoreByYearDatasetsObj) {
+		var containerName=	scoreByYearDatasetsObj[dataset];
+		var svgElement=		containerName+"-svg";
+		
+		document.getElementById(containerName).removeChild(document.getElementById(svgElement));
+
+		stackedBarScoreCategoriesByYear(dataset, containerName);
+	}
+});
+
+
+// function test(i){
+// 	console.log(i);
+// }
+
+// var obj=	{
+// 	"hello": "world",
+// 	"greetings": "earth"
+// };
+
+// for(var key in obj){
+// 	var thing=	obj[key];
+// 	test(thing);
+
+// 	d3.select(window).on("resize",function(){
+// 		var arr=	[
+// 			"I",
+// 			"am",
+// 			"an",
+// 			"array"
+// 		];
+// 		for (var i = 0; i < arr.length; i++) {
+// 			test(arr[i]);
+// 		}
+// 	});
+
+// }
+</script>
