@@ -54,10 +54,12 @@ Two PC games from 2003 seemed overrun by insincere votes: "[Navy SEALs: Weapons 
 
 ## Players dislike one in eight video games
 
+---
 {% include charts/Metacritic-videogames/chart-metascore-group-by-year.html %}
-
+---
+---
 {% include charts/Metacritic-videogames/chart-user-score-group-by-year.html %}
-
+---
 The most interesting fact I found was that players believe video games nowadays are worse than ever. Half of games released from 1999-2006 were rated "Good" by Metacritic's users, getting scores of at least 7.5. But from 2007 onwards, players' ratings steadily dropped. At least 50 percent of games released in 2015 and 2016 so far have been rated at a 7.0 or below, which means ratings of "bad" or "mixed." (For this part of the analysis, I included only the years 1999 to 2016, since Metacritic has user scores for at least 50 games in each of those years.)
 
 What's more, the share of games users rate as "bad" nearly tripled over the past 16 years. Only about one in 22 games released in 2000 had a user score of 4.9 or less on Metacritic. **For 2016 so far, about one in eight games were considered terrible.**
