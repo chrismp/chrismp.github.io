@@ -77,7 +77,7 @@
 </style>
 
 <script type="text/javascript">
-function stackedBarScoreCategoriesByYear(dataset, containerName){
+function drawChartScoreCategoriesByYear(dataset, containerName){
 	var container=			containerName;
 	var containerTag=		'#'+container;
 	var containerElement=	document.getElementById(container);
@@ -207,25 +207,28 @@ function stackedBarScoreCategoriesByYear(dataset, containerName){
 	});
 }
 
+function drawAllScoreCategoriesByYearCharts(datasetObj){
+	for(var dataset in datasetObj) {
+		var containerName=	datasetObj[dataset];
+		var container=		document.getElementById(containerName);
+		var svg=			document.getElementById(containerName+"-svg");
+		
+		if (svg != null){
+			container.removeChild(svg);
+		}
+		
+		drawChartScoreCategoriesByYear(dataset, containerName);
+	}
+}
+
 var scoreByYearDatasetsObj=	{
 	"chartData.MetascoreByYear.csv": "normalized-stacked-bar-metascore-by-year",
 	"chartData.UserScoreByYear.csv": "normalized-stacked-bar-user-score-by-year"
 };
 
-for(var dataset in scoreByYearDatasetsObj) {
-	var containerName=	scoreByYearDatasetsObj[dataset];
-	stackedBarScoreCategoriesByYear(dataset, containerName);
-}
-
+drawAllScoreCategoriesByYearCharts(scoreByYearDatasetsObj);
 d3.select(window).on("resize",function(){
-	for(var dataset in scoreByYearDatasetsObj) {
-		var containerName=	scoreByYearDatasetsObj[dataset];
-		var svgElement=		containerName+"-svg";
-		
-		document.getElementById(containerName).removeChild(document.getElementById(svgElement));
-
-		stackedBarScoreCategoriesByYear(dataset, containerName);
-	}
+	drawAllScoreCategoriesByYearCharts(scoreByYearDatasetsObj);
 });
 
 
