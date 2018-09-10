@@ -25,23 +25,7 @@
 	<script type="text/javascript">
 		var dataDir = "vote-by-race";
 		d3.csv(dataDir+"/white.csv").then(function(data){
-			var row;
 			data.forEach(function(d,i){
-				if (i%3===0) {
-					row = document.createElement("div");
-					row.className = "row";
-				}
-
-				var col = document.createElement("div");
-				col.className = "col-sm";
-
-				var chartDiv = document.createElement("div");
-				chartDiv.id = "chart"+i;
-
-				col.appendChild(chartDiv);
-				row.appendChild(col);
-				document.getElementById("charts").appendChild(row);
-
 				var chartDataObj = Object.assign({},d);
 				delete chartDataObj["Year"];
 				var chart = c3.generate({
@@ -68,13 +52,34 @@
 							}
 						}
 					},
-					bindto: '#'+chartDiv.id
+					bindto: "#chart"+i
 				});
 			});
 		});
 	</script>
 </head>
 <body>
-	<div id="charts" class="container"></div>
+	<div id="charts" class="container">
+		<div class="row">
+			<div class="col-sm"><div id="chart0"><div></div>
+			<div class="col-sm"><div id="chart1"><div></div>
+			<div class="col-sm"><div id="chart2"><div></div>
+		</div>
+		<div class="row">
+			<div class="col-sm"><div id="chart3"><div></div>
+			<div class="col-sm"><div id="chart4"><div></div>
+			<div class="col-sm"><div id="chart5"><div></div>
+		</div>
+		<div class="row">
+			<div class="col-sm"><div id="chart6"><div></div>
+			<div class="col-sm"><div id="chart7"><div></div>
+			<div class="col-sm"><div id="chart8"><div></div>
+		</div>
+		<div class="row">
+			<div class="col-sm"><div id="chart9"><div></div>
+			<div class="col-sm"><div id="chart10"><div></div>
+			<div class="col-sm"><div id="chart11"><div></div>
+		</div>
+	</div>
 </body>
 </html>
