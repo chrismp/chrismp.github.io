@@ -3,4 +3,4 @@ layout: page
 title: About
 ---
 
-[Chris Persaud]({{ site.author.url }}) is a programmer/reporter. He runs Datavizz and wrote this section in third person.
+I'm [Chris Persaud]({{ site.author.url }}), a data visualist/data reporter who has programmed and written for Reuters, Playboy, Fusion.net, and more. If you want to hire me for a project or freelance work, email me at {{ site.author.email }}.
