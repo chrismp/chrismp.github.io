@@ -1,38 +1,38 @@
 # Permalinks
 #
 # Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
+permalink:  pretty
 # relative_permalinks: true
 
 # Setup
-title:               Datavizz
-tagline:             "Data visualizations by Chris Persaud"
-url:                 http://datavizz.com
-gems:				 [jekyll-paginate]
-paginate:            1
-baseurl:             ""
-future:				 false # Allows us to see posts scheduled in the future
+title:      Datavizz
+tagline:    "Data visualizations by Chris Persaud"
+url:        http://datavizz.com
+plugins:       [jekyll-paginate]
+paginate:   1
+baseurl:    ""
+future:     false # Allows us to see posts scheduled in the future
 
 # Assets
 #
 # We specify the directory for Jekyll so we can use @imports.
 sass:
-  sass_dir:          _sass
-  style:            :compressed
+    sass_dir: _sass
+    style: :compressed
 
 # About/contact
 author:
-  name:              Chris Persaud
-  url:				 http://chrispersaud.com
-  twitter:           https://twitter.com/chrismpersaud
-  email:             christopher.mark.persaud@gmail.com
+    name:              Chris Persaud
+    url:               http://chrispersaud.com
+    twitter:           https://twitter.com/chrismpersaud
+    email:             christopher.mark.persaud@gmail.com
 
 # Custom vars
-version:             2.0.0
+version:    2.0.0
 github:
-  repo:              https://github.com/chrismp/chrismp.github.io
+    repo:   https://github.com/chrismp/chrismp.github.io
 
 pages_list:
-  About: '/about'
-  Archive: '/archive'
-  Feed: '/atom.xml'
+    About: "/about"
+    Archive: "/archive"
+    Feed: "/atom.xml"
