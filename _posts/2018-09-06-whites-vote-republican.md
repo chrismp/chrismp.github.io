@@ -1,10 +1,12 @@
 ---
 layout: post
-title: White people are the only big racial group that still votes Republican
+title: White people keep voting Republican while everyone else votes Democrat
 author: Chris Persaud
 ---
 
 <script src="https://pym.nprapps.org/pym.v1.js"></script>
+
+When it comes to U.S. presidential elections, white voters are the only major racial group in 
 
 <div id="white"></div>
 <div id="white-non-college"></div>
