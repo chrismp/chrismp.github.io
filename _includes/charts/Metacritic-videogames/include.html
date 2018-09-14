@@ -1,0 +1,373 @@
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<!-- <script src="https://raw.githubusercontent.com/dankogai/js-base64/master/base64.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/canvas2image/0.1/canvas2image.min.js"></script>
+<script src="{{site.baseurl}}/public/js/html2canvas.js"></script> -->
+
+<style type="text/css">
+	.chart-container {
+		margin: 10 auto;
+		background-color: #eee;
+		border-radius: 10px;
+		padding: 10px;
+	}
+
+	.chart-container h3 {
+		text-align: center;
+	}
+
+	.caption {
+		font-size: 10px;
+		color: grey;
+	}
+
+	/*.score-by-year .x .tick:last-of-type {
+		display: none;
+	}*/
+
+	.legend-container {
+		display: inline-flex;
+	}
+
+	.legend-square {
+		width: 16px;
+		height: 16px;
+		margin-right: 5px;
+	}
+
+	.legend-label {
+		margin-right: 15px;
+		position: relative;
+		bottom: 3px;
+		font-weight: bold;
+	}
+
+	.bad {
+		background-color: #f00;
+	}
+
+	.mixed {
+		background-color: #fc3; 
+	}
+
+	.good {
+		background-color: #6c3;
+	}
+
+	.x line,
+	.y .domain {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+	.x line,
+	.y line {
+		opacity: 1;
+	}
+
+	.x .domain,
+	.y .domain {
+		display: none;
+	}
+
+	.legend text,
+	.axis text,
+	.tick text {
+		font: 14px sans-serif;
+		font-weight: bold;
+		fill: #000;
+	}
+
+	.tooltip {
+		background: #fff;
+		box-shadow: 0 0 5px #999;
+		color: #333;
+		display: none;
+		font: 14px sans-serif;
+		left: 130px;
+		padding: 10px;
+		position: absolute;
+		text-align: left;
+		top: 95px;
+		z-index: 10;
+	}
+
+	.tooltip-bad {
+		color: #f00;
+	}
+
+	.tooltip-mixed {
+		color: #e6ac00;
+	}
+
+	.tooltip-good {
+		color: #52a329;
+	}
+
+	.credit,
+	.source {
+		font-size: 14px;
+	}
+
+	.credit {
+		text-align: left;
+	}
+
+	.source {
+		/*text-align: right;*/
+	}
+
+	.credit,
+	.source {
+		/*max-width: 50%;*/
+	}
+
+
+	@media screen and (max-width: 640px){
+		.tooltip,
+		.axis text,
+		.legend-label {
+			font-weight: unset;
+		}
+
+		.tooltip,
+		.legend-label,
+		.axis text,
+		.tick text,
+		.credit,
+		.source {
+			font-size: 12px;
+		}
+
+		.legend-square {
+			width: 10px;
+			height: 10px;
+			margin-right: 2.5px;
+		}
+	}
+</style>
+
+<script type="text/javascript">
+function drawChartScoreCategoriesByYear(dataset, containerName, title){
+	var windowWidth=		window.innerWidth;
+	var containerTag=		'#'+containerName;
+	var containerElement=	document.getElementById(containerName);
+	var windowWidth=		containerElement.clientWidth;
+	var svgID=				containerName+"-svg";
+
+	var chart=	{
+		get title(){
+			return d3.select(containerTag)
+					.append("h3")
+					.html(title);
+		},
+		margin: {
+			top: 20,
+			right: 40,
+			bottom: 0,
+			left: 50
+		},
+		get width(){
+			return document.getElementById(containerName).clientWidth - this.margin.left - this.margin.right;
+		},
+		height: 500,
+		legendHTMLArray: [
+			"<div class=\"legend-square bad\"></div><span class=\"legend-label\">Bad</span>",
+			"<div class=\"legend-square mixed\"></div><span class=\"legend-label\">Mixed</span>",
+			"<div class=\"legend-square good\"></div><span class=\"legend-label\">Good</span>"
+		],
+		get legend(){
+			return d3.select(containerTag)
+				.append("div")
+				.attr("class","legend-container")
+				.html(this.legendHTMLArray.join(''));
+		},
+		get g(){
+			return this.svg.append('g')
+					.attr("transform", "translate("+this.margin.left+','+this.margin.top+')');
+		},
+		tooltip: d3.select(containerTag).append("div").attr("class","tooltip")
+	};
+
+	chart.title;
+	chart.legend;	// add legend
+	var legendContainers=	document.getElementsByClassName("legend-container");
+	for (var idx=0; idx < legendContainers.length; idx++) {
+		var legendContainer=				legendContainers[idx];
+		var containerCenter=				legendContainer.offsetWidth / 2;
+		var containerParentWidth=			legendContainer.parentNode.offsetWidth;
+		var centeringMarginLeft=			(containerParentWidth / 2) - containerCenter;
+		legendContainer.style.marginLeft=	centeringMarginLeft+"px";
+	}
+
+	// Draw SVG chart
+	chart.svg=	d3.select(containerTag)
+				.append("svg")
+				.attr("id",svgID)
+				.attr("width",chart.width + chart.margin.left + chart.margin.right)
+				.attr("height",chart.height + chart.margin.top + chart.margin.bottom);
+
+	chart.credit=	d3.select(containerTag)
+					.append("div")
+					.attr("class","credit")
+					.html("Chris Persaud - Datavizz.com.");
+
+	chart.source=	d3.select(containerTag)
+					.append("div")
+					.attr("class","source")
+					.html("Based on data from Metacritic.");
+
+	var dataFilePath=	"{{site.baseurl}}/public/datasets/MetacriticVideoGames/"+dataset;
+	d3.csv(dataFilePath, function(error,data){
+		if(error) throw error;
+
+		data.reverse();	// reverse order since by default a vertical chart puts bottom row of data at top of chart.
+
+		chart.x=	{
+			rangeRoundArray: [0,chart.width],
+			padding: 0.1,
+			get ticks(){
+				var ticks=	windowWidth <= 640 ? 5 : 10;
+				return ticks;
+			},
+			get axisProperties(){
+				return d3.scaleLinear().rangeRound(this.rangeRoundArray);
+			},
+			get axis(){
+				return d3.axisTop(this.axisProperties)
+						.ticks(this.ticks,'%');
+			}
+		};
+
+		chart.y=	{
+			rangeRoundArray: [chart.height,0],
+			padding: 0.05,
+			align: 0.05
+		};
+		chart.y.axisProperties=	d3.scaleBand()
+							.rangeRound(chart.y.rangeRoundArray)
+							.padding(chart.y.padding)
+							.align(chart.y.align);
+		chart.y.axis=		d3.axisLeft().scale(chart.y.axisProperties);
+
+		var colorGood=		"#6c3";
+		var colorMixed=		"#fc3";
+		var colorBad=		"#f00";
+		chart.legendColors=	[
+			colorBad,
+			colorMixed,
+			colorGood			
+		];
+		chart.z=	d3.scaleOrdinal()
+			.range(chart.legendColors);
+
+		var stack=	d3.stack()
+					.offset(d3.stackOffsetExpand);
+
+		chart.y.axisProperties.domain(data.map(function(d){
+			return d["ReleaseYear"];
+		}));
+
+		var targetColumns=	data.columns.slice(1,4)
+		chart.z.domain(targetColumns);	// Get columns at indices one thru three, which are the number of Good, Bad and Mixed
+
+		var serie=	chart.g.selectAll(".serie")
+					.data(stack.keys(targetColumns)(data))
+					.enter()
+					.append('g')
+						.attr("class","serie")
+						.attr("fill",function(d){
+							return chart.z(d.key);
+						});
+
+		serie.selectAll("rect")
+			.data(function(d){
+				return d;
+			})
+			.enter()
+			.append("rect")
+				.attr('y',function(d){
+					return chart.y.axisProperties(d.data["ReleaseYear"]);
+				})
+				.attr('x',function(d){
+					return chart.x.axisProperties(d[0]);
+				})
+				.attr("width",function(d){
+					return chart.x.axisProperties(d[1]) - chart.x.axisProperties(d[0]);
+				})
+				.attr("height", chart.y.axisProperties.bandwidth())
+				.on("mouseover",function(d){
+					var dataObj=	d.data;	// `d` is [... , ... , data: {Object with data for the year}]
+					var nBad=		parseInt(dataObj.Bad);
+					var nMixed=		parseInt(dataObj.Mixed);
+					var nGood=		parseInt(dataObj.Good);		
+					var nTotal=		nBad + nMixed + nGood;
+					var pct=		d3.format(".0%");
+
+					var tooltipContentArray=	[
+						"<b>"+dataObj.ReleaseYear+"</b>",
+						"<b><span class=\"tooltip-bad\">Bad:</span> "+pct(nBad/nTotal)+"  ("+nBad+")</b>",
+						"<b><span class=\"tooltip-mixed\">Mixed:</span> "+pct(nMixed/nTotal)+"  ("+nMixed+")</b>",
+						"<b><span class=\"tooltip-good\">Good:</span> "+pct(nGood/nTotal)+"  ("+nGood+")</b>"
+					];
+					chart.tooltip.html(tooltipContentArray.join("<br>"));
+					chart.tooltip.style("display","block");
+				})
+				.on('mouseout',function(d){
+					chart.tooltip.style('display','none');
+				})
+				.on('mousemove',function(){
+					chart.tooltip.style('top',(d3.event.pageY+10)+'px')
+						.style('left',(d3.event.pageX+10)+'px');
+				})
+
+		chart.svg.append('g')
+			.attr("class","y axis")
+			.call(chart.y.axis);
+
+		chart.svg.selectAll(".y")
+			.attr("transform","translate("+chart.margin.left+')');
+
+		chart.svg.selectAll(".y .tick")
+			.attr("transform",function(d){
+				var topOfbar=		chart.y.axisProperties(d);
+				var barheight=		chart.y.axisProperties.bandwidth();
+				var barHalfHeight=	barheight/2;
+				var tickPosition=	topOfbar + barHalfHeight + chart.margin.top;
+				return "translate(0,"+tickPosition+')';
+			});
+
+		chart.svg.append('g')
+			.attr("class","x axis")
+			.attr("transform","translate("+chart.margin.left+','+chart.margin.top+')')
+			.call(chart.x.axis);
+	});
+}
+
+function drawAllScoreCategoriesByYearCharts(datasetObj){
+	for(var dataset in datasetObj) {
+		var containerName=	datasetObj[dataset].containerName;
+		document.getElementById(containerName).innerHTML='';
+
+		var title=			datasetObj[dataset].title;
+		drawChartScoreCategoriesByYear(dataset, containerName, title);
+	}
+}
+
+var scoreByYearDatasetsObj=	{
+	"chartData.MetascoreByYear.csv": {
+		containerName: "normalized-stacked-bar-metascore-by-year",
+		title: "How critics rate video games, 2000-2016"
+	},
+	"chartData.UserScoreByYear.csv": {
+		containerName: "normalized-stacked-bar-user-score-by-year",
+		title: "How players rate video games, 2000-2016"
+	}
+};
+
+drawAllScoreCategoriesByYearCharts(scoreByYearDatasetsObj);
+d3.select(window).on("resize",function(){
+	drawAllScoreCategoriesByYearCharts(scoreByYearDatasetsObj);
+});
+</script>

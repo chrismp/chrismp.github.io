@@ -5,13 +5,14 @@ permalink:  pretty
 # relative_permalinks: true
 
 # Setup
-title:      Datavizz
-tagline:    "Data visualizations by Chris Persaud"
-url:        http://datavizz.com
-plugins:       [jekyll-paginate]
-paginate:   1
-baseurl:    ""
-future:     false # Allows us to see posts scheduled in the future
+title:               Datavizz
+tagline:             "Data visualizations by Chris Persaud"
+url:                 http://datavizz.com
+plugins:				 [jekyll-paginate]
+paginate:            1
+baseurl:             ""
+future:				 false # Allows us to see posts scheduled in the future
+
 
 # Assets
 #
