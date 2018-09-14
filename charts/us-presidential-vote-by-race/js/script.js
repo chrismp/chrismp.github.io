@@ -42,6 +42,7 @@ var pymChild = null;
 var dataDir = "vote-by-race";
 d3.csv(dataDir+'/'+filename+".csv").then(function(data){
 	var row;
+	var chartsContainer = document.getElementById("charts");
 	data.forEach(function(d,i){
 		if (i%4===0) {
 			row = document.createElement("div");
@@ -56,7 +57,7 @@ d3.csv(dataDir+'/'+filename+".csv").then(function(data){
 
 		col.appendChild(chartDiv);
 		row.appendChild(col);
-		document.getElementById("charts").appendChild(row);
+		chartsContainer.appendChild(row);
 	});
 	data.forEach(function(d,i){
 		var chartDataObj = Object.assign({},d);
@@ -64,5 +65,17 @@ d3.csv(dataDir+'/'+filename+".csv").then(function(data){
 
 		var chart = typeof isPercentWhiteChart === "undefined" ? drawGraphic(chartDataObj,d,i,false) : drawGraphic(chartDataObj,d,i,isPercentWhiteChart)
 	});
+
+	var sourceP = document.createElement('p');
+	sourceP.innerHTML = "<small><i>Source: Exit poll results displayed by The New York Times.</i></small>"
+
+	var sourceRow = document.createElement("div");
+	sourceRow.className = "row";
+	var sourceCol = document.createElement("div");
+	sourceCol.className = "col";
+	sourceCol.appendChild(sourceP);
+	sourceRow.appendChild(sourceCol);
+	chartsContainer.appendChild(sourceRow);
+
 	pymChild = new pym.Child({rendercallback: drawGraphic});
 });
