@@ -1,12 +1,12 @@
 ---
 layout: post
-title: White people remain the only major race that votes GOP for president
+title: White people are the only major race that votes GOP for president
 author: Chris Persaud
 ---
 
 <script src="https://pym.nprapps.org/pym.v1.js"></script>
 
-When it comes to U.S. presidential elections, the only major racial group that continues to consistently vote for Republican candidates is white people. 
+When it comes to U.S. presidential elections, the only major racial group that continues to vote for Republican candidates is white people. 
 
 During elections, pollsters stand outside voting booths across America, asking voters leaving their polling places who they voted for. The results of these surveys are published and reported on by news companies. The *New York Times* has [visualized](https://www.nytimes.com/interactive/2016/11/08/us/politics/election-exit-polls.html) this data going back to the 1972 presidential race. Over the past 12 presidential cycles, one trend is clear. White voters are the only racial demographic in the electorate that consistently backs Republican candidates. 
 
