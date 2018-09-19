@@ -23,15 +23,21 @@ Schools across Florida and in Palm Beach County punished black students far more
 
 <img src="{{site.baseurl}}/charts/pbc-school-punishment/PBCvFL.png" class="simple-chart">
 
-For Palm Beach County schools, there is a relationship between punishment rates for whites students and black students. When white students are punished at high rates, a bigger portion of their black peers are punished.
+Full-size chart [here]({{site.baseurl}}/charts/pbc-school-punishment/PBCvFL.png).
+
+For Palm Beach County schools, there is a relationship between punishment rates for whites students and black students. When white students are punished at high rates, a bigger portion of their black peers are punished. 
 
 <img src="{{site.baseurl}}/charts/pbc-school-punishment/PBC-black-white-punishment-scatter.png" class="simple-chart">
+
+Full-size chart [here]({{site.baseurl}}/charts/pbc-school-punishment/PBC-black-white-punishment-scatter.png).
 
 One big outlier during the 2016-17 school year was Boca Raton Community Middle School, which punished 64 percent of black students versus 18 percent of whites. Boca Raton Middle had 1,509 enrolled in 2016-17, with 192 black students and 815 who were white. Another outlier was Renaissance Charter School At Cypress, a K-8 charter school in West Palm Beach that is 65 percent black. Renaissance punished 16 percent of its black pupils. 
 
 Comparing punishment rates for nonblack and black students may mean a school's overall punishment rate is linked to how often it punished black kids and teens. The link between punishment rates for these two groups is even stronger than between black and white students. Check the next chart.
 
 <img src="{{site.baseurl}}/charts/pbc-school-punishment/PBC-black-nonblack-punishment-scatter.png" class="simple-chart">
+
+Full-size chart [here]({{site.baseurl}}/charts/pbc-school-punishment/PBC-black-nonblack-punishment-scatter.png).
 
 Once again, Boca Community Middle stands out. But most other schools are closer to the trend line. 
 
