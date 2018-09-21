@@ -59,4 +59,4 @@ Finally, here's a breakdown by party.
 
 Unsurprisingly, most voters in last month's races belonged to one of the two major parties. But just because a voter needs to be registered with a party to vote in that party's primary does not mean they are locked out of all races. Many other offices, like judges, mayors and other local politicians were on the ballot.
 
-Next month, I'll take another look at primary data once all the votes have been added to the voter file.
+Next month, I'd like totake another look at primary data once all the votes have been added to the voter file. If you'd like to look at the R code I used to analyze this data and make these charts, check [this Github repo of mine](https://github.com/chrismp/FL-Sept-2018-voter-file-analysis). 
