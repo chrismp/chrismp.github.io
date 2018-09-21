@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Looks like whites and eldely dominated 2018 Florida primary election
+title: Looks like whites and the elderly dominated 2018 Florida primary election
 author: Chris Persaud
 ---
 
